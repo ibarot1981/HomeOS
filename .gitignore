@@ -1,0 +1,61 @@
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+.clang_complete
+.gcc-flags.json
+
+# VS Code local workspace files
+.vscode/*
+!.vscode/.gitkeep
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Build outputs
+builds/*
+!builds/.gitkeep
+*.bin
+*.elf
+*.hex
+*.map
+*.o
+*.a
+*.d
+
+# Logs
+*.log
+logs/
+
+# Local secrets and machine-specific configuration
+.env
+.env.*
+!.env.example
+secrets/
+*.secret
+*.secrets
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+config.local.*
+local.*
+
+# Editor temporary files
+*~
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+.#*
+\#*#
+
+# OS-generated files
+.DS_Store
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
