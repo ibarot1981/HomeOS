@@ -4,6 +4,18 @@
 
 Use a 4.2 inch black-and-white SPI ePaper module with 400 x 300 resolution, preferably Waveshare-compatible.
 
+Delivered display status:
+
+- received: 2026-07-29
+- brand marking: `Waveshare`
+- model marking: `4.2inch e-Paper Module`
+- version marking: `V2`
+- board revision: `Rev2.2`
+- resolution marking: `400x300 Pixels`
+- interface selector marking: `BS`, with PCB table showing `1` for 3-line SPI and `0` for 4-line SPI
+- repository photo: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/PXL_20260729_154404151_sm.jpg`
+- local reference PDF: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/Waveshare eink display.pdf`
+
 This recommendation is for a complete driver module, not a bare ePaper panel. A complete module includes the small interface board needed to connect the panel to an ESP32-style controller. A bare panel is much harder to use and should not be selected for Version 1.
 
 Expected pins:
@@ -87,18 +99,19 @@ Version 0.1 should first use the vendor's official example or a known matching G
 
 | Field | Value |
 |---|---|
-| Seller | TBD until delivered |
-| Product link | TBD until delivered |
-| Manufacturer or compatible brand | TBD until delivered |
-| Board/module revision | TBD until delivered |
-| Display controller | TBD until delivered |
-| GxEPD2 driver class | TBD until delivered |
-| Supply-voltage instructions | TBD until delivered |
-| Logic-voltage compatibility | TBD until delivered |
-| Vendor example used for first testing | TBD until delivered |
-| Front photograph | TBD until delivered |
-| Back photograph | TBD until delivered |
-| Printed pin labels | TBD until delivered |
+| Seller | Robu.in, based on user-provided purchase context |
+| Product link | TBD until recorded |
+| Manufacturer or compatible brand | Waveshare, observed on PCB |
+| Board/module revision | V2, Rev2.2, observed on PCB |
+| Display controller | TBD until verified from vendor documentation or first working example |
+| GxEPD2 driver class | TBD until verified by example build and display test |
+| Supply-voltage instructions | TBD until checked against vendor documentation for this revision |
+| Logic-voltage compatibility | TBD until checked against vendor documentation for this revision |
+| Vendor example used for first testing | TBD until first display bring-up |
+| Front photograph | TBD - not present in current artifact set |
+| Back/interface photograph | `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/PXL_20260729_154404151_sm.jpg` |
+| Printed pin labels | `BUSY`, `RST`, `DC`, `CS`, `CLK`, `DIN`, `GND`, `VCC` |
+| Interface selector | `BS` marking observed; verify 4-line SPI setting before first display test |
 
 ## Library
 

@@ -4,7 +4,13 @@
 
 ### Added
 
+- Recorded received ESP32-S3 DevKit photos and Waveshare 4.2 inch ePaper display photo/reference PDF.
+- Documented observed board/display markings for the delivered Edgehax S3-PRO and Waveshare 4.2 inch e-Paper Module V2 Rev2.2.
+- Documented visible USB connector labels, BOOT/RESET buttons, and the display `BS` SPI interface selector marking.
+
 ### Changed
+
+- Updated hardware, project context, ESP32, display, and wiring notes from purchase planning status to received-hardware verification status.
 
 ### Fixed
 
@@ -46,4 +52,3 @@
 - Hardware not yet purchased
 - Wiring not yet finalized
 - GPIO assignments intentionally left TBD
-

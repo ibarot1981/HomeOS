@@ -20,6 +20,36 @@ Never rely solely on jumper-wire color. Wire colors are helpful labels, but the 
 
 ## ePaper Display Pins
 
+Delivered Waveshare 4.2 inch ePaper module pin labels are printed on the interface board. The connector order visible in the repository photo is:
+
+```text
+BUSY
+RST
+DC
+CS
+CLK
+DIN
+GND
+VCC
+```
+
+The through-hole header on the same board is printed in the reverse visual order:
+
+```text
+VCC
+GND
+DIN
+CLK
+CS
+DC
+RST
+BUSY
+```
+
+Always follow the label printed next to the exact connector being wired. Do not wire by cable color.
+
+The display PCB also has a `BS` interface selector marking. The printed table says `1` means 3-line SPI and `0` means 4-line SPI. Version 0.1 should use the vendor-documented 4-line SPI setup unless a matching example requires otherwise.
+
 Typical 4.2 inch SPI ePaper module pins:
 
 | Display Pin | Meaning | ESP32-S3 Connection |
@@ -36,6 +66,14 @@ Typical 4.2 inch SPI ePaper module pins:
 The exact ESP32-S3 pins should be selected after checking the board pinout and display library examples.
 
 Some complete Waveshare-style interface boards accept a wider supply range, but raw panels and other boards may not. Logic-level compatibility and power-input voltage are separate questions. Version 0.1 wiring must follow the exact vendor manual or verified example for the delivered revision.
+
+Delivered hardware notes:
+
+- display board: Waveshare 4.2 inch e-Paper Module V2, Rev2.2
+- controller board: Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8
+- controller USB labels: `UART` and `USB`; upload and serial behavior still must be verified
+- wiring status: not finalized
+- first safe step: verify board USB/serial behavior before connecting the display
 
 ## What Each Display Signal Means
 

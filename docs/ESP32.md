@@ -4,6 +4,18 @@
 
 Use an ESP32-S3 DevKit with the ESP32-S3-WROOM-1-N16R8 module.
 
+Delivered board status:
+
+- received: 2026-07-29
+- board marking: `Edgehax S3-PRO`
+- module marking: `ESP32-S3-WROOM-1`
+- module code marking: `MCN16R8`
+- USB connector labels visible on PCB: `UART` and `USB`
+- buttons visible on PCB: `RESET` and `BOOT`
+- repository photos: `hardware/photos/ESP32 S3 Devkit/`
+
+The delivered module marking appears to match the intended N16R8 class, but the actual flash size, PSRAM size, USB behavior, and usable GPIO list must be verified through firmware and board documentation before being treated as confirmed.
+
 This gives:
 
 - WiFi
@@ -68,6 +80,8 @@ Arduino IDE can work, but PlatformIO is better for this long-term project.
 
 The ESP32-S3 chip supports native USB, but development boards may expose native USB, USB-to-serial, or both through one or two physical USB connectors. The exact use of each USB connector must be checked against the purchased board's pinout or seller documentation.
 
+The delivered Edgehax S3-PRO has two USB-C connectors labeled `UART` and `USB`. For Version 0.1, record which connector appears in Windows, which connector PlatformIO can upload through, and which connector provides reliable serial logs.
+
 A USB cable used for firmware flashing must support data. Some phone charging cables provide power only, and the board may turn on but not appear on the computer.
 
 ## WiFi
@@ -115,8 +129,9 @@ The firmware configuration should enable PSRAM when using the N16R8 board. PSRAM
 
 Before connecting the display or other parts:
 
-- confirm exact board model
+- confirm exact board model: delivered board is marked `Edgehax S3-PRO`
 - inspect connector labels
+- verify behavior of the `UART` and `USB` connectors
 - use a known data cable
 - confirm the board appears on the computer
 - upload a basic serial test

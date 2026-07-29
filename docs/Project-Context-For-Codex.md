@@ -12,11 +12,13 @@ The user has strong computer systems knowledge but beginner hands-on electronics
 
 ## Preferred Hardware
 
-- ESP32-S3 DevKit with ESP32-S3-WROOM-1-N16R8
-- 4.2 inch black-and-white SPI ePaper display, 400 x 300, Waveshare-compatible
+- received Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8
+- received Waveshare 4.2 inch black-and-white SPI ePaper Module V2, Rev2.2, 400 x 300
 - three tactile buttons
 - passive buzzer
 - USB phone charger
+
+Do not treat flash size, PSRAM size, USB behavior, display driver class, or GPIO wiring as confirmed until Version 0.1 verification proves them on the delivered hardware.
 
 ## Architecture Direction
 
@@ -65,4 +67,3 @@ Start with Version 0.1:
 - serial logging
 - no Telegram yet
 - no sensors yet
-
