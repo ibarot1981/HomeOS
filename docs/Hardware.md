@@ -4,8 +4,8 @@
 
 | Item | Preferred Choice | Status | Reason |
 |---|---|---:|---|
-| Microcontroller | ESP32-S3 DevKit with ESP32-S3-WROOM-1-N16R8 | Buy | strong memory, WiFi, Bluetooth, native USB |
-| Display | 4.2 inch black-and-white SPI ePaper, 400 x 300, Waveshare-compatible | Buy | ideal dashboard size and library support |
+| Microcontroller | Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8 | Received - verification pending | strong memory target; flash, PSRAM, USB behavior, and board pinout must be verified |
+| Display | Waveshare 4.2 inch black-and-white SPI ePaper module V2, Rev2.2, 400 x 300 | Received - verification pending | ideal dashboard size; exact driver and refresh behavior must be tested |
 | Breadboard | existing 30-point breadboard | Already owned - suitability to be checked | may help with buttons and small components |
 | Jumper wires | existing kit | Already owned | required for temporary wiring |
 | Buttons | tactile switches | Already owned | good for prototype navigation |
@@ -16,9 +16,29 @@
 | Component storage/labels | small box or labels | Optional | helps identify starter-kit parts later |
 | Buzzer/load driver parts | transistor, base/gate resistor, protection components | Buy only if required | needed if buzzer or other load exceeds safe GPIO drive |
 
+## Received Hardware Records
+
+Received hardware evidence is stored in the repository:
+
+- ESP32-S3 photos: `hardware/photos/ESP32 S3 Devkit/`
+- Waveshare display photo and local reference PDF: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/`
+
+Do not store purchase invoices in the public repository. They can contain personal billing or shipping details.
+
 ## Controller Rationale
 
 The recommended ESP32-S3 board is the ESP32-S3-WROOM-1-N16R8 variant.
+
+The delivered board is marked:
+
+- board: `Edgehax S3-PRO`
+- module: `ESP32-S3-WROOM-1`
+- module marking: `MCN16R8`
+- seller/manufacturer marking on PCB: `Edgehax`
+- USB connector labels visible on PCB: `UART` and `USB`
+- button labels visible on PCB: `RESET` and `BOOT`
+
+The module marking is consistent with the intended N16R8 class, but firmware must still verify actual flash size, PSRAM size, and USB behavior before depending on them.
 
 Name breakdown:
 
@@ -37,6 +57,18 @@ Why this matters:
 ## Display Rationale
 
 The preferred display is a 4.2 inch black-and-white SPI ePaper module with 400 x 300 resolution.
+
+The delivered display PCB is marked:
+
+- brand: `Waveshare`
+- model marking: `4.2inch e-Paper Module`
+- version marking: `V2`
+- board revision: `Rev2.2`
+- resolution marking: `400x300 Pixels`
+- interface labels: `BUSY`, `RST`, `DC`, `CS`, `CLK`, `DIN`, `GND`, `VCC`
+- interface selector marking: `BS`, with PCB table showing `1` for 3-line SPI and `0` for 4-line SPI
+
+The display driver class, controller IC, power requirements, and refresh behavior are still unverified. Version 0.1 should prove the vendor example or a known matching GxEPD2 example before HomeOS UI work begins.
 
 Why 4.2 inch:
 

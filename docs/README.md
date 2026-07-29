@@ -27,13 +27,14 @@ This project should be built like a small product, not like a one-file Arduino e
 
 ## Current Preferred Hardware
 
-- Controller: ESP32-S3 DevKit with ESP32-S3-WROOM-1-N16R8 module
-- Display: 4.2 inch black-and-white SPI ePaper display, Waveshare-compatible, 400 x 300
+- Controller: received Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8
+- Display: received Waveshare 4.2 inch black-and-white SPI ePaper Module V2, Rev2.2, 400 x 300
 - Interaction: three tactile buttons plus Telegram commands
 - Alert output: passive buzzer
 - Power: good-quality USB phone charger, typically 5 V / 1 A or better
 
+Flash size, PSRAM size, USB behavior, display driver class, and final wiring remain verification tasks for Version 0.1.
+
 ## User Learning Profile
 
 The intended builder has strong computer systems knowledge but beginner-level hands-on electronics experience. Explanations should assume comfort with software architecture, APIs, configuration, and debugging, but should not assume prior knowledge of voltage, GPIO, SPI, pull-up resistors, breadboards, sensors, or circuit safety.
-
