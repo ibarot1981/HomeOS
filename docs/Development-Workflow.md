@@ -122,16 +122,16 @@ Do not replace this remote with HTTPS. Do not replace it with `git@github.com:ib
 The SSH configuration file is:
 
 ```text
-C:\Users\ibaro\.ssh\config
+%USERPROFILE%\.ssh\config
 ```
 
-It contains:
+It should contain an entry shaped like this:
 
 ```ssh
 Host github-newspaper-bot
     HostName github.com
     User git
-    IdentityFile ~/.ssh/id_ed25519_github_newspaperbot
+    IdentityFile ~/.ssh/<github-private-key-file>
     IdentitiesOnly yes
 ```
 
