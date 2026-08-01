@@ -14,7 +14,7 @@ Delivered board status:
 - buttons visible on PCB: `RESET` and `BOOT`
 - repository photos: `hardware/photos/ESP32 S3 Devkit/`
 
-The delivered module marking appears to match the intended N16R8 class. PSRAM and the UART USB connector have been verified through the factory firmware boot log. Flash size, native USB behavior, PlatformIO upload behavior, and the usable GPIO list still need to be verified before being treated as confirmed.
+The delivered module marking appears to match the intended N16R8 class. PSRAM, 16 MB flash, UART serial, and PlatformIO upload have been verified on the delivered board. Native USB behavior and the usable GPIO list still need to be verified before being treated as confirmed.
 
 This gives:
 
@@ -80,7 +80,9 @@ Arduino IDE can work, but PlatformIO is better for this long-term project.
 
 The ESP32-S3 chip supports native USB, but development boards may expose native USB, USB-to-serial, or both through one or two physical USB connectors. The exact use of each USB connector must be checked against the purchased board's pinout or seller documentation.
 
-The delivered Edgehax S3-PRO has two USB-C connectors labeled `UART` and `USB`. For Version 0.1, record which connector appears in Windows, which connector PlatformIO can upload through, and which connector provides reliable serial logs.
+The delivered Edgehax S3-PRO has two USB-C connectors labeled `UART` and `USB`. The first HomeOS PlatformIO environment is `edgehax_s3_pro_diagnostics`, using the generic PlatformIO `esp32-s3-devkitc-1` board target with explicit 16 MB flash and OPI PSRAM settings for the delivered `MCN16R8` module.
+
+PlatformIO labels the base board target as `ESP32-S3-DevKitC-1-N8 (8 MB QD, No PSRAM)`, but HomeOS overrides the flash and PSRAM settings in `platformio.ini`. The real board values must be confirmed from serial output, not the generic board title alone.
 
 First verified serial result:
 
@@ -95,6 +97,19 @@ First verified serial result:
 - LED blink test: passed
 - SD card test: mount failed; expected unless a compatible SD card is installed
 - WiFi factory test: failed while trying SSID `Edgehax`; expected unless that factory-test network exists
+
+First verified HomeOS PlatformIO result:
+
+- date: 2026-08-01
+- connector used: `UART`
+- Windows port during test: `COM7`
+- upload: succeeded with PlatformIO over `esptool`
+- bootloader entry: automatic; no manual `BOOT`/`RESET` timing required
+- chip observed by upload tool: ESP32-S3 revision `v0.2`
+- upload tool features: WiFi, BLE, embedded PSRAM 8 MB
+- flash size printed by firmware: 16 MB (`16777216` bytes)
+- PSRAM printed by firmware: 8 MB class
+- serial output: readable HomeOS diagnostics and periodic heartbeat
 
 A USB cable used for firmware flashing must support data. Some phone charging cables provide power only, and the board may turn on but not appear on the computer.
 
@@ -148,7 +163,7 @@ Before connecting the display or other parts:
 - verify behavior of the `UART` and `USB` connectors
 - use a known data cable
 - confirm the board appears on the computer; first test showed `USB-SERIAL CH340 (COM7)` on the `UART` connector
-- upload a basic serial test
-- print flash size
+- upload a basic serial test; first PlatformIO upload succeeded over `COM7`
+- print flash size; first HomeOS diagnostic firmware printed 16 MB
 - print PSRAM size; factory firmware already detected 8 MB
-- record the successful PlatformIO board configuration
+- record the successful PlatformIO board configuration; initial environment is `edgehax_s3_pro_diagnostics`

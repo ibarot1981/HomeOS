@@ -4,7 +4,7 @@
 
 | Item | Preferred Choice | Status | Reason |
 |---|---|---:|---|
-| Microcontroller | Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8 | Received - UART serial and PSRAM verified | flash size, native USB behavior, PlatformIO upload, and board pinout still must be verified |
+| Microcontroller | Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8 | Received - UART serial, PlatformIO upload, 16 MB flash, and PSRAM verified | native USB behavior and board pinout still must be verified |
 | Display | Waveshare 4.2 inch black-and-white SPI ePaper module V2, Rev2.2, 400 x 300 | Received - verification pending | ideal dashboard size; exact driver and refresh behavior must be tested |
 | Breadboard | existing 30-point breadboard | Already owned - suitability to be checked | may help with buttons and small components |
 | Jumper wires | existing kit | Already owned | required for temporary wiring |
@@ -38,7 +38,7 @@ The delivered board is marked:
 - USB connector labels visible on PCB: `UART` and `USB`
 - button labels visible on PCB: `RESET` and `BOOT`
 
-The module marking is consistent with the intended N16R8 class. The first UART serial monitor test on 2026-08-01 showed the board booting factory firmware and detecting 8 MB PSRAM. Firmware must still verify actual flash size, PlatformIO upload behavior, native USB behavior, and usable GPIOs before depending on them.
+The module marking is consistent with the intended N16R8 class. The first UART serial monitor test on 2026-08-01 showed the board booting factory firmware and detecting 8 MB PSRAM. The first HomeOS PlatformIO diagnostic firmware uploaded successfully over `COM7` and printed 16 MB flash plus 8 MB-class PSRAM. Native USB behavior and usable GPIOs still need to be verified before depending on them.
 
 Name breakdown:
 
