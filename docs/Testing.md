@@ -37,7 +37,36 @@ Notes:
 
 - SD card mount failure is acceptable during this test because no SD card is part of Version 0.1.
 - Factory WiFi failure is acceptable because the test firmware tries SSID `Edgehax`, not the future HomeOS WiFi setup.
-- The next board test is a HomeOS diagnostic firmware upload that prints flash size, PSRAM size, and chip information.
+- The next board test is the HomeOS PlatformIO environment `edgehax_s3_pro_diagnostics`, which prints flash size, PSRAM size, chip information, and a heartbeat over serial.
+
+HomeOS PlatformIO result:
+
+- date: 2026-08-01
+- environment: `edgehax_s3_pro_diagnostics`
+- build result: passed
+- upload result: passed over `COM7`
+- manual bootloader buttons required: no
+- firmware flash size output: 16 MB (`16777216` bytes)
+- firmware PSRAM output: 8 MB class
+- heartbeat output: observed every 5 seconds
+
+PlatformIO CLI commands, if `pio` is available in the terminal:
+
+```powershell
+pio run
+pio run --target upload
+pio device monitor
+```
+
+On this Windows PC, the PlatformIO extension may install the CLI without adding it to the normal terminal path. In that case, use the VS Code PlatformIO sidebar or run:
+
+```powershell
+& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run
+& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run --target upload
+& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" device monitor --port COM7 --baud 115200
+```
+
+In VS Code, the same actions are available from the PlatformIO sidebar as Build, Upload, and Monitor.
 
 ## Version 0.1 Display Test
 

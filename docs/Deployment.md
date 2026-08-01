@@ -25,6 +25,41 @@ Benefits:
 - board configuration
 - easier long-term maintenance
 
+## First PlatformIO Environment
+
+The first checked-in PlatformIO environment is:
+
+```text
+edgehax_s3_pro_diagnostics
+```
+
+It is a board-only diagnostic firmware for the delivered Edgehax S3-PRO. It uses the `UART` USB-C connector on `COM7` at `115200` baud and prints chip, flash, heap, and PSRAM information. The ePaper display should remain disconnected for this test.
+
+First verified result on 2026-08-01:
+
+- PlatformIO build passed.
+- PlatformIO upload passed over `COM7`.
+- The board entered upload mode automatically; no manual `BOOT`/`RESET` sequence was needed.
+- Serial monitor showed readable HomeOS diagnostics and heartbeat output.
+- Firmware printed 16 MB flash and 8 MB-class PSRAM.
+
+In VS Code:
+
+1. open the HomeOS folder
+2. wait for PlatformIO to finish loading
+3. use the PlatformIO sidebar
+4. run Build
+5. run Upload with the board connected to the `UART` USB-C port
+6. run Monitor at `115200` baud
+
+If using a normal Windows terminal and `pio` is not on `PATH`, run PlatformIO through the extension's installed executable:
+
+```powershell
+& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run
+& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run --target upload
+& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" device monitor --port COM7 --baud 115200
+```
+
 ## Configuration
 
 Local configuration should include:
@@ -94,4 +129,3 @@ If a firmware update breaks the device:
 3. upload last known good firmware
 4. check serial logs
 5. document what failed
-
