@@ -14,7 +14,7 @@ Delivered board status:
 - buttons visible on PCB: `RESET` and `BOOT`
 - repository photos: `hardware/photos/ESP32 S3 Devkit/`
 
-The delivered module marking appears to match the intended N16R8 class, but the actual flash size, PSRAM size, USB behavior, and usable GPIO list must be verified through firmware and board documentation before being treated as confirmed.
+The delivered module marking appears to match the intended N16R8 class. PSRAM and the UART USB connector have been verified through the factory firmware boot log. Flash size, native USB behavior, PlatformIO upload behavior, and the usable GPIO list still need to be verified before being treated as confirmed.
 
 This gives:
 
@@ -82,6 +82,20 @@ The ESP32-S3 chip supports native USB, but development boards may expose native 
 
 The delivered Edgehax S3-PRO has two USB-C connectors labeled `UART` and `USB`. For Version 0.1, record which connector appears in Windows, which connector PlatformIO can upload through, and which connector provides reliable serial logs.
 
+First verified serial result:
+
+- date: 2026-08-01
+- connector used: `UART`
+- Windows device: `USB-SERIAL CH340`
+- Windows port during test: `COM7`
+- serial monitor baud rate: `115200`
+- boot ROM line observed: `ESP-ROM:esp32s3-20210327`
+- factory firmware observed: `EDGEHAX ESP32-S3 AUTO TEST`
+- PSRAM result: detected, 8 MB (`8388608` bytes)
+- LED blink test: passed
+- SD card test: mount failed; expected unless a compatible SD card is installed
+- WiFi factory test: failed while trying SSID `Edgehax`; expected unless that factory-test network exists
+
 A USB cable used for firmware flashing must support data. Some phone charging cables provide power only, and the board may turn on but not appear on the computer.
 
 ## WiFi
@@ -133,8 +147,8 @@ Before connecting the display or other parts:
 - inspect connector labels
 - verify behavior of the `UART` and `USB` connectors
 - use a known data cable
-- confirm the board appears on the computer
+- confirm the board appears on the computer; first test showed `USB-SERIAL CH340 (COM7)` on the `UART` connector
 - upload a basic serial test
 - print flash size
-- print PSRAM size
+- print PSRAM size; factory firmware already detected 8 MB
 - record the successful PlatformIO board configuration

@@ -15,6 +15,30 @@ Unlike pure software, a firmware bug might be:
 
 Testing should isolate one variable at a time.
 
+## Version 0.1 Board Serial Test
+
+Goal:
+
+- prove the ESP32-S3 board powers on and prints readable serial logs before connecting the display
+
+First result:
+
+- date: 2026-08-01
+- connector used: `UART`
+- Windows device: `USB-SERIAL CH340`
+- Windows port during test: `COM7`
+- baud rate: `115200`
+- boot ROM line observed: `ESP-ROM:esp32s3-20210327`
+- factory firmware observed: `EDGEHAX ESP32-S3 AUTO TEST`
+- PSRAM detected: 8 MB (`8388608` bytes)
+- LED blink test: passed
+
+Notes:
+
+- SD card mount failure is acceptable during this test because no SD card is part of Version 0.1.
+- Factory WiFi failure is acceptable because the test firmware tries SSID `Edgehax`, not the future HomeOS WiFi setup.
+- The next board test is a HomeOS diagnostic firmware upload that prints flash size, PSRAM size, and chip information.
+
 ## Version 0.1 Display Test
 
 Goal:
@@ -145,4 +169,3 @@ Good debugging:
 Bad debugging:
 
 - change pins, library, board type, and wiring all at once
-
