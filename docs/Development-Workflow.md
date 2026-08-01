@@ -107,6 +107,48 @@ Rules:
 
 Temporary experiments are allowed during learning, but they should either become documented project code or be removed.
 
+## Local GitHub SSH Setup
+
+This Windows PC uses the SSH host alias `github-newspaper-bot` for GitHub access to the HomeOS repository.
+
+The correct HomeOS remote URL is:
+
+```text
+git@github-newspaper-bot:ibarot1981/HomeOS.git
+```
+
+Do not replace this remote with HTTPS. Do not replace it with `git@github.com:ibarot1981/HomeOS.git` unless the SSH configuration is changed to support the plain `github.com` host directly.
+
+The SSH configuration file is:
+
+```text
+%USERPROFILE%\.ssh\config
+```
+
+It should contain an entry shaped like this:
+
+```ssh
+Host github-newspaper-bot
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/<github-private-key-file>
+    IdentitiesOnly yes
+```
+
+The correct SSH test command is:
+
+```powershell
+ssh -T git@github-newspaper-bot
+```
+
+A successful result looks like:
+
+```text
+Hi ibarot1981! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+Plain `ssh -T git@github.com` is expected to fail on this PC unless a separate `github.com` SSH configuration is added.
+
 ## Hardware Documentation Rules
 
 Every newly purchased hardware component should eventually have documented:
@@ -149,4 +191,3 @@ Avoid leaving the repository in a broken intermediate state. A release does not 
 - the changelog reflects the milestone
 
 The project should feel calm to return to after a gap of weeks or months. The documentation is what makes that possible.
-
