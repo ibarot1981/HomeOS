@@ -6,6 +6,7 @@
 
 - Added initial PlatformIO configuration for the Edgehax S3-PRO board diagnostics environment.
 - Added first firmware diagnostic sketch that prints chip, flash, heap, and PSRAM information over serial.
+- Added PR handoff instructions requiring a ready-to-paste pull request title and description whenever Codex asks the user to create a PR.
 - Added hardware reference documents for the Edgehax S3-PRO pinout, Espressif ESP32-S3-WROOM-1 module datasheet, and Waveshare 4.2 inch ePaper module manual PDF.
 - Recorded received ESP32-S3 DevKit photos and Waveshare 4.2 inch ePaper display photo/reference PDF.
 - Documented observed board/display markings for the delivered Edgehax S3-PRO and Waveshare 4.2 inch e-Paper Module V2 Rev2.2.

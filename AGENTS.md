@@ -250,6 +250,8 @@ Do not include unrelated changes in the same commit.
 
 Every implementation branch should result in a pull request unless the user explicitly asks otherwise.
 
+If an agent asks the user to create the pull request, the agent must provide the pull request title and a ready-to-paste description body. Do not only provide the branch name or GitHub "create pull request" link.
+
 The pull request summary should include:
 
 - What changed
@@ -259,6 +261,14 @@ The pull request summary should include:
 - Tests or validation performed
 - Known limitations
 - Anything requiring user review
+
+When the agent cannot create the pull request directly because of tool or permission limitations, the final response should include:
+
+- the branch name
+- the pull request target branch
+- the pull request title
+- the ready-to-paste pull request description
+- the GitHub pull request creation link, if available
 
 Do not merge the pull request without explicit user approval.
 

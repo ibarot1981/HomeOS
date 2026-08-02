@@ -178,6 +178,20 @@ Whenever implementing a task, Codex should:
 
 Codex should not invent missing electronics details. If a board revision, GPIO safety note, voltage requirement, or module marking is unknown, it should remain documented as `TBD` until verified.
 
+## Pull Request Handoff
+
+If Codex asks the user to create a pull request, Codex must provide enough text for the user to paste directly into GitHub.
+
+The handoff should include:
+
+- branch name
+- target branch
+- pull request title
+- ready-to-paste pull request description
+- GitHub pull request creation link, if available
+
+This is required when Codex has pushed a branch but cannot create the pull request because of GitHub tool or permission limitations.
+
 ## Release Philosophy
 
 HomeOS should always be releasable.
