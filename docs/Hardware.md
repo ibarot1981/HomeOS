@@ -21,7 +21,8 @@
 Received hardware evidence is stored in the repository:
 
 - ESP32-S3 photos: `hardware/photos/ESP32 S3 Devkit/`
-- Waveshare display photo and local reference PDF: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/`
+- Waveshare display photo: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/`
+- Hardware reference documents: `hardware/datasheets/`
 
 Do not store purchase invoices in the public repository. They can contain personal billing or shipping details.
 
@@ -39,6 +40,12 @@ The delivered board is marked:
 - button labels visible on PCB: `RESET` and `BOOT`
 
 The module marking is consistent with the intended N16R8 class. The first UART serial monitor test on 2026-08-01 showed the board booting factory firmware and detecting 8 MB PSRAM. The first HomeOS PlatformIO diagnostic firmware uploaded successfully over `COM7` and printed 16 MB flash plus 8 MB-class PSRAM. Native USB behavior and usable GPIOs still need to be verified before depending on them.
+
+Reference documents:
+
+- board pinout: `hardware/datasheets/edgehax-s3-pro-esp32-s3-wroom-n16r8-pinout.pdf`
+- module datasheet: `hardware/datasheets/espressif-esp32-s3-wroom-1-wroom-1u-datasheet.pdf`
+- Edgehax board repository: `https://github.com/edgehax/esp32-s3-wroom1-n16r8`
 
 Name breakdown:
 
@@ -69,6 +76,11 @@ The delivered display PCB is marked:
 - interface selector marking: `BS`, with PCB table showing `1` for 3-line SPI and `0` for 4-line SPI
 
 The display driver class, controller IC, power requirements, and refresh behavior are still unverified. Version 0.1 should prove the vendor example or a known matching GxEPD2 example before HomeOS UI work begins.
+
+Reference documents:
+
+- downloaded display manual PDF: `hardware/datasheets/waveshare-4.2inch-epaper-module-manual.pdf`
+- live Waveshare manual: `https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_Manual`
 
 Why 4.2 inch:
 

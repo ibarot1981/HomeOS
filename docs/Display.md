@@ -14,7 +14,9 @@ Delivered display status:
 - resolution marking: `400x300 Pixels`
 - interface selector marking: `BS`, with PCB table showing `1` for 3-line SPI and `0` for 4-line SPI
 - repository photo: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/PXL_20260729_154404151_sm.jpg`
-- local reference PDF: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/Waveshare eink display.pdf`
+- downloaded reference manual PDF: `hardware/datasheets/waveshare-4.2inch-epaper-module-manual.pdf`
+- user-provided photo PDF: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/Waveshare eink display.pdf`
+- live vendor manual: `https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_Manual`
 
 This recommendation is for a complete driver module, not a bare ePaper panel. A complete module includes the small interface board needed to connect the panel to an ESP32-style controller. A bare panel is much harder to use and should not be selected for Version 1.
 
@@ -110,6 +112,9 @@ Version 0.1 should first use the vendor's official example or a known matching G
 | Vendor example used for first testing | TBD until first display bring-up |
 | Front photograph | TBD - not present in current artifact set |
 | Back/interface photograph | `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/PXL_20260729_154404151_sm.jpg` |
+| Downloaded reference manual PDF | `hardware/datasheets/waveshare-4.2inch-epaper-module-manual.pdf` |
+| User-provided photo PDF | `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/Waveshare eink display.pdf` |
+| Live vendor manual | `https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_Manual` |
 | Printed pin labels | `BUSY`, `RST`, `DC`, `CS`, `CLK`, `DIN`, `GND`, `VCC` |
 | Interface selector | `BS` marking observed; verify 4-line SPI setting before first display test |
 
