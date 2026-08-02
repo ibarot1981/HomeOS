@@ -65,6 +65,13 @@ Typical 4.2 inch SPI ePaper module pins:
 
 The exact ESP32-S3 pins should be selected after checking the board pinout and display library examples.
 
+Reference documents to check before wiring:
+
+- Edgehax S3-PRO pinout: `hardware/datasheets/edgehax-s3-pro-esp32-s3-wroom-n16r8-pinout.pdf`
+- Espressif ESP32-S3-WROOM-1 datasheet: `hardware/datasheets/espressif-esp32-s3-wroom-1-wroom-1u-datasheet.pdf`
+- Waveshare 4.2 inch ePaper manual PDF: `hardware/datasheets/waveshare-4.2inch-epaper-module-manual.pdf`
+- Live Waveshare manual: `https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_Manual`
+
 Some complete Waveshare-style interface boards accept a wider supply range, but raw panels and other boards may not. Logic-level compatibility and power-input voltage are separate questions. Version 0.1 wiring must follow the exact vendor manual or verified example for the delivered revision.
 
 Delivered hardware notes:

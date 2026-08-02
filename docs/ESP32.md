@@ -13,6 +13,8 @@ Delivered board status:
 - USB connector labels visible on PCB: `UART` and `USB`
 - buttons visible on PCB: `RESET` and `BOOT`
 - repository photos: `hardware/photos/ESP32 S3 Devkit/`
+- board pinout PDF: `hardware/datasheets/edgehax-s3-pro-esp32-s3-wroom-n16r8-pinout.pdf`
+- module datasheet PDF: `hardware/datasheets/espressif-esp32-s3-wroom-1-wroom-1u-datasheet.pdf`
 
 The delivered module marking appears to match the intended N16R8 class. PSRAM, 16 MB flash, UART serial, and PlatformIO upload have been verified on the delivered board. Native USB behavior and the usable GPIO list still need to be verified before being treated as confirmed.
 
@@ -66,6 +68,8 @@ Rule:
 - avoid pins connected internally to flash/PSRAM, boot-strapping pins, USB pins, and unavailable pins where applicable
 
 The exact development board matters, not only the `N16R8` module name. Before pin assignments are chosen, record the purchased board model and photograph both sides of the board.
+
+Use the local Edgehax pinout PDF and the Espressif module datasheet in `hardware/datasheets/` before finalizing new GPIO assignments.
 
 ## Programming
 
