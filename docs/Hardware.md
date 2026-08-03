@@ -5,7 +5,7 @@
 | Item | Preferred Choice | Status | Reason |
 |---|---|---:|---|
 | Microcontroller | Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8 | Received - UART serial, PlatformIO upload, 16 MB flash, and PSRAM verified | native USB behavior and board pinout still must be verified |
-| Display | Waveshare 4.2 inch black-and-white SPI ePaper module V2, Rev2.2, 400 x 300 | Received - verification pending | ideal dashboard size; exact driver and refresh behavior must be tested |
+| Display | Waveshare 4.2 inch black-and-white SPI ePaper module V2, Rev2.2, 400 x 300 | Received - full-refresh hello-world verified | ideal dashboard size; partial and fast refresh behavior still must be tested |
 | Breadboard | existing 30-point breadboard | Already owned - suitability to be checked | may help with buttons and small components |
 | Jumper wires | existing kit | Already owned | required for temporary wiring |
 | Buttons | tactile switches | Already owned | good for prototype navigation |
@@ -22,6 +22,7 @@ Received hardware evidence is stored in the repository:
 
 - ESP32-S3 photos: `hardware/photos/ESP32 S3 Devkit/`
 - Waveshare display photo: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/`
+- first wired display hello-world photos: `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172005639_sm.jpg` and `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172010729_sm.jpg`
 - Hardware reference documents: `hardware/datasheets/`
 
 Do not store purchase invoices in the public repository. They can contain personal billing or shipping details.
@@ -75,7 +76,7 @@ The delivered display PCB is marked:
 - interface labels: `BUSY`, `RST`, `DC`, `CS`, `CLK`, `DIN`, `GND`, `VCC`
 - interface selector marking: `BS`, with PCB table showing `1` for 3-line SPI and `0` for 4-line SPI
 
-The display driver class, controller IC, power requirements, and refresh behavior are still unverified. Version 0.1 should prove the vendor example or a known matching GxEPD2 example before HomeOS UI work begins.
+The first HomeOS display hello-world test on 2026-08-03 verified full refresh using GxEPD2 driver class `GxEPD2_420_GDEY042T81`, USB power through the ESP32 board, and 3V3 display power. The display controller is inferred from that working GxEPD2 class rather than directly read from a chip marking. Partial refresh, fast refresh, and long-term refresh behavior are still unverified.
 
 Reference documents:
 

@@ -16,7 +16,7 @@ Delivered board status:
 - board pinout PDF: `hardware/datasheets/edgehax-s3-pro-esp32-s3-wroom-n16r8-pinout.pdf`
 - module datasheet PDF: `hardware/datasheets/espressif-esp32-s3-wroom-1-wroom-1u-datasheet.pdf`
 
-The delivered module marking appears to match the intended N16R8 class. PSRAM, 16 MB flash, UART serial, and PlatformIO upload have been verified on the delivered board. Native USB behavior and the usable GPIO list still need to be verified before being treated as confirmed.
+The delivered module marking appears to match the intended N16R8 class. PSRAM, 16 MB flash, UART serial, PlatformIO upload, and the first wired ePaper hello-world test have been verified on the delivered board. Native USB behavior and the broader usable GPIO list still need to be verified before being treated as confirmed.
 
 This gives:
 
@@ -115,6 +115,18 @@ First verified HomeOS PlatformIO result:
 - PSRAM printed by firmware: 8 MB class
 - serial output: readable HomeOS diagnostics and periodic heartbeat
 
+First verified HomeOS display result:
+
+- date: 2026-08-03
+- connector used: `UART`
+- Windows port during test: `COM7`
+- upload: succeeded with PlatformIO over `esptool`
+- bootloader entry: automatic; no manual `BOOT`/`RESET` timing required
+- flash size printed by firmware: 16 MB (`16777216` bytes)
+- PSRAM printed by firmware: 8 MB class
+- display wiring: GPIO11 MOSI, GPIO12 SCK, GPIO10 CS, GPIO8 DC, GPIO9 RST, GPIO7 BUSY, 3V3 power, common GND
+- display result: Waveshare 4.2 inch ePaper full-refresh hello-world screen displayed successfully
+
 A USB cable used for firmware flashing must support data. Some phone charging cables provide power only, and the board may turn on but not appear on the computer.
 
 ## WiFi
@@ -171,3 +183,4 @@ Before connecting the display or other parts:
 - print flash size; first HomeOS diagnostic firmware printed 16 MB
 - print PSRAM size; factory firmware already detected 8 MB
 - record the successful PlatformIO board configuration; initial environment is `edgehax_s3_pro_diagnostics`
+- first ePaper hello-world test succeeded on 2026-08-03 using the wiring documented in `docs/Wiring.md`

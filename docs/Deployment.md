@@ -33,7 +33,7 @@ The first checked-in PlatformIO environment is:
 edgehax_s3_pro_diagnostics
 ```
 
-It is a board-only diagnostic firmware for the delivered Edgehax S3-PRO. It uses the `UART` USB-C connector on `COM7` at `115200` baud and prints chip, flash, heap, and PSRAM information. The ePaper display should remain disconnected for this test.
+It began as a board-only diagnostic firmware for the delivered Edgehax S3-PRO. It now keeps those startup diagnostics and also runs the Version 0.1 ePaper hello-world test when the display is wired according to `docs/Wiring.md`. It uses the `UART` USB-C connector on `COM7` at `115200` baud and prints chip, flash, heap, PSRAM, display pin, and display refresh information.
 
 First verified result on 2026-08-01:
 
@@ -42,6 +42,15 @@ First verified result on 2026-08-01:
 - The board entered upload mode automatically; no manual `BOOT`/`RESET` sequence was needed.
 - Serial monitor showed readable HomeOS diagnostics and heartbeat output.
 - Firmware printed 16 MB flash and 8 MB-class PSRAM.
+
+First display hello-world deployment result on 2026-08-03:
+
+- PlatformIO build passed with GxEPD2 `1.6.9`.
+- PlatformIO upload passed over `COM7`.
+- The board entered upload mode automatically; no manual `BOOT`/`RESET` sequence was needed.
+- Serial monitor showed readable HomeOS diagnostics, display pin mapping, GxEPD2 full-refresh output, and heartbeat output.
+- Firmware printed 16 MB flash and 8 MB-class PSRAM.
+- The Waveshare 4.2 inch ePaper display showed the HomeOS hello-world screen.
 
 In VS Code:
 

@@ -54,16 +54,20 @@ Typical 4.2 inch SPI ePaper module pins:
 
 | Display Pin | Meaning | ESP32-S3 Connection |
 |---|---|---|
-| VCC | power | TBD - must be confirmed from the exact delivered module documentation |
+| VCC | power | 3V3 for the first temporary USB-powered test |
 | GND | ground | GND |
-| DIN / MOSI | data from ESP32 to display | TBD |
-| CLK / SCK | SPI clock | TBD |
-| CS | chip select | TBD |
-| DC | data/command select | TBD |
-| RST | reset | TBD |
-| BUSY | display busy signal | TBD |
+| DIN / MOSI | data from ESP32 to display | GPIO11 / MOSI |
+| CLK / SCK | SPI clock | GPIO12 / SCK |
+| CS | chip select | GPIO10 / SS |
+| DC | data/command select | GPIO8 |
+| RST | reset | GPIO9 |
+| BUSY | display busy signal | GPIO7 |
 
-The exact ESP32-S3 pins should be selected after checking the board pinout and display library examples.
+This is the first verified temporary mapping for the Waveshare 4.2 inch e-Paper Module V2 Rev2.2 hello-world test. It uses the generic ESP32-S3 Arduino hardware SPI defaults for MOSI, SCK, and CS, plus nearby non-strapping GPIOs for DC, RST, and BUSY. It avoids ESP32-S3 strapping pins GPIO0, GPIO3, GPIO45, and GPIO46; USB pins GPIO19 and GPIO20; UART0 pins GPIO43 and GPIO44; and pins currently noted as onboard LED/JTAG-sensitive in the board pinout.
+
+The display module manual says V2.1 and later Waveshare driver boards include level processing for 3.3 V and 5 V environments. For the first HomeOS test, use 3V3 from the ESP32-S3 board to keep display power and ESP32 logic at the same voltage. Do not use external power for this milestone.
+
+The GxEPD2 driver class verified for the first full-refresh hello-world test is `GxEPD2_420_GDEY042T81`, listed by GxEPD2 for a 4.2 inch black-and-white 400 x 300 SSD1683 panel. This proves a basic full refresh on the delivered Waveshare V2 Rev2.2 module, but it does not yet prove partial refresh, fast refresh, or long-term refresh behavior.
 
 Reference documents to check before wiring:
 
@@ -78,9 +82,9 @@ Delivered hardware notes:
 
 - display board: Waveshare 4.2 inch e-Paper Module V2, Rev2.2
 - controller board: Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8
-- controller USB labels: `UART` and `USB`; upload and serial behavior still must be verified
-- wiring status: not finalized
-- first safe step: verify board USB/serial behavior before connecting the display
+- controller USB labels: `UART` and `USB`; upload and serial behavior verified on the `UART` connector over `COM7`
+- wiring status: first temporary display mapping physically verified on 2026-08-03
+- first display result: full-refresh HomeOS hello-world screen displayed successfully
 
 ## What Each Display Signal Means
 
@@ -154,7 +158,14 @@ If current demand is unknown, use a transistor driver rather than risking an ESP
 
 | Wire number | From device | From pin | To device | To pin | Expected voltage or signal | Wire color | Verified by | Date |
 |---|---|---|---|---|---|---|---|---|
-| 1 | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| 1 | Waveshare ePaper | VCC | Edgehax S3-PRO | 3V3 | 3.3 V module power | light gray / white | user photo and manual trace | 2026-08-03 |
+| 2 | Waveshare ePaper | GND | Edgehax S3-PRO | GND | common ground | brown | user photo and manual trace | 2026-08-03 |
+| 3 | Waveshare ePaper | DIN | Edgehax S3-PRO | GPIO11 | SPI MOSI | blue | user photo and manual trace | 2026-08-03 |
+| 4 | Waveshare ePaper | CLK | Edgehax S3-PRO | GPIO12 | SPI SCK | yellow | user photo and manual trace | 2026-08-03 |
+| 5 | Waveshare ePaper | CS | Edgehax S3-PRO | GPIO10 | chip select | orange | user photo and manual trace | 2026-08-03 |
+| 6 | Waveshare ePaper | DC | Edgehax S3-PRO | GPIO8 | data/command select | green | user photo and manual trace | 2026-08-03 |
+| 7 | Waveshare ePaper | RST | Edgehax S3-PRO | GPIO9 | display reset | white / gray | user photo and manual trace | 2026-08-03 |
+| 8 | Waveshare ePaper | BUSY | Edgehax S3-PRO | GPIO7 | display busy signal | purple | user photo and manual trace | 2026-08-03 |
 
 ## Power
 
