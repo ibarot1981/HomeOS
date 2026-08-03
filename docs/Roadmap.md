@@ -25,6 +25,11 @@ Success criteria:
 
 Goal: prove the ESP32-S3 can control the 4.2 inch ePaper display.
 
+Status:
+
+- first full-refresh hello-world test passed on 2026-08-03
+- partial refresh, fast refresh, and long-term refresh behavior remain future validation
+
 Features:
 
 - compile and flash firmware
@@ -204,4 +209,3 @@ HomeOS can become a reusable platform for multiple displays:
 - one in the bedroom
 - one for factory alerts
 - one for water and power monitoring
-

@@ -16,6 +16,7 @@ Delivered display status:
 - repository photo: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/PXL_20260729_154404151_sm.jpg`
 - downloaded reference manual PDF: `hardware/datasheets/waveshare-4.2inch-epaper-module-manual.pdf`
 - user-provided photo PDF: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/Waveshare eink display.pdf`
+- first hello-world photo: `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172005639_sm.jpg`
 - live vendor manual: `https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_Manual`
 
 This recommendation is for a complete driver module, not a bare ePaper panel. A complete module includes the small interface board needed to connect the panel to an ESP32-style controller. A bare panel is much harder to use and should not be selected for Version 1.
@@ -105,18 +106,36 @@ Version 0.1 should first use the vendor's official example or a known matching G
 | Product link | TBD until recorded |
 | Manufacturer or compatible brand | Waveshare, observed on PCB |
 | Board/module revision | V2, Rev2.2, observed on PCB |
-| Display controller | TBD until verified from vendor documentation or first working example |
-| GxEPD2 driver class | TBD until verified by example build and display test |
-| Supply-voltage instructions | TBD until checked against vendor documentation for this revision |
-| Logic-voltage compatibility | TBD until checked against vendor documentation for this revision |
-| Vendor example used for first testing | TBD until first display bring-up |
-| Front photograph | TBD - not present in current artifact set |
+| Display controller | SSD1683 inferred from the working GxEPD2 `GxEPD2_420_GDEY042T81` driver class; not directly read from a chip marking |
+| GxEPD2 driver class | `GxEPD2_420_GDEY042T81`, verified by full-refresh hello-world test on 2026-08-03 |
+| Supply-voltage instructions | Manual says V2.1 and later driver boards support 3.3 V and 5 V environments; first HomeOS test used 3V3 only |
+| Logic-voltage compatibility | Verified with ESP32-S3 3.3 V GPIO during first hello-world test |
+| Vendor example used for first testing | HomeOS minimal GxEPD2 hello-world sketch using the GxEPD2 matching 4.2 inch black-and-white driver class |
+| Front photograph | `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172005639_sm.jpg` |
 | Back/interface photograph | `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/PXL_20260729_154404151_sm.jpg` |
+| Wired setup photograph | `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172010729_sm.jpg` |
 | Downloaded reference manual PDF | `hardware/datasheets/waveshare-4.2inch-epaper-module-manual.pdf` |
 | User-provided photo PDF | `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/Waveshare eink display.pdf` |
 | Live vendor manual | `https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_Manual` |
 | Printed pin labels | `BUSY`, `RST`, `DC`, `CS`, `CLK`, `DIN`, `GND`, `VCC` |
-| Interface selector | `BS` marking observed; verify 4-line SPI setting before first display test |
+| Interface selector | `BS` marking observed; first HomeOS test used the module in 4-line SPI mode |
+
+## First Hello-World Result
+
+On 2026-08-03, the delivered Waveshare 4.2 inch e-Paper Module V2 Rev2.2 successfully displayed the HomeOS hello-world screen over SPI from the Edgehax S3-PRO. The test used full refresh only, USB power through the ESP32 board, and 3V3 display power. The display showed:
+
+```text
+HomeOS
+ePaper hello-world
+Waveshare 4.2 V2 Rev2.2
+```
+
+Known limitations after this result:
+
+- partial refresh is not tested
+- fast refresh is not tested
+- long-term refresh interval behavior is not tested
+- the display controller is inferred from the working driver class, not from a readable controller marking
 
 ## Library
 

@@ -74,14 +74,28 @@ Goal:
 
 - display shows a known message
 
+First successful HomeOS display result:
+
+- date: 2026-08-03
+- environment: `edgehax_s3_pro_diagnostics`
+- library: GxEPD2 `1.6.9`
+- driver class: `GxEPD2_420_GDEY042T81`
+- wiring: documented in `docs/Wiring.md`
+- power: USB power through the ESP32-S3 board only; display VCC connected to ESP32 `3V3`
+- build result: passed
+- upload result: passed over `COM7`
+- serial result: diagnostics printed 16 MB flash, 8 MB-class PSRAM, display pin map, and `Display refresh command complete`
+- display result: HomeOS hello-world text appeared clearly on a white background
+- setup photos: `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172005639_sm.jpg` and `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172010729_sm.jpg`
+
 Checklist:
 
-- firmware compiles
-- upload succeeds
-- serial monitor opens
-- display initializes
-- screen refreshes
-- text appears
+- firmware compiles: passed on 2026-08-03
+- upload succeeds: passed on 2026-08-03
+- serial monitor opens: passed on 2026-08-03
+- display initializes: passed on 2026-08-03
+- screen refreshes: passed on 2026-08-03
+- text appears: passed on 2026-08-03
 
 If it fails:
 
@@ -91,6 +105,13 @@ If it fails:
 4. check BUSY pin
 5. confirm display driver class in GxEPD2
 6. run vendor example
+
+Still untested:
+
+- partial refresh
+- fast refresh
+- refresh behavior after long uptime
+- display behavior from a standalone USB charger
 
 ## Button Test
 
