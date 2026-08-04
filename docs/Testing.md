@@ -113,6 +113,48 @@ Still untested:
 - refresh behavior after long uptime
 - display behavior from a standalone USB charger
 
+## Version 0.2 Clock Screen Test
+
+Goal:
+
+- display shows a useful clock screen using WiFi and NTP while keeping serial diagnostics useful
+
+Build result:
+
+- date: 2026-08-04
+- environment: `edgehax_s3_pro_diagnostics`
+- build command: `& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run`
+- build result: passed
+- firmware behavior without local WiFi credentials: compiled fallback path that displays `WiFi not configured`
+
+Before upload:
+
+1. confirm the ePaper module is still wired exactly as documented in `docs/Wiring.md`
+2. confirm USB power is only through the ESP32 board
+3. confirm `firmware/include/config.local.h` exists only locally if testing real WiFi/NTP
+4. confirm no WiFi SSID or password is staged for commit
+
+Expected serial behavior:
+
+- startup diagnostics still print chip, flash, heap, PSRAM, display pin map, WiFi credential status, timezone, and clock refresh interval
+- WiFi SSID and password are not printed
+- if credentials are configured, firmware logs WiFi connection status and NTP sync status
+- heartbeat output continues after the first display refresh
+
+Expected display behavior:
+
+- without local credentials: fallback clock setup screen appears
+- with valid local credentials and network access: clock screen shows IST time and date
+- refresh remains full-screen only
+- partial refresh and fast refresh remain untested
+
+Still untested until hardware upload:
+
+- actual WiFi connection on the delivered Edgehax S3-PRO
+- actual NTP sync result on the local network
+- displayed clock layout on the Waveshare panel
+- one-minute full-refresh clock update behavior
+
 ## Button Test
 
 Goal:

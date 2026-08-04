@@ -41,6 +41,7 @@ secrets/
 *.p12
 *.pfx
 config.local.*
+firmware/include/config.local.h
 local.*
 
 # Editor temporary files

@@ -141,11 +141,27 @@ WiFi will be used for:
 
 WiFi credentials should be stored securely and should not be committed to a public repository.
 
+Version 0.2 begins WiFi use for NTP clock sync. The firmware looks for an ignored local header:
+
+```text
+firmware/include/config.local.h
+```
+
+Create it by copying:
+
+```text
+firmware/include/config.example.h
+```
+
+Then fill in the local `HOMEOS_WIFI_SSID` and `HOMEOS_WIFI_PASSWORD` values. Do not commit `config.local.h`, screenshots of it, serial logs containing secrets, or any other credential file.
+
 ## Time
 
 Use NTP for time sync. NTP means Network Time Protocol. It lets the ESP32 get the correct time from internet time servers.
 
 For India, timezone should be set to IST, UTC+05:30.
+
+Version 0.2 uses NTP with IST (`UTC+05:30`) for the first clock screen. If credentials are missing or WiFi/NTP fails, the firmware should still boot, keep serial diagnostics available, and draw a clear fallback screen instead of hard-failing.
 
 An RTC module is not required for Version 1.
 

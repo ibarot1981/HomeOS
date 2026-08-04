@@ -137,6 +137,19 @@ Known limitations after this result:
 - long-term refresh interval behavior is not tested
 - the display controller is inferred from the working driver class, not from a readable controller marking
 
+## Version 0.2 Clock Screen
+
+Version 0.2 replaces the hello-world screen with a simple clock screen path while keeping the same verified display driver, wiring, and full-refresh behavior.
+
+Expected clock screen behavior:
+
+- header: `HomeOS Clock` and WiFi status
+- main area: local IST time and date when NTP sync succeeds
+- fallback area: setup or failure status when WiFi credentials are missing, WiFi connection fails, or NTP sync fails
+- footer: clock status and `Full refresh only`
+
+The firmware intentionally avoids partial refresh and fast refresh. The clock redraws by full refresh on minute changes after time sync. This is simple and testable, but long-term full-refresh interval behavior is still a Version 0.2 validation item.
+
 ## Library
 
 Preferred library:

@@ -48,13 +48,25 @@ Learning:
 
 Goal: show a useful first screen.
 
+Status:
+
+- firmware implementation started on 2026-08-04
+- local PlatformIO build passed
+- hardware upload/display verification pending wiring reconfirmation
+
 Features:
 
 - WiFi connection
 - NTP time sync
 - date and time display
 - timezone configuration
-- manual refresh interval
+- manual refresh interval, currently as a firmware constant
+
+Scope boundaries:
+
+- full refresh only
+- same verified ePaper wiring as Version 0.1
+- no buttons, buzzer, Telegram, sensors, relays, or module-manager abstraction yet
 
 Success criteria:
 
