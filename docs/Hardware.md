@@ -4,7 +4,7 @@
 
 | Item | Preferred Choice | Status | Reason |
 |---|---|---:|---|
-| Microcontroller | Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8 | Received - UART serial, PlatformIO upload, 16 MB flash, PSRAM, and Version 0.2 clock-screen upload verified | native USB behavior and board pinout still must be verified |
+| Microcontroller | Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8 | Received - UART serial, PlatformIO upload, 16 MB flash, PSRAM, Version 0.2 clock-screen upload, and USB power-cycle recovery verified | native USB behavior, physical RESET behavior, and board pinout still must be verified |
 | Display | Waveshare 4.2 inch black-and-white SPI ePaper module V2, Rev2.2, 400 x 300 | Received - full-refresh hello-world and Version 0.2 clock screen verified | ideal dashboard size; partial refresh and fast refresh behavior still must be tested |
 | Breadboard | existing 30-point breadboard | Already owned - suitability to be checked | may help with buttons and small components |
 | Jumper wires | existing kit | Already owned | required for temporary wiring |
@@ -41,6 +41,8 @@ The delivered board is marked:
 - button labels visible on PCB: `RESET` and `BOOT`
 
 The module marking is consistent with the intended N16R8 class. The first UART serial monitor test on 2026-08-01 showed the board booting factory firmware and detecting 8 MB PSRAM. The first HomeOS PlatformIO diagnostic firmware uploaded successfully over `COM7` and printed 16 MB flash plus 8 MB-class PSRAM. Native USB behavior and usable GPIOs still need to be verified before depending on them.
+
+Version 0.2 clock-screen firmware recovered correctly after a USB power-cycle on 2026-08-04. Pressing the physical `RESET` button did not appear to do anything obvious during that user test, so exact reset-button behavior remains to be investigated separately.
 
 Reference documents:
 

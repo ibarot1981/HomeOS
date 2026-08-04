@@ -158,6 +158,8 @@ First user-reported clock-screen result on 2026-08-04:
 - top-right WiFi status showed `WiFi`
 - footer showed NTP sync status and `Full refresh only`
 - the original `IST via NTP` footer text was visually ambiguous on the ePaper font, so the firmware label was changed to `NTP synced`
+- after a USB power-cycle, the clock display recovered with WiFi/NTP as before
+- after waiting for the next full refresh, the displayed time was correct
 
 ## Library
 

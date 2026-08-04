@@ -137,6 +137,14 @@ First hardware result:
 - footer status: NTP sync status and `Full refresh only`
 - label follow-up: changed the synced status text from `IST via NTP` to `NTP synced` because the display font could make `IST` look like `1st`
 
+Follow-up recovery result:
+
+- date: 2026-08-04
+- physical `RESET` button behavior: user reported pressing it did not appear to do anything obvious
+- USB power-cycle result: passed
+- after reconnecting USB power, WiFi/NTP behavior returned as before
+- one-minute full-refresh update result: passed; after waiting for the screen refresh, the displayed time was correct
+
 Before upload:
 
 1. confirm the ePaper module is still wired exactly as documented in `docs/Wiring.md`
@@ -158,11 +166,10 @@ Expected display behavior:
 - refresh remains full-screen only
 - partial refresh and fast refresh remain untested
 
-Still to validate:
+Still to validate later:
 
-- one-minute full-refresh clock update behavior
-- behavior after restart
 - behavior when WiFi is unavailable after credentials have been configured
+- exact physical `RESET` button behavior on the Edgehax S3-PRO
 
 ## Button Test
 

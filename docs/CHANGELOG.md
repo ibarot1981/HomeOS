@@ -17,6 +17,7 @@
 - Added Version 0.2 clock screen firmware path using WiFi, NTP, IST timezone, and full-refresh ePaper drawing.
 - Added a non-secret firmware config example for local WiFi credentials.
 - Recorded the first user-reported Version 0.2 clock-screen hardware result.
+- Recorded Version 0.2 USB power-cycle recovery and one-minute clock refresh validation.
 
 ### Changed
 

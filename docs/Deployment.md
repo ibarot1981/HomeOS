@@ -61,6 +61,9 @@ Version 0.2 clock-screen result on 2026-08-04:
 - Without local credentials, the firmware builds and shows a clear `WiFi not configured` fallback screen.
 - User ran VS Code PlatformIO build, upload, and monitor with local WiFi credentials in ignored `firmware/include/config.local.h`.
 - The ePaper display showed the digital clock, top-right `WiFi` status, NTP sync status, and `Full refresh only`.
+- USB power-cycle recovery passed; after reconnecting power, WiFi/NTP returned and the clock display recovered.
+- One-minute full-refresh update passed; the displayed time was correct after the refresh.
+- Physical `RESET` button behavior was not obvious during the user test and remains a separate board-behavior item.
 
 In VS Code:
 

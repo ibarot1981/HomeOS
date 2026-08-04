@@ -25,13 +25,14 @@ Confirmed so far:
 - 8 MB-class PSRAM
 - Waveshare 4.2 inch ePaper full-refresh hello-world using the wiring in `docs/Wiring.md`
 - Version 0.2 clock-screen upload and display using local ignored WiFi credentials
+- Version 0.2 USB power-cycle recovery and one-minute clock refresh
 
 Still unverified or pending:
 
 - native USB behavior
 - broader usable GPIO list
 - ePaper partial refresh and fast refresh
-- one-minute clock refresh behavior over longer runtime
+- exact physical `RESET` button behavior
 
 ## Architecture Direction
 
