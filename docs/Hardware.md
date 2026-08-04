@@ -4,8 +4,8 @@
 
 | Item | Preferred Choice | Status | Reason |
 |---|---|---:|---|
-| Microcontroller | Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8 | Received - UART serial, PlatformIO upload, 16 MB flash, PSRAM, and clock-screen firmware build verified | native USB behavior and board pinout still must be verified |
-| Display | Waveshare 4.2 inch black-and-white SPI ePaper module V2, Rev2.2, 400 x 300 | Received - full-refresh hello-world verified; Version 0.2 clock-screen firmware build passed | ideal dashboard size; Version 0.2 hardware clock test, partial refresh, and fast refresh behavior still must be tested |
+| Microcontroller | Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8 | Received - UART serial, PlatformIO upload, 16 MB flash, PSRAM, and Version 0.2 clock-screen upload verified | native USB behavior and board pinout still must be verified |
+| Display | Waveshare 4.2 inch black-and-white SPI ePaper module V2, Rev2.2, 400 x 300 | Received - full-refresh hello-world and Version 0.2 clock screen verified | ideal dashboard size; partial refresh and fast refresh behavior still must be tested |
 | Breadboard | existing 30-point breadboard | Already owned - suitability to be checked | may help with buttons and small components |
 | Jumper wires | existing kit | Already owned | required for temporary wiring |
 | Buttons | tactile switches | Already owned | good for prototype navigation |

@@ -127,6 +127,16 @@ Build result:
 - build result: passed
 - firmware behavior without local WiFi credentials: compiled fallback path that displays `WiFi not configured`
 
+First hardware result:
+
+- date: 2026-08-04
+- test method: user ran VS Code PlatformIO build, upload, and monitor
+- local WiFi credentials: present only in ignored `firmware/include/config.local.h`
+- display result: digital clock appeared on the ePaper display
+- top-right status: `WiFi`
+- footer status: NTP sync status and `Full refresh only`
+- label follow-up: changed the synced status text from `IST via NTP` to `NTP synced` because the display font could make `IST` look like `1st`
+
 Before upload:
 
 1. confirm the ePaper module is still wired exactly as documented in `docs/Wiring.md`
@@ -148,12 +158,11 @@ Expected display behavior:
 - refresh remains full-screen only
 - partial refresh and fast refresh remain untested
 
-Still untested until hardware upload:
+Still to validate:
 
-- actual WiFi connection on the delivered Edgehax S3-PRO
-- actual NTP sync result on the local network
-- displayed clock layout on the Waveshare panel
 - one-minute full-refresh clock update behavior
+- behavior after restart
+- behavior when WiFi is unavailable after credentials have been configured
 
 ## Button Test
 

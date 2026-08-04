@@ -147,7 +147,7 @@ void drawRightText(const char *text, int16_t rightX, int16_t baselineY) {
 const char *clockStatusMessage() {
   switch (clockStatus) {
     case ClockStatus::kTimeSynced:
-      return "IST via NTP";
+      return "NTP synced";
     case ClockStatus::kTimeSyncFailed:
       return "Time not synced";
     case ClockStatus::kWiFiConnectFailed:

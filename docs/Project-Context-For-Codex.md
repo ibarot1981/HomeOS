@@ -24,13 +24,14 @@ Confirmed so far:
 - 16 MB flash
 - 8 MB-class PSRAM
 - Waveshare 4.2 inch ePaper full-refresh hello-world using the wiring in `docs/Wiring.md`
+- Version 0.2 clock-screen upload and display using local ignored WiFi credentials
 
 Still unverified or pending:
 
 - native USB behavior
 - broader usable GPIO list
 - ePaper partial refresh and fast refresh
-- Version 0.2 clock-screen upload and NTP behavior
+- one-minute clock refresh behavior over longer runtime
 
 ## Architecture Direction
 

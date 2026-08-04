@@ -150,6 +150,15 @@ Expected clock screen behavior:
 
 The firmware intentionally avoids partial refresh and fast refresh. The clock redraws by full refresh on minute changes after time sync. This is simple and testable, but long-term full-refresh interval behavior is still a Version 0.2 validation item.
 
+First user-reported clock-screen result on 2026-08-04:
+
+- build, upload, and monitor were run from VS Code
+- local WiFi credentials were provided through ignored `firmware/include/config.local.h`
+- the screen showed the digital clock
+- top-right WiFi status showed `WiFi`
+- footer showed NTP sync status and `Full refresh only`
+- the original `IST via NTP` footer text was visually ambiguous on the ePaper font, so the firmware label was changed to `NTP synced`
+
 ## Library
 
 Preferred library:

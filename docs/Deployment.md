@@ -52,14 +52,15 @@ First display hello-world deployment result on 2026-08-03:
 - Firmware printed 16 MB flash and 8 MB-class PSRAM.
 - The Waveshare 4.2 inch ePaper display showed the HomeOS hello-world screen.
 
-Version 0.2 clock-screen build result on 2026-08-04:
+Version 0.2 clock-screen result on 2026-08-04:
 
 - PlatformIO build passed.
 - The firmware keeps the board diagnostics and verified ePaper pin map.
 - The display path now draws a clock screen instead of the hello-world screen.
 - WiFi credentials are optional at build time and must live only in ignored local configuration.
 - Without local credentials, the firmware builds and shows a clear `WiFi not configured` fallback screen.
-- Hardware upload and display verification must wait until the display wiring is reconfirmed against `docs/Wiring.md`.
+- User ran VS Code PlatformIO build, upload, and monitor with local WiFi credentials in ignored `firmware/include/config.local.h`.
+- The ePaper display showed the digital clock, top-right `WiFi` status, NTP sync status, and `Full refresh only`.
 
 In VS Code:
 

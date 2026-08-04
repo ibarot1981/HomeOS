@@ -52,7 +52,7 @@ Status:
 
 - firmware implementation started on 2026-08-04
 - local PlatformIO build passed
-- hardware upload/display verification pending wiring reconfirmation
+- user-reported VS Code build, upload, monitor, WiFi/NTP sync, and ePaper clock display passed on 2026-08-04
 
 Features:
 

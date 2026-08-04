@@ -16,6 +16,7 @@
 - Recorded first wired setup and display hello-world photos.
 - Added Version 0.2 clock screen firmware path using WiFi, NTP, IST timezone, and full-refresh ePaper drawing.
 - Added a non-secret firmware config example for local WiFi credentials.
+- Recorded the first user-reported Version 0.2 clock-screen hardware result.
 
 ### Changed
 
@@ -25,6 +26,7 @@
 - Updated wiring, display, deployment, hardware, and testing documentation after the Waveshare display full-refresh hello-world test passed on 2026-08-03.
 - Replaced the firmware's hello-world display path with a minimal Version 0.2 clock screen while keeping startup diagnostics and the verified ePaper wiring.
 - Documented safe local WiFi credential handling with ignored `firmware/include/config.local.h`.
+- Changed the synced clock footer from `IST via NTP` to `NTP synced` to avoid ambiguity on the ePaper font.
 
 ### Fixed
 
