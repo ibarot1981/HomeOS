@@ -33,7 +33,16 @@ This project should be built like a small product, not like a one-file Arduino e
 - Alert output: passive buzzer
 - Power: good-quality USB phone charger, typically 5 V / 1 A or better
 
-Flash size, PSRAM size, USB behavior, display driver class, and final wiring remain verification tasks for Version 0.1.
+Version 0.1 verified UART upload/serial on `COM7`, 16 MB flash, 8 MB-class PSRAM, the GxEPD2 display driver class, and the first ePaper wiring in `docs/Wiring.md`.
+
+Version 0.2 verified the first clock screen with local ignored WiFi credentials, NTP sync, USB power-cycle recovery, one-minute full-refresh update, and the ePaper display showing a digital clock.
+
+Still pending:
+
+- native USB behavior
+- broader usable GPIO list
+- ePaper partial refresh and fast refresh
+- exact physical `RESET` button behavior
 
 ## User Learning Profile
 

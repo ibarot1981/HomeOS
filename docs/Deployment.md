@@ -33,7 +33,7 @@ The first checked-in PlatformIO environment is:
 edgehax_s3_pro_diagnostics
 ```
 
-It began as a board-only diagnostic firmware for the delivered Edgehax S3-PRO. It now keeps those startup diagnostics and also runs the Version 0.1 ePaper hello-world test when the display is wired according to `docs/Wiring.md`. It uses the `UART` USB-C connector on `COM7` at `115200` baud and prints chip, flash, heap, PSRAM, display pin, and display refresh information.
+It began as a board-only diagnostic firmware for the delivered Edgehax S3-PRO. It now keeps those startup diagnostics and runs the Version 0.2 clock screen when the display is wired according to `docs/Wiring.md`. It uses the `UART` USB-C connector on `COM7` at `115200` baud and prints chip, flash, heap, PSRAM, display pin, WiFi/NTP, and display refresh information.
 
 First verified result on 2026-08-01:
 
@@ -51,6 +51,19 @@ First display hello-world deployment result on 2026-08-03:
 - Serial monitor showed readable HomeOS diagnostics, display pin mapping, GxEPD2 full-refresh output, and heartbeat output.
 - Firmware printed 16 MB flash and 8 MB-class PSRAM.
 - The Waveshare 4.2 inch ePaper display showed the HomeOS hello-world screen.
+
+Version 0.2 clock-screen result on 2026-08-04:
+
+- PlatformIO build passed.
+- The firmware keeps the board diagnostics and verified ePaper pin map.
+- The display path now draws a clock screen instead of the hello-world screen.
+- WiFi credentials are optional at build time and must live only in ignored local configuration.
+- Without local credentials, the firmware builds and shows a clear `WiFi not configured` fallback screen.
+- User ran VS Code PlatformIO build, upload, and monitor with local WiFi credentials in ignored `firmware/include/config.local.h`.
+- The ePaper display showed the digital clock, top-right `WiFi` status, NTP sync status, and `Full refresh only`.
+- USB power-cycle recovery passed; after reconnecting power, WiFi/NTP returned and the clock display recovered.
+- One-minute full-refresh update passed; the displayed time was correct after the refresh.
+- Physical `RESET` button behavior was not obvious during the user test and remains a separate board-behavior item.
 
 In VS Code:
 
@@ -82,6 +95,27 @@ Local configuration should include:
 - API keys if needed
 
 These should not be committed to public source control.
+
+For Version 0.2, only WiFi SSID and WiFi password are needed. Copy:
+
+```text
+firmware/include/config.example.h
+```
+
+to:
+
+```text
+firmware/include/config.local.h
+```
+
+Then fill in:
+
+```cpp
+#define HOMEOS_WIFI_SSID "your-wifi-ssid"
+#define HOMEOS_WIFI_PASSWORD "your-wifi-password"
+```
+
+`config.local.h` is ignored by git. Do not commit it.
 
 ## OTA Updates
 

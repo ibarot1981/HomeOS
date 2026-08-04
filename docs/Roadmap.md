@@ -48,18 +48,35 @@ Learning:
 
 Goal: show a useful first screen.
 
+Status:
+
+- firmware implementation started on 2026-08-04
+- local PlatformIO build passed
+- user-reported VS Code build, upload, monitor, WiFi/NTP sync, and ePaper clock display passed on 2026-08-04
+- USB power-cycle recovery and one-minute full-refresh clock update passed on 2026-08-04
+
 Features:
 
 - WiFi connection
 - NTP time sync
 - date and time display
 - timezone configuration
-- manual refresh interval
+- manual refresh interval, currently as a firmware constant
+
+Scope boundaries:
+
+- full refresh only
+- same verified ePaper wiring as Version 0.1
+- no buttons, buzzer, Telegram, sensors, relays, or module-manager abstraction yet
 
 Success criteria:
 
 - screen shows correct local time
 - device recovers after restart
+
+Result:
+
+- success criteria met using USB power-cycle restart; physical `RESET` button behavior still needs separate board-behavior investigation
 
 ## Version 0.3: Buttons and Navigation
 

@@ -18,7 +18,21 @@ The user has strong computer systems knowledge but beginner hands-on electronics
 - passive buzzer
 - USB phone charger
 
-Do not treat flash size, PSRAM size, USB behavior, display driver class, or GPIO wiring as confirmed until Version 0.1 verification proves them on the delivered hardware.
+Confirmed so far:
+
+- UART USB-C upload and serial monitor on `COM7`
+- 16 MB flash
+- 8 MB-class PSRAM
+- Waveshare 4.2 inch ePaper full-refresh hello-world using the wiring in `docs/Wiring.md`
+- Version 0.2 clock-screen upload and display using local ignored WiFi credentials
+- Version 0.2 USB power-cycle recovery and one-minute clock refresh
+
+Still unverified or pending:
+
+- native USB behavior
+- broader usable GPIO list
+- ePaper partial refresh and fast refresh
+- exact physical `RESET` button behavior
 
 ## Architecture Direction
 
@@ -56,9 +70,9 @@ Implement over time:
 - fixed module mode
 - smart alert mode
 
-## Initial Milestone
+## Current Milestone
 
-Start with Version 0.1:
+Version 0.1 passed:
 
 - minimal PlatformIO project
 - ESP32-S3 board configuration
@@ -67,3 +81,11 @@ Start with Version 0.1:
 - serial logging
 - no Telegram yet
 - no sensors yet
+
+Version 0.2 starts the first useful screen:
+
+- WiFi connection through ignored local credentials
+- NTP time sync
+- IST date and time display
+- full-refresh ePaper clock screen
+- no buttons, buzzer, Telegram, sensors, relays, or module-manager abstraction yet

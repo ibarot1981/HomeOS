@@ -137,6 +137,30 @@ Known limitations after this result:
 - long-term refresh interval behavior is not tested
 - the display controller is inferred from the working driver class, not from a readable controller marking
 
+## Version 0.2 Clock Screen
+
+Version 0.2 replaces the hello-world screen with a simple clock screen path while keeping the same verified display driver, wiring, and full-refresh behavior.
+
+Expected clock screen behavior:
+
+- header: `HomeOS Clock` and WiFi status
+- main area: local IST time and date when NTP sync succeeds
+- fallback area: setup or failure status when WiFi credentials are missing, WiFi connection fails, or NTP sync fails
+- footer: clock status and `Full refresh only`
+
+The firmware intentionally avoids partial refresh and fast refresh. The clock redraws by full refresh on minute changes after time sync. This is simple and testable, but long-term full-refresh interval behavior is still a Version 0.2 validation item.
+
+First user-reported clock-screen result on 2026-08-04:
+
+- build, upload, and monitor were run from VS Code
+- local WiFi credentials were provided through ignored `firmware/include/config.local.h`
+- the screen showed the digital clock
+- top-right WiFi status showed `WiFi`
+- footer showed NTP sync status and `Full refresh only`
+- the original `IST via NTP` footer text was visually ambiguous on the ePaper font, so the firmware label was changed to `NTP synced`
+- after a USB power-cycle, the clock display recovered with WiFi/NTP as before
+- after waiting for the next full refresh, the displayed time was correct
+
 ## Library
 
 Preferred library:

@@ -184,6 +184,12 @@ Minimum wiring for Version 0.1:
 
 This reduces the number of possible mistakes during first display bring-up.
 
+## Version 0.2 Wiring
+
+Version 0.2 keeps the same verified ePaper wiring table and still uses USB power through the ESP32-S3 board only. Do not add buttons, buzzer, sensors, relays, or external power for the clock-screen test.
+
+Before uploading the Version 0.2 firmware, re-check the display wires against the connection verification table above. The firmware still uses GPIO11 MOSI, GPIO12 SCK, GPIO10 CS, GPIO8 DC, GPIO9 RST, and GPIO7 BUSY.
+
 ## First Power-On Checklist
 
 1. Confirm exact ESP32 board.

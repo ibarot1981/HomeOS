@@ -14,6 +14,10 @@
 - Recorded the first ESP32-S3 UART serial monitor result, including CH340 detection, readable boot logs, factory test output, and 8 MB PSRAM detection.
 - Added minimal GxEPD2 display hello-world firmware for the Waveshare 4.2 inch ePaper module.
 - Recorded first wired setup and display hello-world photos.
+- Added Version 0.2 clock screen firmware path using WiFi, NTP, IST timezone, and full-refresh ePaper drawing.
+- Added a non-secret firmware config example for local WiFi credentials.
+- Recorded the first user-reported Version 0.2 clock-screen hardware result.
+- Recorded Version 0.2 USB power-cycle recovery and one-minute clock refresh validation.
 
 ### Changed
 
@@ -21,6 +25,9 @@
 - Updated microcontroller status after the first HomeOS PlatformIO upload verified UART serial, automatic upload, 16 MB flash, 8 MB-class PSRAM, and heartbeat serial output over `COM7`, while keeping native USB and GPIO mapping pending.
 - Kept the user-provided Waveshare photo PDF under `hardware/photos` and stored downloaded manuals under `hardware/datasheets`.
 - Updated wiring, display, deployment, hardware, and testing documentation after the Waveshare display full-refresh hello-world test passed on 2026-08-03.
+- Replaced the firmware's hello-world display path with a minimal Version 0.2 clock screen while keeping startup diagnostics and the verified ePaper wiring.
+- Documented safe local WiFi credential handling with ignored `firmware/include/config.local.h`.
+- Changed the synced clock footer from `IST via NTP` to `NTP synced` to avoid ambiguity on the ePaper font.
 
 ### Fixed
 

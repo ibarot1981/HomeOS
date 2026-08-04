@@ -113,6 +113,64 @@ Still untested:
 - refresh behavior after long uptime
 - display behavior from a standalone USB charger
 
+## Version 0.2 Clock Screen Test
+
+Goal:
+
+- display shows a useful clock screen using WiFi and NTP while keeping serial diagnostics useful
+
+Build result:
+
+- date: 2026-08-04
+- environment: `edgehax_s3_pro_diagnostics`
+- build command: `& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run`
+- build result: passed
+- firmware behavior without local WiFi credentials: compiled fallback path that displays `WiFi not configured`
+
+First hardware result:
+
+- date: 2026-08-04
+- test method: user ran VS Code PlatformIO build, upload, and monitor
+- local WiFi credentials: present only in ignored `firmware/include/config.local.h`
+- display result: digital clock appeared on the ePaper display
+- top-right status: `WiFi`
+- footer status: NTP sync status and `Full refresh only`
+- label follow-up: changed the synced status text from `IST via NTP` to `NTP synced` because the display font could make `IST` look like `1st`
+
+Follow-up recovery result:
+
+- date: 2026-08-04
+- physical `RESET` button behavior: user reported pressing it did not appear to do anything obvious
+- USB power-cycle result: passed
+- after reconnecting USB power, WiFi/NTP behavior returned as before
+- one-minute full-refresh update result: passed; after waiting for the screen refresh, the displayed time was correct
+
+Before upload:
+
+1. confirm the ePaper module is still wired exactly as documented in `docs/Wiring.md`
+2. confirm USB power is only through the ESP32 board
+3. confirm `firmware/include/config.local.h` exists only locally if testing real WiFi/NTP
+4. confirm no WiFi SSID or password is staged for commit
+
+Expected serial behavior:
+
+- startup diagnostics still print chip, flash, heap, PSRAM, display pin map, WiFi credential status, timezone, and clock refresh interval
+- WiFi SSID and password are not printed
+- if credentials are configured, firmware logs WiFi connection status and NTP sync status
+- heartbeat output continues after the first display refresh
+
+Expected display behavior:
+
+- without local credentials: fallback clock setup screen appears
+- with valid local credentials and network access: clock screen shows IST time and date
+- refresh remains full-screen only
+- partial refresh and fast refresh remain untested
+
+Still to validate later:
+
+- behavior when WiFi is unavailable after credentials have been configured
+- exact physical `RESET` button behavior on the Edgehax S3-PRO
+
 ## Button Test
 
 Goal:
