@@ -33,7 +33,7 @@ The first checked-in PlatformIO environment is:
 edgehax_s3_pro_diagnostics
 ```
 
-It began as a board-only diagnostic firmware for the delivered Edgehax S3-PRO. It now keeps those startup diagnostics and runs the Version 0.2 clock screen when the display is wired according to `docs/Wiring.md`. It uses the `UART` USB-C connector on `COM7` at `115200` baud and prints chip, flash, heap, PSRAM, display pin, WiFi/NTP, and display refresh information.
+It began as a board-only diagnostic firmware for the delivered Edgehax S3-PRO. It now keeps those startup diagnostics, runs the Version 0.2 clock screen, and supports the verified Version 0.3 button navigation when the display and buttons are wired according to `docs/Wiring.md`. It uses the `UART` USB-C connector on `COM7` at `115200` baud and prints chip, flash, heap, PSRAM, display pin, button, WiFi/NTP, and display refresh information.
 
 First verified result on 2026-08-01:
 

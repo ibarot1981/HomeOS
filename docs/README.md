@@ -37,6 +37,8 @@ Version 0.1 verified UART upload/serial on `COM7`, 16 MB flash, 8 MB-class PSRAM
 
 Version 0.2 verified the first clock screen with local ignored WiFi credentials, NTP sync, USB power-cycle recovery, one-minute full-refresh update, and the ePaper display showing a digital clock.
 
+Version 0.3 verified breadboard buttons on GPIO4, GPIO5, and GPIO6 using active-low wiring and internal pull-ups. Previous and Next navigate between the Clock and Board diagnostics screens, Select redraws the active screen, and normal button presses are debounced and logged once.
+
 Still pending:
 
 - native USB behavior
