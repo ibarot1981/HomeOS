@@ -26,6 +26,7 @@ Confirmed so far:
 - Waveshare 4.2 inch ePaper full-refresh hello-world using the wiring in `docs/Wiring.md`
 - Version 0.2 clock-screen upload and display using local ignored WiFi credentials
 - Version 0.2 USB power-cycle recovery and one-minute clock refresh
+- Version 0.3 button wiring, debounced input, and Clock/Board navigation verified on GPIO4/5/6
 
 Still unverified or pending:
 
