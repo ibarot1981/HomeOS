@@ -193,3 +193,9 @@ Recommended order:
 6. Water Tank
 7. Electricity
 
+## Version 0.3 Navigation Scope
+
+Version 0.3 intentionally does not introduce the formal module lifecycle or
+module registry. It uses direct built-in screen navigation between the existing
+Clock screen and a small Board diagnostics screen so the physical buttons can be
+proved before Version 0.4 adds the module manager.

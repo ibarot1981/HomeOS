@@ -65,6 +65,16 @@ Version 0.2 clock-screen result on 2026-08-04:
 - One-minute full-refresh update passed; the displayed time was correct after the refresh.
 - Physical `RESET` button behavior was not obvious during the user test and remains a separate board-behavior item.
 
+Version 0.3 buttons/navigation build result:
+
+- PlatformIO build passed.
+- The firmware keeps the board diagnostics, WiFi/NTP clock path, and verified ePaper pin map.
+- Button inputs use active-low wiring with internal pull-ups on `GPIO4`, `GPIO5`, and `GPIO6`.
+- Previous and Next cycle between the Clock and Board screens.
+- Select logs and redraws the active screen.
+- Upload and hardware testing passed on 2026-08-06 over `COM7` after the wiring was confirmed against `docs/Wiring.md`.
+- Serial output recorded one event for each tested normal button press with no observed false repeats; WiFi/NTP and Clock remained functional.
+
 In VS Code:
 
 1. open the HomeOS folder

@@ -18,6 +18,9 @@
 - Added a non-secret firmware config example for local WiFi credentials.
 - Recorded the first user-reported Version 0.2 clock-screen hardware result.
 - Recorded Version 0.2 USB power-cycle recovery and one-minute clock refresh validation.
+- Documented Version 0.3 active-low button wiring for Previous, Select, and Next on GPIO4, GPIO5, and GPIO6.
+- Added Version 0.3 firmware support for debounced Previous, Select, and Next button presses.
+- Recorded successful Version 0.3 upload and hardware validation over `COM7`, including serial press logs and Clock/Board navigation.
 
 ### Changed
 
@@ -28,6 +31,8 @@
 - Replaced the firmware's hello-world display path with a minimal Version 0.2 clock screen while keeping startup diagnostics and the verified ePaper wiring.
 - Documented safe local WiFi credential handling with ignored `firmware/include/config.local.h`.
 - Changed the synced clock footer from `IST via NTP` to `NTP synced` to avoid ambiguity on the ePaper font.
+- Scoped Version 0.3 to debounced button presses and simple built-in screen navigation, with long press deferred.
+- Added direct Clock/Board screen navigation while deferring the formal module manager to Version 0.4.
 
 ### Fixed
 

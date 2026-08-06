@@ -137,9 +137,8 @@ When asking Codex to implement something, include:
 Example:
 
 ```text
-Implement Version 0.3 button navigation using the existing ButtonDriver pattern.
+Implement Version 0.3 button navigation with a small direct button scanner.
 Use internal pull-ups and active-low buttons.
 Do not add Telegram yet.
-Add serial logs for button press, long press, and module change.
+Add serial logs for button press and screen change.
 ```
-

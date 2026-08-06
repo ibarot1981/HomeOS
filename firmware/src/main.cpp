@@ -27,6 +27,7 @@ constexpr unsigned long kClockRefreshIntervalMs = 60UL * 1000UL;
 constexpr unsigned long kClockRetryIntervalMs = 5UL * 60UL * 1000UL;
 constexpr unsigned long kWiFiConnectTimeoutMs = 20000;
 constexpr unsigned long kTimeSyncTimeoutMs = 20000;
+constexpr unsigned long kButtonDebounceMs = 50;
 unsigned long lastHeartbeatMs = 0;
 unsigned long lastClockRefreshMs = 0;
 unsigned long lastClockSyncAttemptMs = 0;
@@ -39,9 +40,18 @@ constexpr int kEPaperCsPin = 10;
 constexpr int kEPaperMosiPin = 11;
 constexpr int kEPaperSckPin = 12;
 
+constexpr int kPreviousButtonPin = 4;
+constexpr int kSelectButtonPin = 5;
+constexpr int kNextButtonPin = 6;
+
 constexpr const char *kTimeZone = "IST-5:30";
 constexpr const char *kNtpServer1 = "pool.ntp.org";
 constexpr const char *kNtpServer2 = "time.nist.gov";
+
+enum class Screen {
+  kClock,
+  kBoard,
+};
 
 enum class ClockStatus {
   kWiFiNotConfigured,
@@ -50,7 +60,29 @@ enum class ClockStatus {
   kTimeSynced,
 };
 
+enum class ButtonAction {
+  kPrevious,
+  kSelect,
+  kNext,
+};
+
+struct ButtonState {
+  const char *name;
+  int pin;
+  ButtonAction action;
+  bool stablePressed;
+  bool lastReadingPressed;
+  unsigned long lastReadingChangeMs;
+};
+
 ClockStatus clockStatus = ClockStatus::kWiFiNotConfigured;
+Screen activeScreen = Screen::kClock;
+
+ButtonState buttons[] = {
+    {"Previous", kPreviousButtonPin, ButtonAction::kPrevious, false, false, 0},
+    {"Select", kSelectButtonPin, ButtonAction::kSelect, false, false, 0},
+    {"Next", kNextButtonPin, ButtonAction::kNext, false, false, 0},
+};
 
 GxEPD2_BW<GxEPD2_420_GDEY042T81, GxEPD2_420_GDEY042T81::HEIGHT> display(
     GxEPD2_420_GDEY042T81(kEPaperCsPin, kEPaperDcPin, kEPaperRstPin,
@@ -111,6 +143,19 @@ void printDisplayInfo() {
   Serial.println(kEPaperSckPin);
 }
 
+void printButtonInfo() {
+  Serial.println("Button wiring      : active-low, internal pull-ups enabled");
+  Serial.print("Previous button    : GPIO");
+  Serial.println(kPreviousButtonPin);
+  Serial.print("Select button      : GPIO");
+  Serial.println(kSelectButtonPin);
+  Serial.print("Next button        : GPIO");
+  Serial.println(kNextButtonPin);
+  Serial.print("Button debounce    : ");
+  Serial.print(kButtonDebounceMs);
+  Serial.println(" ms");
+}
+
 void printClockInfo() {
   Serial.print("WiFi credentials   : ");
   Serial.println(hasWiFiCredentials() ? "configured locally" : "not configured");
@@ -155,6 +200,16 @@ const char *clockStatusMessage() {
     case ClockStatus::kWiFiNotConfigured:
     default:
       return "WiFi not configured";
+  }
+}
+
+const char *screenName(Screen screen) {
+  switch (screen) {
+    case Screen::kBoard:
+      return "Board";
+    case Screen::kClock:
+    default:
+      return "Clock";
   }
 }
 
@@ -208,6 +263,52 @@ void drawClockScreen() {
   } while (display.nextPage());
 
   lastClockRefreshMs = millis();
+}
+
+void drawBoardScreen() {
+  char flashText[32];
+  char psramText[32];
+  snprintf(flashText, sizeof(flashText), "Flash: %.1f MB",
+           ESP.getFlashChipSize() / (1024.0 * 1024.0));
+  snprintf(psramText, sizeof(psramText), "PSRAM: %.1f MB",
+           ESP.getPsramSize() / (1024.0 * 1024.0));
+
+  display.setRotation(0);
+  display.setFullWindow();
+  display.firstPage();
+  do {
+    display.fillScreen(GxEPD_WHITE);
+    display.setTextColor(GxEPD_BLACK);
+
+    display.setFont(&FreeMono9pt7b);
+    display.setCursor(16, 28);
+    display.print("HomeOS Board");
+    drawRightText(WiFi.status() == WL_CONNECTED ? "WiFi" : "Offline", 384, 28);
+    display.drawFastHLine(16, 42, 368, GxEPD_BLACK);
+
+    display.setFont(&FreeMonoBold18pt7b);
+    drawCenteredText("Edgehax S3-PRO", 104);
+
+    display.setFont(&FreeMono9pt7b);
+    drawCenteredText(flashText, 148);
+    drawCenteredText(psramText, 176);
+    drawCenteredText("Buttons: P4 S5 N6", 204);
+
+    display.drawFastHLine(16, 236, 368, GxEPD_BLACK);
+    drawCenteredText("Diagnostics", 264);
+    drawCenteredText("Full refresh only", 288);
+  } while (display.nextPage());
+}
+
+void drawActiveScreen() {
+  // Waveshare ePaper boards may need a shortened reset pulse.
+  display.init(115200, true, 2, false);
+  if (activeScreen == Screen::kBoard) {
+    drawBoardScreen();
+  } else {
+    drawClockScreen();
+  }
+  display.hibernate();
 }
 
 ClockStatus connectWiFiAndSyncTime() {
@@ -264,18 +365,15 @@ ClockStatus connectWiFiAndSyncTime() {
 
 void runClockScreen() {
   Serial.println();
-  Serial.println("Starting ePaper clock screen.");
+  Serial.println("Starting HomeOS display.");
   Serial.println("If the display is not wired, disconnect USB and wire it before upload.");
 
   SPI.begin(kEPaperSckPin, -1, kEPaperMosiPin, kEPaperCsPin);
 
-  // Waveshare ePaper boards may need a shortened reset pulse.
-  display.init(115200, true, 2, false);
   clockStatus = connectWiFiAndSyncTime();
-  drawClockScreen();
-  display.hibernate();
+  drawActiveScreen();
 
-  Serial.println("Clock screen refresh command complete. Check the ePaper screen.");
+  Serial.println("Display refresh command complete. Check the ePaper screen.");
 }
 
 void refreshClockIfNeeded(unsigned long now) {
@@ -283,10 +381,10 @@ void refreshClockIfNeeded(unsigned long now) {
     if (hasWiFiCredentials() &&
         now - lastClockSyncAttemptMs >= kClockRetryIntervalMs) {
       Serial.println("Retrying WiFi/NTP clock sync.");
-      display.init(115200, true, 2, false);
       clockStatus = connectWiFiAndSyncTime();
-      drawClockScreen();
-      display.hibernate();
+      if (activeScreen == Screen::kClock) {
+        drawActiveScreen();
+      }
     }
     return;
   }
@@ -295,18 +393,86 @@ void refreshClockIfNeeded(unsigned long now) {
   if (!getLocalTime(&timeInfo, 50)) {
     Serial.println("Local time became unavailable.");
     clockStatus = ClockStatus::kTimeSyncFailed;
-    display.init(115200, true, 2, false);
-    drawClockScreen();
-    display.hibernate();
+    if (activeScreen == Screen::kClock) {
+      drawActiveScreen();
+    }
+    return;
+  }
+
+  if (activeScreen != Screen::kClock) {
     return;
   }
 
   if (timeInfo.tm_min != lastRenderedMinute &&
       now - lastClockRefreshMs >= kClockRefreshIntervalMs) {
     Serial.println("Refreshing ePaper clock minute.");
-    display.init(115200, true, 2, false);
-    drawClockScreen();
-    display.hibernate();
+    drawActiveScreen();
+  }
+}
+
+void beginButtons() {
+  for (ButtonState &button : buttons) {
+    pinMode(button.pin, INPUT_PULLUP);
+    const bool pressed = digitalRead(button.pin) == LOW;
+    button.stablePressed = pressed;
+    button.lastReadingPressed = pressed;
+    button.lastReadingChangeMs = millis();
+  }
+}
+
+void changeScreen(Screen nextScreen) {
+  if (activeScreen == nextScreen) {
+    return;
+  }
+
+  activeScreen = nextScreen;
+  Serial.print("Active screen      : ");
+  Serial.println(screenName(activeScreen));
+  drawActiveScreen();
+}
+
+void handleButtonPress(const ButtonState &button) {
+  Serial.print("Button pressed     : ");
+  Serial.println(button.name);
+
+  switch (button.action) {
+    case ButtonAction::kPrevious:
+      changeScreen(activeScreen == Screen::kClock ? Screen::kBoard
+                                                  : Screen::kClock);
+      break;
+    case ButtonAction::kNext:
+      changeScreen(activeScreen == Screen::kClock ? Screen::kBoard
+                                                  : Screen::kClock);
+      break;
+    case ButtonAction::kSelect:
+      Serial.print("Select redraw      : ");
+      Serial.println(screenName(activeScreen));
+      drawActiveScreen();
+      break;
+  }
+}
+
+void scanButtons(unsigned long now) {
+  for (ButtonState &button : buttons) {
+    const bool readingPressed = digitalRead(button.pin) == LOW;
+
+    if (readingPressed != button.lastReadingPressed) {
+      button.lastReadingPressed = readingPressed;
+      button.lastReadingChangeMs = now;
+    }
+
+    if (now - button.lastReadingChangeMs < kButtonDebounceMs) {
+      continue;
+    }
+
+    if (readingPressed == button.stablePressed) {
+      continue;
+    }
+
+    button.stablePressed = readingPressed;
+    if (button.stablePressed) {
+      handleButtonPress(button);
+    }
   }
 }
 }  // namespace
@@ -329,13 +495,16 @@ void setup() {
   printChipInfo();
   printMemoryInfo();
   printDisplayInfo();
+  printButtonInfo();
   printClockInfo();
 
+  beginButtons();
   runClockScreen();
 }
 
 void loop() {
   const unsigned long now = millis();
+  scanButtons(now);
   refreshClockIfNeeded(now);
 
   if (now - lastHeartbeatMs >= kHeartbeatIntervalMs) {

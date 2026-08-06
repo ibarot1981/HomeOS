@@ -171,19 +171,44 @@ Still to validate later:
 - behavior when WiFi is unavailable after credentials have been configured
 - exact physical `RESET` button behavior on the Edgehax S3-PRO
 
+## Version 0.3 Buttons and Navigation Test
+
+Build result:
+
+- build date: 2026-08-05
+- environment: `edgehax_s3_pro_diagnostics`
+- build command: `& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run`
+- build result: passed
+
+Hardware test status:
+
+- upload passed on 2026-08-06 over `COM7`
+- serial diagnostics confirmed the Edgehax S3-PRO, 16 MB flash, and 8 MB PSRAM
+- each button produced one serial press event per normal tested press; no false repeat was observed
+- Previous reached the Board screen, Select redrew the active screen once, and Next returned to Clock
+- WiFi connected, NTP synchronized, and the Clock screen remained functional after navigation
+
+The Version 0.3 hardware test used USB power through the ESP32-S3 board only.
+
 ## Button Test
 
 Goal:
 
-- each button produces exactly one event per press
+- each button produces exactly one event per normal press and can navigate between
+  the Version 0.3 screens
 
 Checklist:
 
-- not pressed reads HIGH
-- pressed reads LOW
-- serial log prints button name
-- long press is detected
-- repeated false presses do not occur
+- internal pull-up, active-low behavior implemented
+- serial log printed the button name once per tested press
+- Previous changed from Clock to Board
+- Next changed from Board to Clock
+- Select logged and redrew the active screen once
+- no repeated false presses were observed during normal testing
+- Clock remained functional after button testing
+
+Version 0.3 intentionally does not include long-press detection. Long press should
+be added later when there is a real settings or mode action to attach to it.
 
 ## Buzzer Test
 

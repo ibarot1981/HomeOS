@@ -8,7 +8,7 @@
 | Display | Waveshare 4.2 inch black-and-white SPI ePaper module V2, Rev2.2, 400 x 300 | Received - full-refresh hello-world and Version 0.2 clock screen verified | ideal dashboard size; partial refresh and fast refresh behavior still must be tested |
 | Breadboard | existing 30-point breadboard | Already owned - suitability to be checked | may help with buttons and small components |
 | Jumper wires | existing kit | Already owned | required for temporary wiring |
-| Buttons | tactile switches | Already owned | good for prototype navigation |
+| Buttons | tactile switches | Version 0.3 verified on GPIO4, GPIO5, and GPIO6 | active-low prototype navigation on breadboard |
 | Buzzer | passive buzzer | Already owned - identify before connecting | type and current requirement must be checked |
 | USB data cable | compatible with purchased ESP32-S3 board | Needed | must support both power and data for flashing |
 | Power | branded USB phone charger | Already owned | suitable for deployment after firmware is loaded |
@@ -129,6 +129,10 @@ Use three tactile switches:
 - Next
 
 They are small but ideal for prototyping. Later, these can be replaced with nicer panel-mount buttons in an enclosure.
+
+Version 0.3 assigns these buttons to `GPIO4`, `GPIO5`, and `GPIO6` using
+active-low wiring with internal pull-ups. On 2026-08-06, the breadboard wiring,
+navigation behavior, debounce, and serial press logs were verified using USB power.
 
 ## Buzzer
 

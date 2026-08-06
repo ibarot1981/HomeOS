@@ -137,6 +137,10 @@ Long press Select:
 
 - open settings or switch mode
 
+Version 0.3 starts with the same physical model but a smaller firmware behavior:
+Previous and Next cycle between built-in screens, while Select logs and redraws
+the active screen. Long press is deferred until settings or display modes exist.
+
 Telegram can provide richer remote control:
 
 - `/module weather`
@@ -169,4 +173,3 @@ Alert screen behavior:
 - Do not animate.
 - Avoid dense dashboards with too many tiny values.
 - Prefer one strong main idea per module.
-
