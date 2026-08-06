@@ -161,6 +161,19 @@ First user-reported clock-screen result on 2026-08-04:
 - after a USB power-cycle, the clock display recovered with WiFi/NTP as before
 - after waiting for the next full refresh, the displayed time was correct
 
+## Version 0.3 Button Navigation
+
+Version 0.3 keeps the same verified ePaper wiring and still uses full refresh
+only. Button navigation redraws the whole screen after a navigation action:
+
+- Previous and Next switch between the Clock screen and a small Board diagnostics screen.
+- Select logs and redraws the active screen.
+- Partial refresh and fast refresh remain untested and unused.
+
+Button upload and display validation passed on 2026-08-06 after the physical
+button wiring matched `docs/Wiring.md`; the Clock and Board screens both rendered
+correctly after navigation.
+
 ## Library
 
 Preferred library:

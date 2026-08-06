@@ -127,6 +127,17 @@ First verified HomeOS display result:
 - display wiring: GPIO11 MOSI, GPIO12 SCK, GPIO10 CS, GPIO8 DC, GPIO9 RST, GPIO7 BUSY, 3V3 power, common GND
 - display result: Waveshare 4.2 inch ePaper full-refresh hello-world screen displayed successfully
 
+Version 0.3 button GPIO selection:
+
+- Previous button: `GPIO4`
+- Select button: `GPIO5`
+- Next button: `GPIO6`
+
+These pins are exposed on the Edgehax S3-PRO pinout and avoid the verified
+ePaper display pins, ESP32-S3 strapping pins, USB pins, UART0 pins, and the
+onboard LED/JTAG-sensitive pins noted in the board pinout. Button hardware
+testing passed on 2026-08-06 using active-low breadboard wiring and USB power.
+
 A USB cable used for firmware flashing must support data. Some phone charging cables provide power only, and the board may turn on but not appear on the computer.
 
 ## WiFi

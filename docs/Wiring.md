@@ -122,15 +122,17 @@ The display uses this to tell the ESP32, "wait, I am still refreshing."
 
 ## Buttons
 
-Use three buttons:
+Version 0.3 adds three active-low tactile buttons. This keeps the circuit simple:
+the ESP32-S3 enables an internal pull-up resistor for each GPIO, and pressing the
+button connects that GPIO to `GND`.
 
 | Button | Purpose | ESP32-S3 Pin |
 |---|---|---|
-| Previous | previous module | TBD |
-| Select | select / mode | TBD |
-| Next | next module | TBD |
+| Previous | previous screen | GPIO4 |
+| Select | select / redraw current screen | GPIO5 |
+| Next | next screen | GPIO6 |
 
-Recommended software approach:
+Wire each button like this:
 
 - connect one side of button to GPIO
 - connect other side to GND
@@ -140,6 +142,25 @@ Behavior:
 
 - not pressed: HIGH
 - pressed: LOW
+
+Button GPIO selection notes:
+
+- `GPIO4`, `GPIO5`, and `GPIO6` are exposed on the Edgehax S3-PRO pinout.
+- They are not used by the verified ePaper wiring.
+- They avoid ESP32-S3 strapping pins `GPIO0`, `GPIO3`, `GPIO45`, and `GPIO46`.
+- They avoid USB pins `GPIO19` and `GPIO20`.
+- They avoid UART0 pins `GPIO43` and `GPIO44`.
+- They avoid the onboard LED/JTAG-sensitive pins currently noted in the board pinout.
+
+Before wiring buttons:
+
+1. disconnect USB power
+2. keep the verified ePaper wires unchanged
+3. connect Previous between `GPIO4` and `GND`
+4. connect Select between `GPIO5` and `GND`
+5. connect Next between `GPIO6` and `GND`
+6. check there is no connection from any button to `3V3` or `5V`
+7. reconnect USB power only after the wiring matches this table
 
 ## Buzzer
 
@@ -166,6 +187,12 @@ If current demand is unknown, use a transistor driver rather than risking an ESP
 | 6 | Waveshare ePaper | DC | Edgehax S3-PRO | GPIO8 | data/command select | green | user photo and manual trace | 2026-08-03 |
 | 7 | Waveshare ePaper | RST | Edgehax S3-PRO | GPIO9 | display reset | white / gray | user photo and manual trace | 2026-08-03 |
 | 8 | Waveshare ePaper | BUSY | Edgehax S3-PRO | GPIO7 | display busy signal | purple | user photo and manual trace | 2026-08-03 |
+| 9 | Previous button | one side | Edgehax S3-PRO | GPIO4 | active-low input with internal pull-up | user wiring | display and serial test | 2026-08-06 |
+| 10 | Previous button | other side | Edgehax S3-PRO | GND | ground when pressed | user wiring | display and serial test | 2026-08-06 |
+| 11 | Select button | one side | Edgehax S3-PRO | GPIO5 | active-low input with internal pull-up | user wiring | display and serial test | 2026-08-06 |
+| 12 | Select button | other side | Edgehax S3-PRO | GND | ground when pressed | user wiring | display and serial test | 2026-08-06 |
+| 13 | Next button | one side | Edgehax S3-PRO | GPIO6 | active-low input with internal pull-up | user wiring | display and serial test | 2026-08-06 |
+| 14 | Next button | other side | Edgehax S3-PRO | GND | ground when pressed | user wiring | display and serial test | 2026-08-06 |
 
 ## Power
 
@@ -189,6 +216,15 @@ This reduces the number of possible mistakes during first display bring-up.
 Version 0.2 keeps the same verified ePaper wiring table and still uses USB power through the ESP32-S3 board only. Do not add buttons, buzzer, sensors, relays, or external power for the clock-screen test.
 
 Before uploading the Version 0.2 firmware, re-check the display wires against the connection verification table above. The firmware still uses GPIO11 MOSI, GPIO12 SCK, GPIO10 CS, GPIO8 DC, GPIO9 RST, and GPIO7 BUSY.
+
+## Version 0.3 Wiring
+
+Version 0.3 keeps the same verified ePaper wiring and adds only the three active-low
+buttons on `GPIO4`, `GPIO5`, and `GPIO6`.
+
+Do not change the ePaper connections. Do not add buzzer, sensors, relays, external
+power, or mains-powered wiring for this milestone. The button wiring above was
+validated on 2026-08-06 using USB power through the ESP32-S3 board only.
 
 ## First Power-On Checklist
 

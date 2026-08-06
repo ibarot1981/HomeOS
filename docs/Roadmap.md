@@ -88,8 +88,18 @@ Features:
 - select button
 - next button
 - button debounce
-- long press detection
-- simple module switcher
+- simple navigation between built-in screens
+
+Result:
+
+- completed and hardware-verified on 2026-08-06 using USB power only
+- Previous and Next navigate between Clock and Board; Select redraws the active screen
+- normal button presses logged once with no observed false repeats
+
+Deferred:
+
+- long press detection, once there is a real settings or mode action
+- formal module switcher, which belongs in Version 0.4
 
 Learning:
 
