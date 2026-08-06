@@ -152,6 +152,14 @@ Button GPIO selection notes:
 - They avoid UART0 pins `GPIO43` and `GPIO44`.
 - They avoid the onboard LED/JTAG-sensitive pins currently noted in the board pinout.
 
+Reference photos:
+
+- [button switch rear/contact reference](hardware/photos/button-switch-rear-reference.jpg)
+- [breadboard row and column reference](hardware/photos/breadboard-layout-reference.jpg)
+
+These photos are visual references only. Use the connection table below and the
+written wiring instructions as the source of truth.
+
 Before wiring buttons:
 
 1. disconnect USB power
