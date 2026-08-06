@@ -15,11 +15,12 @@ This folder is meant to be uploaded into a new ChatGPT Project and used as the s
 7. `Modules.md`
 8. `UI.md`
 9. `Wiring.md`
-10. `Roadmap.md`
-11. `Coding-Standards.md`
-12. `Testing.md`
-13. `Deployment.md`
-14. `Decisions.md`
+10. `Hardware-Integration-Plan.md`
+11. `Roadmap.md`
+12. `Coding-Standards.md`
+13. `Testing.md`
+14. `Deployment.md`
+15. `Decisions.md`
 
 ## Project Principle
 
@@ -45,6 +46,7 @@ Still pending:
 - broader usable GPIO list
 - ePaper partial refresh and fast refresh
 - exact physical `RESET` button behavior
+- carrier PCB and enclosure prototype planning, tracked in `Hardware-Integration-Plan.md`
 
 ## User Learning Profile
 

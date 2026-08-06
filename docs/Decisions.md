@@ -184,3 +184,45 @@ Mains detection or control must use appropriately rated isolation hardware, encl
 Status:
 
 Accepted
+
+## ADR-011: Prefer a Carrier PCB Before a Fully Custom ESP32-S3 Board
+
+Date: 2026-08-06
+
+Decision:
+
+When HomeOS reaches a future hardware-freeze milestone, the first custom hardware
+integration should be a carrier PCB that accepts the existing Edgehax S3-PRO
+through headers and preserves the verified GPIO map:
+
+- GPIO4: Previous button
+- GPIO5: Select button
+- GPIO6: Next button
+- GPIO7 through GPIO12: Waveshare 4.2 inch ePaper
+
+The project should not design a fully custom ESP32-S3 motherboard yet.
+
+This decision records the preferred hardware direction, not an immediate roadmap
+commitment. The project should continue through software and UI milestones before
+freezing carrier PCB dimensions, button placement, or enclosure shape.
+
+Reason:
+
+The Edgehax S3-PRO has already verified UART upload, serial diagnostics, 16 MB
+flash, 8 MB-class PSRAM, ePaper display output, button input, and USB-powered
+operation. A carrier PCB improves serviceability and removes breadboard wiring
+while keeping the known-good controller and firmware assumptions intact.
+
+A fully custom ESP32-S3 board would add USB, boot, reset, power, RF layout, module
+assembly, and manufacturing risks before the enclosure shape and product needs are
+stable.
+
+Alternatives considered:
+
+- continue with breadboard wiring
+- solder jumper wires directly into a permanent prototype
+- design a fully custom ESP32-S3 motherboard now
+
+Status:
+
+Accepted
