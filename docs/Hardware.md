@@ -133,7 +133,7 @@ They are small but ideal for prototyping. Later, these can be replaced with nice
 Version 0.3 assigns these buttons to `GPIO4`, `GPIO5`, and `GPIO6` using
 active-low wiring with internal pull-ups. On 2026-08-06, the breadboard wiring,
 navigation behavior, debounce, and serial press logs were verified using USB power.
-Reference photos are stored in `docs/hardware/photos/` for the button rear/contact
+Reference photos are stored in `hardware/photos/` for the button rear/contact
 layout and breadboard row/column numbering.
 
 ## Buzzer

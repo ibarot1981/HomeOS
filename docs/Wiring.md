@@ -154,8 +154,8 @@ Button GPIO selection notes:
 
 Reference photos:
 
-- [button switch rear/contact reference](hardware/photos/button-switch-rear-reference.jpg)
-- [breadboard row and column reference](hardware/photos/breadboard-layout-reference.jpg)
+- [button switch rear/contact reference](../hardware/photos/button-switch-rear-reference.jpg)
+- [breadboard row and column reference](../hardware/photos/breadboard-layout-reference.jpg)
 
 These photos are visual references only. Use the connection table below and the
 written wiring instructions as the source of truth.
