@@ -43,6 +43,7 @@ When code and documentation disagree, the disagreement itself must be treated as
 | Project overview | `README.md` |
 | Project scope | `Project.md` |
 | Milestone completion | `CHANGELOG.md` |
+| Material system structure or code-flow change | `Architecture.md`, `Code-Map.md`, and `visualizations/homeos-code-map.html` |
 
 ## Definition of Done
 
@@ -51,6 +52,7 @@ A task is considered complete only when:
 - code compiles successfully
 - existing functionality is not broken
 - relevant documentation has been updated
+- architecture, static code map, and interactive code map have been reviewed and updated when system structure or code flow changed
 - `CHANGELOG.md` has been updated if the change is user-visible or milestone-worthy
 - tests have been updated where appropriate
 - new files are documented
@@ -171,7 +173,11 @@ Whenever implementing a task, Codex should:
 
 1. Review affected documentation.
 2. Implement the code.
-3. Update all affected Markdown files.
+3. Update all affected Markdown files, including `Architecture.md`, `Code-Map.md`, and `visualizations/homeos-code-map.html` when the implementation materially changes system structure or code flow.
+
+For normal firmware evolution, update the interactive map's Version-specific data
+and flow entries while preserving its UI shell, side panels, and click behavior.
+Any UI redesign requires separate approval.
 4. Update `CHANGELOG.md` if appropriate.
 5. Report exactly which Markdown files were modified.
 6. Report any documentation that still requires manual input, such as hardware photos, measurements, purchase links, or markings printed on a component.

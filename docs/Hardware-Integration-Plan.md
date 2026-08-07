@@ -19,6 +19,10 @@ When that future milestone starts, the preferred hardware step should be a custo
 carrier PCB that accepts the current Edgehax board through headers, removes
 breadboard wiring, and preserves the verified GPIO map.
 
+Current status: Version 0.4 is complete and hardware-validated. The current
+firmware uses Clock and Status modules, with Previous and Next navigation through
+the module registry and Select redrawing the active module.
+
 Out of scope for this stage:
 
 - relays
@@ -331,13 +335,13 @@ Steps:
 - power only through Edgehax USB
 - upload existing firmware without changing GPIO assignments
 - verify Clock screen
-- verify Board screen
+- verify Status screen
 - verify Previous, Select, and Next button behavior
 - verify USB power-cycle recovery
 
 Done when:
 
-- Version 0.3 behavior matches the breadboard result
+- Version 0.4 Clock/Status navigation and redraw behavior matches the breadboard result
 - no firmware pin changes were required
 - the carrier wiring is documented with photos
 
@@ -423,6 +427,7 @@ The carrier should preserve:
 - current button logic
 - current debounce behavior
 - current active-low wiring
+- current Clock and Status module behavior
 - current full-refresh display behavior
 - current USB upload and power path through the Edgehax board
 
@@ -469,8 +474,8 @@ Definition of done:
 - carrier schematic preserves GPIO4 through GPIO12 exactly
 - carrier PCB passes continuity and short checks before hardware is plugged in
 - existing firmware uploads without GPIO changes
-- Clock and Board screens render correctly
-- Previous, Select, and Next buttons behave as in Version 0.3
+- Clock and Status screens render correctly
+- Previous, Select, and Next buttons behave as in Version 0.4
 - USB power-cycle recovery still works
 - enclosure holds the display, carrier, Edgehax board, and buttons without stress
 - USB cable can be connected without opening the enclosure

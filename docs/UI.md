@@ -141,6 +141,11 @@ Version 0.3 starts with the same physical model but a smaller firmware behavior:
 Previous and Next cycle between built-in screens, while Select logs and redraws
 the active screen. Long press is deferred until settings or display modes exist.
 
+Version 0.4 names those built-in screens Clock and Status modules. Previous and
+Next wrap through the two-module registry; Select still performs a full redraw of
+the active module. Status presents the board diagnostics. This does not add menus
+or settings.
+
 Telegram can provide richer remote control:
 
 - `/module weather`
