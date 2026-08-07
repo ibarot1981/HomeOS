@@ -23,13 +23,11 @@
 
 namespace {
 constexpr unsigned long kHeartbeatIntervalMs = 5000;
-constexpr unsigned long kClockRefreshIntervalMs = 60UL * 1000UL;
 constexpr unsigned long kClockRetryIntervalMs = 5UL * 60UL * 1000UL;
 constexpr unsigned long kWiFiConnectTimeoutMs = 20000;
 constexpr unsigned long kTimeSyncTimeoutMs = 20000;
 constexpr unsigned long kButtonDebounceMs = 50;
 unsigned long lastHeartbeatMs = 0;
-unsigned long lastClockRefreshMs = 0;
 unsigned long lastClockSyncAttemptMs = 0;
 int lastRenderedMinute = -1;
 
@@ -161,9 +159,7 @@ void printClockInfo() {
   Serial.print("WiFi credentials   : ");
   Serial.println(hasWiFiCredentials() ? "configured locally" : "not configured");
   Serial.println("Timezone           : IST (UTC+05:30)");
-  Serial.print("Clock refresh      : full refresh every ");
-  Serial.print(kClockRefreshIntervalMs / 1000);
-  Serial.println(" seconds");
+  Serial.println("Clock refresh      : full refresh on minute change");
 }
 
 void drawCenteredText(const char *text, int16_t centerY) {
@@ -253,7 +249,6 @@ void drawClockScreen() {
     drawCenteredText("Full refresh only", 288);
   } while (display.nextPage());
 
-  lastClockRefreshMs = millis();
 }
 
 void drawStatusScreen() {
@@ -415,8 +410,7 @@ void refreshClockIfNeeded(unsigned long now) {
     return;
   }
 
-  if (timeInfo.tm_min != lastRenderedMinute &&
-      now - lastClockRefreshMs >= kClockRefreshIntervalMs) {
+  if (timeInfo.tm_min != lastRenderedMinute) {
     Serial.println("Refreshing ePaper clock minute.");
     drawActiveModule();
   }

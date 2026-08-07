@@ -12,7 +12,7 @@ flowchart TD
   Navigation --> Draw
   Loop --> Update["activeModule().update(now)"]
   Update --> Clock["ClockModule\nWiFi/NTP retry + minute refresh"]
-  Clock --> Draw
+  Clock -->|minute changes| Draw
   Draw --> Display["full ePaper refresh, then hibernate"]
 ```
 
@@ -29,7 +29,9 @@ flowchart TD
 `Module` has `name()`, `draw()`, and `update(now)`. `modules[]` contains static
 instances of `ClockModule` and `StatusModule`; `activeModuleIndex` selects one.
 `drawActiveModule()` initializes the verified ePaper driver, draws the selected
-module, and hibernates it. The Clock module is the only module with periodic work.
+module, and hibernates it. The Clock module is the only module with periodic work:
+it performs one full refresh when the actual local-time minute differs from the
+minute it last rendered, independent of when the user opened Clock.
 
 Buttons remain direct and hardware-specific: Previous GPIO4, Select GPIO5, and
 Next GPIO6 use `INPUT_PULLUP`, active-low presses, and the existing 50 ms debounce.

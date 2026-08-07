@@ -87,6 +87,13 @@ Version 0.4 module-manager build result:
 - WiFi/NTP did not connect during the initial startup window but recovered through
   the existing five-minute retry and displayed the current time.
 
+Clock minute-boundary refresh follow-up:
+
+- PlatformIO build and upload passed on 2026-08-07 over `COM7`.
+- The Clock refresh now follows the next local-time minute change, independent of
+  when the user navigated to Clock.
+- Physical minute-boundary confirmation remains pending after the upload.
+
 In VS Code:
 
 1. open the HomeOS folder

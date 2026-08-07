@@ -279,6 +279,21 @@ Upload and hardware validation passed on 2026-08-07 over `COM7`:
 - WiFi/NTP initially missed its startup connection window, then the existing
   five-minute retry succeeded and the Clock showed the current time.
 
+## Clock Minute-Boundary Refresh Test
+
+The Clock module must redraw on the next actual minute change after it becomes
+active. Navigation time must not add an extra delay. This uses the rendered-minute
+comparison only; it remains a full ePaper refresh and does not affect Status.
+
+Manual check after upload:
+
+- navigate to Clock shortly before a minute changes
+- confirm the display refreshes when that minute changes, rather than about one
+  minute after navigation
+
+Build and upload passed on 2026-08-07 over `COM7`; the physical minute-boundary
+result remains pending.
+
 Manual smoke-test checklist for future regression testing:
 
 - boot into Clock
