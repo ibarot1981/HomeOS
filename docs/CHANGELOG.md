@@ -43,6 +43,8 @@
 
 ### Fixed
 
+- Fixed Clock full-refresh timing so the next redraw follows the actual minute
+  boundary instead of being delayed by the time Clock was opened.
 ### Removed
 
 ---
