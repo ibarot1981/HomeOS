@@ -4,6 +4,7 @@
 
 ### Added
 
+- Added living Architecture, static Code Map, and self-contained interactive code-map documentation.
 - Added the Version 0.4 built-in Clock and Status module registry, current-module
   state, and draw/update lifecycle. Status retains the existing board diagnostics.
 - Added initial PlatformIO configuration for the Edgehax S3-PRO board diagnostics environment.

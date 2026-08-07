@@ -1,5 +1,57 @@
 # Architecture
 
+## Current Implementation (Version 0.4)
+
+HomeOS Version 0.4 remains a small, single-file firmware implementation, now with
+a fixed two-module registry. `firmware/src/main.cpp` owns Button Input,
+Navigation, Clock, Board Diagnostics, Display, WiFi/NTP, and Serial Diagnostics.
+The target architecture below remains a future direction; its proposed layers do
+not yet exist as separate firmware modules.
+
+```mermaid
+flowchart LR
+  subgraph Hardware
+    Buttons["Button Input<br/>Previous GPIO4 · Select GPIO5 · Next GPIO6"]
+    DisplayHW["SPI ePaper<br/>GPIO7–GPIO12"]
+  end
+  subgraph Firmware["ESP32-S3 Firmware: firmware/src/main.cpp"]
+    Navigation["Navigation"]
+    Clock["Clock"]
+    Registry["Module registry\nClockModule + StatusModule"]
+    Board["Board Diagnostics\nStatus module"]
+    Display["Display"]
+    Serial["Serial Diagnostics"]
+    WiFiNTP["WiFi/NTP"]
+  end
+  subgraph External["External services"]
+    WiFi["WiFi network"]
+    NTP["NTP servers"]
+  end
+  Buttons --> Navigation
+  Navigation --> Registry
+  Registry --> Clock
+  Registry --> Board
+  Clock --> Display
+  Board --> Display
+  Display --> DisplayHW
+  WiFi --> WiFiNTP --> NTP
+  WiFiNTP --> Clock
+  Navigation --> Serial
+  WiFiNTP --> Serial
+  Display --> Serial
+```
+
+Current behavior:
+
+- Button Input uses active-low GPIO inputs with internal pull-ups and 50 ms debounce.
+- Navigation lets Previous and Next wrap through Clock and Status; Select redraws the active module.
+- The Clock module owns minute refresh and WiFi/NTP retry work; the Status module owns board diagnostics.
+- WiFi/NTP uses locally configured credentials when present and retries synchronization every five minutes after failure.
+- Display uses the verified SPI wiring and full refresh only; each draw ends in ePaper hibernation.
+- Serial Diagnostics reports startup board information, button activity, WiFi/NTP state, display activity, and a five-second heartbeat.
+
+For a file and function-level view, see [Code-Map.md](Code-Map.md). The optional local interactive companion is [homeos-code-map.html](visualizations/homeos-code-map.html).
+
 ## Overview
 
 HomeOS should be designed as a small firmware platform with modules, services, drivers, and clear ownership boundaries.
@@ -62,22 +114,6 @@ Avoid creating empty abstractions or placeholder frameworks merely because they 
 Refactoring at a planned milestone is acceptable and preferable to premature complexity. For example, it is fine if Version 0.1 has one simple display test, and Version 0.4 introduces the formal module manager after the display and buttons are already working.
 
 The architecture direction should remain stable, but implementation should grow incrementally.
-
-## Current Version 0.4 Implementation
-
-The firmware currently keeps the module model inside `firmware/src/main.cpp`:
-
-- `Module` exposes only `name()`, `draw()`, and `update(now)`.
-- `ClockModule` owns the existing clock refresh and WiFi/NTP retry lifecycle.
-- `StatusModule` draws the existing board diagnostics content.
-- A fixed two-entry registry and `activeModuleIndex` own module selection.
-- `loop()` scans the verified buttons, calls `activeModule().update(now)`, and
-  retains the serial heartbeat.
-
-Previous and Next wrap through the registry. Select redraws the active module.
-This is intentionally not the larger target interface below: there is no module
-`begin`, button dispatch, alert handling, command handling, plugin system, or
-scheduler in Version 0.4.
 
 ## Layer Responsibilities
 
