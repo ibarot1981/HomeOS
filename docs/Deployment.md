@@ -82,8 +82,10 @@ Version 0.4 module-manager build result:
   registry; Status retains the Board diagnostics content.
 - The verified ePaper GPIO7-GPIO12 path, active-low GPIO4/GPIO5/GPIO6 button
   wiring, 50 ms debounce, and full-refresh-only display behavior are unchanged.
-- Upload passed on 2026-08-07 over `COM7`; physical navigation validation remains
-  pending and requires no hardware rewiring.
+- Upload and hardware validation passed on 2026-08-07 over `COM7`. Clock, Status,
+  Previous/Next navigation, and Select redraws worked with the existing wiring.
+- WiFi/NTP did not connect during the initial startup window but recovered through
+  the existing five-minute retry and displayed the current time.
 
 In VS Code:
 

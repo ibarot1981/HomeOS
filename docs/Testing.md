@@ -272,8 +272,14 @@ Build result:
 - build command: `& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run`
 - build result: passed
 
-Upload passed on 2026-08-07 over `COM7`. Manual hardware smoke test still to
-perform:
+Upload and hardware validation passed on 2026-08-07 over `COM7`:
+
+- Clock appeared after boot; Next reached Status and Previous returned to Clock.
+- Select redrew the active module, with the existing active-low button behavior.
+- WiFi/NTP initially missed its startup connection window, then the existing
+  five-minute retry succeeded and the Clock showed the current time.
+
+Manual smoke-test checklist for future regression testing:
 
 - boot into Clock
 - press Next to reach Status and confirm the existing board diagnostics render

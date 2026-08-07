@@ -24,6 +24,8 @@
 - Documented Version 0.3 active-low button wiring for Previous, Select, and Next on GPIO4, GPIO5, and GPIO6.
 - Added Version 0.3 firmware support for debounced Previous, Select, and Next button presses.
 - Recorded successful Version 0.3 upload and hardware validation over `COM7`, including serial press logs and Clock/Board navigation.
+- Recorded Version 0.4 upload and hardware validation over `COM7`, including
+  Clock/Status navigation, Select redraws, and WiFi/NTP retry recovery.
 
 ### Changed
 
