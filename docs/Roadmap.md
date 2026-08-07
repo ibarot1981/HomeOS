@@ -128,8 +128,8 @@ Result:
 
 - implemented on 2026-08-07 with Clock and Status as the two built-in modules
 - PlatformIO build passed
-- physical navigation smoke test remains pending after upload; no rewiring is
-  required
+- upload passed over `COM7`; physical navigation smoke test remains pending and
+  requires no rewiring
 
 ## Version 0.5: Display Modes
 

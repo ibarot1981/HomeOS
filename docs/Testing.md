@@ -272,7 +272,8 @@ Build result:
 - build command: `& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run`
 - build result: passed
 
-Manual hardware smoke test still to perform after upload:
+Upload passed on 2026-08-07 over `COM7`. Manual hardware smoke test still to
+perform:
 
 - boot into Clock
 - press Next to reach Status and confirm the existing board diagnostics render

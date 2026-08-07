@@ -82,8 +82,8 @@ Version 0.4 module-manager build result:
   registry; Status retains the Board diagnostics content.
 - The verified ePaper GPIO7-GPIO12 path, active-low GPIO4/GPIO5/GPIO6 button
   wiring, 50 ms debounce, and full-refresh-only display behavior are unchanged.
-- Upload and physical navigation validation remain pending; no hardware rewiring
-  is required.
+- Upload passed on 2026-08-07 over `COM7`; physical navigation validation remains
+  pending and requires no hardware rewiring.
 
 In VS Code:
 
