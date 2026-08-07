@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HomeOS Version 0.3 Code Map</title>
+  <style>
+    :root { color-scheme: light; --ink:#17212b; --muted:#516170; --paper:#f5f1e8; --card:#fffdf8; --line:#cbd5df; --accent:#176b87; --accent-soft:#dff2f5; }
+    * { box-sizing:border-box; } body { margin:0; font:16px/1.5 system-ui,sans-serif; color:var(--ink); background:var(--paper); }
+    main { max-width:1120px; margin:auto; padding:28px 20px 48px; } h1 { margin:0; } .lead { color:var(--muted); max-width:72ch; }
+    .legend { font-size:.9rem; color:var(--muted); } .flow { display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); align-items:stretch; margin:16px 0 28px; }
+    .arrow { align-self:center; text-align:center; color:var(--accent); font-weight:bold; } button { font:inherit; text-align:left; border:1px solid var(--line); border-radius:10px; background:var(--card); padding:14px; color:var(--ink); cursor:pointer; box-shadow:0 1px 2px #0001; }
+    button:hover, button:focus, button.active { border-color:var(--accent); background:var(--accent-soft); outline:none; } button strong { display:block; color:var(--accent); }
+    .layout { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr); gap:22px; } .panel, .note { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; }
+    .panel h2 { margin-top:0; } dl { margin:0; } dt { margin-top:12px; font-weight:700; } dd { margin:2px 0 0; color:var(--muted); } code { background:#edf0f2; padding:1px 4px; border-radius:4px; }
+    .group { margin-top:26px; } .tag { display:inline-block; margin:2px; padding:2px 7px; border-radius:999px; background:#e8edf0; font-size:.83rem; }
+    footer { color:var(--muted); margin-top:24px; font-size:.9rem; } @media (max-width:700px) { .layout { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body><main>
+  <h1>HomeOS Code Map <small>Version 0.3</small></h1>
+  <p class="lead">A local, self-contained guide to the current single-file firmware. Click a block to see the responsible file, implementation details, callers, and interfaces.</p>
+  <p class="legend">Startup flow</p>
+  <section class="flow" id="startup"></section>
+  <p class="legend">Repeating loop flow</p>
+  <section class="flow" id="loop"></section>
+  <div class="layout"><section class="panel" id="detail" aria-live="polite"></section><aside class="note"><h2>Hardware boundaries</h2><p><strong>Inputs:</strong> Previous GPIO4, Select GPIO5, Next GPIO6. Each is active-low with an internal pull-up.</p><p><strong>Output:</strong> Waveshare 4.2-inch black-and-white SPI ePaper: BUSY GPIO7, DC GPIO8, RST GPIO9, CS GPIO10, MOSI GPIO11, SCK GPIO12.</p><p><strong>External:</strong> optional local WiFi credentials connect to WiFi and NTP time sources. Credentials are stored only in ignored <code>firmware/include/config.local.h</code>.</p></aside></div>
+  <section class="group"><h2>Responsibilities</h2><div class="flow" id="components"></div></section>
+  <footer>Verified against <code>firmware/src/main.cpp</code> and <code>platformio.ini</code>. This file needs no server, build step, external dependency, or secret.</footer>
+</main>
+<script>
+const data={
+ startup:[['setup','setup()','Starts serial diagnostics, initializes Button Input, then starts the Clock path.'],['serial','Startup diagnostics','Prints board, memory, Display, Button Input, and Clock configuration.'],['buttons','Button initialization','Configures GPIO4–GPIO6 as active-low INPUT_PULLUP buttons.'],['wifi','SPI + WiFi/NTP','Initializes SPI, then attempts local WiFi connection and NTP sync.'],['display','Initial Display draw','Draws Clock or Board Diagnostics, then hibernates the ePaper.']],
+ loop:[['loop','loop()','Runs continuously after setup().'],['scan','Button scanning + debounce','Checks inputs; a stable 50 ms press triggers Navigation.'],['clock','Clock refresh + retry','Refreshes a changed minute or retries WiFi/NTP after five minutes.'],['heart','Heartbeat logging','Writes uptime to serial every five seconds.']],
+ components:[['buttons','Button Input','GPIO4–GPIO6 active-low inputs, ButtonState tracking, and debounce.'],['navigation','Navigation','Previous/Next change screens; Select redraws the active screen.'],['clock','Clock','Local time, minute refresh, and WiFi/NTP state.'],['board','Board Diagnostics','The Board screen presents model, flash, PSRAM, and button summary.'],['display','Display','GxEPD2 full-refresh drawing and hibernation.'],['wifi','WiFi/NTP','Optional local credentials, station connection, IST, and NTP synchronization.'],['serial','Serial Diagnostics','Startup reporting, behavior logs, and heartbeat.']],
+ details:{
+  setup:{title:'setup()',path:'firmware/src/main.cpp',functions:'setup(), printChipInfo(), printMemoryInfo(), printDisplayInfo(), printButtonInfo(), printClockInfo(), beginButtons(), runClockScreen()',state:'Serial begins at 115200 baud; then startup state is prepared.',callers:'Arduino framework calls setup() once after boot.',related:'ESP32 chip APIs; serial diagnostics.'},
+  loop:{title:'loop()',path:'firmware/src/main.cpp',functions:'loop(), scanButtons(now), refreshClockIfNeeded(now)',state:'lastHeartbeatMs controls the five-second heartbeat.',callers:'Arduino framework calls loop() repeatedly.',related:'Serial Diagnostics; Button Input; Clock.'},
+  buttons:{title:'Button Input',path:'firmware/src/main.cpp',functions:'beginButtons(), scanButtons(now), handleButtonPress()',state:'ButtonState; buttons[]; ButtonAction; kButtonDebounceMs = 50.',callers:'setup() initializes it; loop() scans it; scanButtons() calls handleButtonPress().',related:'GPIO4 Previous, GPIO5 Select, GPIO6 Next; active-low INPUT_PULLUP.'},
+  navigation:{title:'Navigation',path:'firmware/src/main.cpp',functions:'handleButtonPress(), changeScreen(), screenName()',state:'Screen enum; activeScreen.',callers:'scanButtons() calls handleButtonPress(); Navigation calls drawActiveScreen().',related:'Previous and Next toggle Clock/Board; Select redraws current screen.'},
+  clock:{title:'Clock',path:'firmware/src/main.cpp',functions:'refreshClockIfNeeded(), drawClockScreen(), clockStatusMessage()',state:'ClockStatus; lastClockRefreshMs; lastClockSyncAttemptMs; lastRenderedMinute.',callers:'loop() calls refreshClockIfNeeded(); Display calls drawClockScreen().',related:'One-minute full refresh; WiFi/NTP retry after five minutes.'},
+  board:{title:'Board Diagnostics',path:'firmware/src/main.cpp',functions:'drawBoardScreen(); printChipInfo(); printMemoryInfo()',state:'Uses activeScreen to choose the Board screen.',callers:'drawActiveScreen() dispatches to drawBoardScreen(); setup() invokes startup reporting.',related:'ESP32 flash/PSRAM APIs; full-refresh ePaper.'},
+  display:{title:'Display',path:'firmware/src/main.cpp',functions:'runClockScreen(), drawActiveScreen(), drawClockScreen(), drawBoardScreen(), drawCenteredText(), drawRightText()',state:'GxEPD2 display instance; activeScreen.',callers:'setup(), Navigation, and Clock refresh paths lead to drawActiveScreen().',related:'GxEPD2; SPI GPIO7–GPIO12; full refresh only; display.hibernate() after every draw.'},
+  wifi:{title:'WiFi/NTP',path:'firmware/src/main.cpp; firmware/include/config.local.h',functions:'hasWiFiCredentials(), connectWiFiAndSyncTime()',state:'ClockStatus; HOMEOS_WIFI_SSID/PASSWORD only when supplied by ignored local file.',callers:'runClockScreen() starts sync; refreshClockIfNeeded() retries it.',related:'WiFi, time.h; IST-5:30; pool.ntp.org and time.nist.gov. Credentials are never committed.'},
+  serial:{title:'Serial Diagnostics',path:'firmware/src/main.cpp',functions:'printBytes(), printChipInfo(), printMemoryInfo(), printDisplayInfo(), printButtonInfo(), printClockInfo()',state:'lastHeartbeatMs; 115200 baud.',callers:'setup() invokes startup diagnostics; multiple paths log status; loop() logs heartbeat.',related:'Serial monitor on COM7 from platformio.ini.'},
+  scan:{title:'Button scanning and debounce',path:'firmware/src/main.cpp',functions:'scanButtons(now)',state:'ButtonState lastReadingPressed, stablePressed, lastReadingChangeMs.',callers:'loop() calls it; it calls handleButtonPress() for a stable press.',related:'50 ms debounce; GPIO4–GPIO6; active-low.'},heart:{title:'Serial heartbeat',path:'firmware/src/main.cpp',functions:'heartbeat block in loop()',state:'lastHeartbeatMs; kHeartbeatIntervalMs = 5000.',callers:'loop() owns it.',related:'Serial diagnostics at 115200 baud.'}
+ }};
+function detail(id){const d=data.details[id]||data.details.display; document.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.id===id)); detailEl.innerHTML=`<h2>${d.title}</h2><dl><dt>Responsible file</dt><dd><code>${d.path}</code></dd><dt>Important functions</dt><dd>${d.functions}</dd><dt>State, enums, or structs</dt><dd>${d.state}</dd><dt>Who calls it / depends on it</dt><dd>${d.callers}</dd><dt>Related interfaces</dt><dd>${d.related}</dd></dl>`;}
+function render(target,items){const el=document.getElementById(target);items.forEach((x,i)=>{const b=document.createElement('button');b.dataset.id=x[0];b.innerHTML=`<strong>${x[1]}</strong><span>${x[2]}</span>`;b.onclick=()=>detail(x[0]);el.append(b);if(i<items.length-1){const a=document.createElement('div');a.className='arrow';a.textContent='→';el.append(a)}})}
+const detailEl=document.getElementById('detail');render('startup',data.startup);render('loop',data.loop);render('components',data.components);detail('setup');
+</script></body></html>

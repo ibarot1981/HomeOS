@@ -12,14 +12,16 @@ This folder is meant to be uploaded into a new ChatGPT Project and used as the s
 4. `ESP32.md`
 5. `Display.md`
 6. `Architecture.md`
-7. `Modules.md`
-8. `UI.md`
-9. `Wiring.md`
-10. `Roadmap.md`
-11. `Coding-Standards.md`
-12. `Testing.md`
-13. `Deployment.md`
-14. `Decisions.md`
+7. `Code-Map.md`
+8. `visualizations/homeos-code-map.html` (optional interactive companion; open locally in a browser)
+9. `Modules.md`
+10. `UI.md`
+11. `Wiring.md`
+12. `Roadmap.md`
+13. `Coding-Standards.md`
+14. `Testing.md`
+15. `Deployment.md`
+16. `Decisions.md`
 
 ## Project Principle
 
