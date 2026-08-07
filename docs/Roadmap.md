@@ -222,6 +222,30 @@ Features:
 - documented wiring
 - stable build and deployment guide
 
+# Post-v1.0: Multi-Device HomeOS
+
+This is a future roadmap direction, not a commitment or a pre-v1.0 scope change.
+The v0.5 through v1.0 roadmap remains focused on a stable, useful single-device
+HomeOS.
+
+Potential future milestones may include:
+
+- persistent device identity
+- HomeOS service discovery
+- peer approval and trust
+- peer registry
+- local P2P text messaging
+- delivered acknowledgements
+- heard acknowledgements
+- optional SD storage
+- asynchronous voice notes
+- Telegram bridge
+- device capability exchange
+- offline and retry behavior
+
+Exact post-v1.0 version numbers and delivery commitments are intentionally not
+assigned yet.
+
 ## Post 1.0: Hardware Modules
 
 Possible modules:

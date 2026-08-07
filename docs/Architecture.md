@@ -52,6 +52,146 @@ Current behavior:
 
 For a file and function-level view, see [Code-Map.md](Code-Map.md). The optional local interactive companion is [homeos-code-map.html](visualizations/homeos-code-map.html).
 
+# Post-v1.0 Multi-Device Architectural Seam
+
+HomeOS v1.0 is intentionally a single-device platform. Multi-device communication
+is a future, post-v1.0 capability. Versions 0.5 through 1.0 should preserve a
+small number of boundaries so that multi-device support can be added later as a
+subsystem rather than requiring a rewrite.
+
+> Preserve the seam; do not implement the subsystem.
+
+This section records architectural direction only. It does not authorize peer
+discovery, pairing, peer registries, device-to-device messaging, delivery
+receipts, synchronization, voice-note transfer, a broker, or any related
+framework before v1.0.
+
+## Future Device Identity
+
+Future HomeOS devices will distinguish a stable machine identity from a
+user-editable display name:
+
+```text
+device_id = stable machine identity
+friendly_name = user-editable name such as Kitchen or Bedroom
+```
+
+A room or friendly name must not become the device's permanent identity, and a
+future `device_id` should survive renaming. The identity algorithm is deferred.
+Raw MAC addresses must not become an application-wide identity dependency; they
+may inform a future identity decision, but that decision has not been made.
+No device identity is needed or implemented for the v0.5-v1.0 milestones.
+
+## Future Messaging and Network Boundaries
+
+Modules should not become permanently coupled to a particular message transport.
+When a current milestone introduces notifications or Telegram, keep
+transport-specific behavior concentrated rather than spreading calls such as
+`telegram.sendMessage(...)` throughout modules. Introduce a messaging service
+only when that milestone has a real need for one.
+
+```text
+Module
+   |
+Messaging / Notification capability
+   |
+Transport implementation
+   +-- Telegram
+   +-- Future Local P2P
+   +-- Future optional server/broker
+```
+
+Modules remain local and single-device through v1.0. They must not need to know
+peer IP addresses, mDNS hostnames, discovery protocols, HTTP details, retry
+timing, or peer online/offline state. Those concerns belong in future services
+or transport components. Likewise, when current milestones need persistence,
+avoid scattering arbitrary filesystem ownership across modules, but do not add a
+speculative storage abstraction.
+
+An event bus remains optional. Future distributed events may eventually include
+peer and message state, but event infrastructure is introduced only when current
+complexity makes direct calls difficult to maintain.
+
+## Future Hardware Capability Direction
+
+Future HomeOS units may differ: some may have a battery, microphone, speaker,
+external storage, touch, deep sleep, or partial-refresh support. A future model
+might describe capabilities such as `hasBattery`, `hasMicrophone`,
+`hasSpeaker`, `hasExternalStorage`, `hasTouch`, `supportsDeepSleep`, and
+`supportsPartialRefresh`. Do not introduce a capability framework until at least
+two real HomeOS hardware configurations need different behavior.
+
+## Post-v1.0 Discovery, Trust, and Messaging Direction
+
+The current preferred direction, not a protocol specification, is:
+
+```text
+HomeOS devices
+      |
+same local Wi-Fi network
+      |
+mDNS / DNS-SD discovery
+      |
+HomeOS service advertisement
+      |
+peer approval / trust
+      |
+direct P2P communication
+```
+
+mDNS/DNS-SD is preferred over a custom discovery protocol. DLNA is not required,
+and normal local HomeOS communication must not require a Raspberry Pi or central
+server. A server or broker can be considered later only if a real requirement
+justifies it. Discovery must not automatically establish trust: future states
+may include `Discovered`, `Approved / Trusted`, `Ignored`, and `Offline`, with
+user approval required before private content is exchanged. Cryptographic pairing
+is intentionally deferred.
+
+A future message lifecycle may look like:
+
+```text
+Bedroom
+   |
+record voice note
+   |
+send directly to Kitchen
+   |
+Kitchen stores message
+   |
+Kitchen returns DELIVERED
+   |
+user plays message
+   |
+Kitchen sends HEARD acknowledgement
+   |
+Bedroom displays heard state
+```
+
+Possible future states are `Pending`, `Delivered`, `Heard`, and `Failed`. These
+are conceptual only; no message storage, retry, delivery, or acknowledgement
+model is implemented before v1.0.
+
+Future voice notes are asynchronous voice messaging, not a live intercom: a
+device may record a short (about 10-20 second) note, hold it locally, transfer it
+over the home network, notify the destination, allow playback, and acknowledge
+playback. Microphones, codecs, audio formats, SD hardware, amplifiers, and live
+full-duplex audio are outside this scope. Telegram may eventually participate in
+the same logical messaging system alongside local P2P; a message may originate
+from another HomeOS unit, Telegram, a local module, or a future transport.
+
+## Multi-Device Architecture Invariants
+
+1. HomeOS v1.0 is single-device; multi-device communication is post-v1.0.
+2. Modules must not contain peer-network topology or direct transport details.
+3. Modules should not become directly coupled to individual message transports.
+4. Friendly names must not be treated as permanent machine identity.
+5. Transport-specific networking belongs in services or drivers, not application modules.
+6. Storage implementation details should not leak throughout application code.
+7. Event infrastructure is introduced only when current complexity requires it.
+8. Capability infrastructure is introduced only when multiple real hardware variants require it.
+9. Future extensibility never justifies unnecessary complexity before v1.0.
+10. HomeOS must reach a stable, useful single-device v1.0 before multi-device functionality is implemented.
+
 ## Overview
 
 HomeOS should be designed as a small firmware platform with modules, services, drivers, and clear ownership boundaries.

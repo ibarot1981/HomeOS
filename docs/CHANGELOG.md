@@ -4,6 +4,8 @@
 
 ### Added
 
+- Added post-v1.0 multi-device architectural guardrails while keeping HomeOS
+  v1.0 explicitly single-device.
 - Added living Architecture, static Code Map, and self-contained interactive code-map documentation.
 - Added the Version 0.4 built-in Clock and Status module registry, current-module
   state, and draw/update lifecycle. Status retains the existing board diagnostics.
@@ -29,6 +31,9 @@
 
 ### Changed
 
+- Documented future seams for device identity, messaging transports, network and
+  storage boundaries, optional event/capability evolution, discovery/trust, and
+  asynchronous voice messaging; no multi-device firmware was added.
 - Replaced direct Clock/Board screen selection with Previous/Next module
   navigation and retained Select as a full redraw of the active module.
 - Updated hardware, project context, ESP32, display, and wiring notes from purchase planning status to received-hardware verification status.

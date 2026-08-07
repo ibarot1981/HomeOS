@@ -184,3 +184,34 @@ Mains detection or control must use appropriately rated isolation hardware, encl
 Status:
 
 Accepted
+
+## ADR-011: Defer Multi-Device Communication Until After v1.0 While Preserving Architectural Seams
+
+Date: 2026-08-08
+
+Decision:
+
+HomeOS remains a single-device platform through Version 1.0. Multi-device
+discovery, messaging, pairing, voice-note exchange, delivery receipts, and
+related networking will not be implemented before v1.0. Pre-v1.0 development
+will avoid unnecessary coupling around device identity, messaging transports,
+networking, storage, module boundaries, and hardware capabilities.
+
+Reason:
+
+The priority is to make one HomeOS device stable, useful, and maintainable before
+introducing distributed-system complexity. Preserving small architectural seams
+reduces future refactoring cost without prematurely implementing unused
+frameworks.
+
+Preferred future direction:
+
+- local P2P on the same home Wi-Fi network
+- mDNS/DNS-SD as the preferred discovery direction
+- no mandatory central server
+- an optional future server or broker only if requirements justify it
+- asynchronous voice notes before considering live audio intercom
+
+Status:
+
+Accepted
