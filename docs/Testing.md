@@ -263,6 +263,26 @@ Checklist:
 - Previous button changes module
 - current module draws correctly
 
+## Version 0.4 Module Manager Build Test
+
+Build result:
+
+- build date: 2026-08-07
+- environment: `edgehax_s3_pro_diagnostics`
+- build command: `& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run`
+- build result: passed
+
+Manual hardware smoke test still to perform after upload:
+
+- boot into Clock
+- press Next to reach Status and confirm the existing board diagnostics render
+- press Previous to return to Clock
+- press Select on each module and confirm one full redraw
+- confirm one serial button event per normal press
+
+The test must use the existing active-low GPIO4/GPIO5/GPIO6 button wiring and USB
+power through the ESP32 board only. It must not enable partial or fast refresh.
+
 ## Smart Mode Test
 
 Goal:

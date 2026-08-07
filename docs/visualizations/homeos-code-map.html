@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HomeOS Code Map</title>
+  <style>
+    body { background: #f6f5f2; color: #1d1d1b; font: 16px/1.5 system-ui, sans-serif; margin: 0 auto; max-width: 900px; padding: 2rem; }
+    h1, h2 { margin-bottom: .4rem; } .flow { display: grid; gap: .6rem; margin: 1rem 0; }
+    .node { background: #fff; border: 1px solid #444; border-radius: .35rem; padding: .75rem 1rem; }
+    .arrow { color: #555; font-weight: 700; padding-left: 1.1rem; } code { background: #e9e7e1; padding: .1rem .25rem; }
+  </style>
+</head>
+<body>
+  <h1>HomeOS Version 0.4 Code Map</h1>
+  <p>A small, verified implementation map for <code>firmware/src/main.cpp</code>.</p>
+  <div class="flow">
+    <div class="node"><strong>setup()</strong><br>Prints diagnostics, starts button inputs, then starts HomeOS.</div>
+    <div class="arrow">↓</div>
+    <div class="node"><strong>ClockModule + StatusModule</strong><br>Static two-entry registry; <code>activeModuleIndex</code> selects the current module.</div>
+    <div class="arrow">↓</div>
+    <div class="node"><strong>drawActiveModule()</strong><br>Initializes the verified ePaper driver, calls the current module draw method, then hibernates. Full refresh only.</div>
+    <div class="arrow">↓</div>
+    <div class="node"><strong>loop()</strong><br><code>scanButtons(now)</code> preserves active-low GPIO4/GPIO5/GPIO6 inputs and 50 ms debounce. Previous/Next wrap modules; Select redraws. <code>activeModule().update(now)</code> lets Clock perform WiFi/NTP retry and minute refresh.</div>
+  </div>
+  <h2>Scope boundaries</h2>
+  <p>No scheduler, plugin system, settings, long press, partial refresh, fast refresh, or additional modules are implemented.</p>
+</body>
+</html>

@@ -63,6 +63,22 @@ Refactoring at a planned milestone is acceptable and preferable to premature com
 
 The architecture direction should remain stable, but implementation should grow incrementally.
 
+## Current Version 0.4 Implementation
+
+The firmware currently keeps the module model inside `firmware/src/main.cpp`:
+
+- `Module` exposes only `name()`, `draw()`, and `update(now)`.
+- `ClockModule` owns the existing clock refresh and WiFi/NTP retry lifecycle.
+- `StatusModule` draws the existing board diagnostics content.
+- A fixed two-entry registry and `activeModuleIndex` own module selection.
+- `loop()` scans the verified buttons, calls `activeModule().update(now)`, and
+  retains the serial heartbeat.
+
+Previous and Next wrap through the registry. Select redraws the active module.
+This is intentionally not the larger target interface below: there is no module
+`begin`, button dispatch, alert handling, command handling, plugin system, or
+scheduler in Version 0.4.
+
 ## Layer Responsibilities
 
 ### Drivers

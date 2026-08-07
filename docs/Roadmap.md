@@ -124,6 +124,13 @@ Success criteria:
 
 - adding a new module does not require rewriting the main loop
 
+Result:
+
+- implemented on 2026-08-07 with Clock and Status as the two built-in modules
+- PlatformIO build passed
+- physical navigation smoke test remains pending after upload; no rewiring is
+  required
+
 ## Version 0.5: Display Modes
 
 Goal: implement slideshow, fixed, and smart display modes.

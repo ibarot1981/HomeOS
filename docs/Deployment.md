@@ -75,6 +75,16 @@ Version 0.3 buttons/navigation build result:
 - Upload and hardware testing passed on 2026-08-06 over `COM7` after the wiring was confirmed against `docs/Wiring.md`.
 - Serial output recorded one event for each tested normal button press with no observed false repeats; WiFi/NTP and Clock remained functional.
 
+Version 0.4 module-manager build result:
+
+- PlatformIO build passed on 2026-08-07.
+- The firmware uses Clock and Status modules selected through a small built-in
+  registry; Status retains the Board diagnostics content.
+- The verified ePaper GPIO7-GPIO12 path, active-low GPIO4/GPIO5/GPIO6 button
+  wiring, 50 ms debounce, and full-refresh-only display behavior are unchanged.
+- Upload and physical navigation validation remain pending; no hardware rewiring
+  is required.
+
 In VS Code:
 
 1. open the HomeOS folder
