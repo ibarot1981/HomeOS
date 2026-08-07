@@ -41,6 +41,11 @@ Version 0.2 verified the first clock screen with local ignored WiFi credentials,
 
 Version 0.3 verified breadboard buttons on GPIO4, GPIO5, and GPIO6 using active-low wiring and internal pull-ups. Previous and Next navigate between the Clock and Board diagnostics screens, Select redraws the active screen, and normal button presses are debounced and logged once.
 
+Version 0.4 introduces a small built-in module registry. Clock and Status are the
+two current modules; Status retains the board diagnostics. Previous and Next wrap
+through the registry, Select redraws the active module, and ePaper refresh remains
+full-screen only.
+
 Still pending:
 
 - native USB behavior

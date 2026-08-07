@@ -263,6 +263,33 @@ Checklist:
 - Previous button changes module
 - current module draws correctly
 
+## Version 0.4 Module Manager Build Test
+
+Build result:
+
+- build date: 2026-08-07
+- environment: `edgehax_s3_pro_diagnostics`
+- build command: `& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run`
+- build result: passed
+
+Upload and hardware validation passed on 2026-08-07 over `COM7`:
+
+- Clock appeared after boot; Next reached Status and Previous returned to Clock.
+- Select redrew the active module, with the existing active-low button behavior.
+- WiFi/NTP initially missed its startup connection window, then the existing
+  five-minute retry succeeded and the Clock showed the current time.
+
+Manual smoke-test checklist for future regression testing:
+
+- boot into Clock
+- press Next to reach Status and confirm the existing board diagnostics render
+- press Previous to return to Clock
+- press Select on each module and confirm one full redraw
+- confirm one serial button event per normal press
+
+The test must use the existing active-low GPIO4/GPIO5/GPIO6 button wiring and USB
+power through the ESP32 board only. It must not enable partial or fast refresh.
+
 ## Smart Mode Test
 
 Goal:

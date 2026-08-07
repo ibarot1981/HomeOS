@@ -48,11 +48,6 @@ constexpr const char *kTimeZone = "IST-5:30";
 constexpr const char *kNtpServer1 = "pool.ntp.org";
 constexpr const char *kNtpServer2 = "time.nist.gov";
 
-enum class Screen {
-  kClock,
-  kBoard,
-};
-
 enum class ClockStatus {
   kWiFiNotConfigured,
   kWiFiConnectFailed,
@@ -75,8 +70,14 @@ struct ButtonState {
   unsigned long lastReadingChangeMs;
 };
 
+class Module {
+ public:
+  virtual const char *name() const = 0;
+  virtual void draw() = 0;
+  virtual void update(unsigned long now) {}
+};
+
 ClockStatus clockStatus = ClockStatus::kWiFiNotConfigured;
-Screen activeScreen = Screen::kClock;
 
 ButtonState buttons[] = {
     {"Previous", kPreviousButtonPin, ButtonAction::kPrevious, false, false, 0},
@@ -203,16 +204,6 @@ const char *clockStatusMessage() {
   }
 }
 
-const char *screenName(Screen screen) {
-  switch (screen) {
-    case Screen::kBoard:
-      return "Board";
-    case Screen::kClock:
-    default:
-      return "Clock";
-  }
-}
-
 void drawClockScreen() {
   struct tm timeInfo;
   const bool hasTime =
@@ -265,7 +256,7 @@ void drawClockScreen() {
   lastClockRefreshMs = millis();
 }
 
-void drawBoardScreen() {
+void drawStatusScreen() {
   char flashText[32];
   char psramText[32];
   snprintf(flashText, sizeof(flashText), "Flash: %.1f MB",
@@ -282,7 +273,7 @@ void drawBoardScreen() {
 
     display.setFont(&FreeMono9pt7b);
     display.setCursor(16, 28);
-    display.print("HomeOS Board");
+    display.print("HomeOS Status");
     drawRightText(WiFi.status() == WL_CONNECTED ? "WiFi" : "Offline", 384, 28);
     display.drawFastHLine(16, 42, 368, GxEPD_BLACK);
 
@@ -295,19 +286,40 @@ void drawBoardScreen() {
     drawCenteredText("Buttons: P4 S5 N6", 204);
 
     display.drawFastHLine(16, 236, 368, GxEPD_BLACK);
-    drawCenteredText("Diagnostics", 264);
+    drawCenteredText("Board diagnostics", 264);
     drawCenteredText("Full refresh only", 288);
   } while (display.nextPage());
 }
 
-void drawActiveScreen() {
+void refreshClockIfNeeded(unsigned long now);
+
+class ClockModule final : public Module {
+ public:
+  const char *name() const override { return "Clock"; }
+  void draw() override { drawClockScreen(); }
+  void update(unsigned long now) override { refreshClockIfNeeded(now); }
+};
+
+class StatusModule final : public Module {
+ public:
+  const char *name() const override { return "Status"; }
+  void draw() override { drawStatusScreen(); }
+};
+
+ClockModule clockModule;
+StatusModule statusModule;
+Module *const modules[] = {&clockModule, &statusModule};
+constexpr size_t kModuleCount = sizeof(modules) / sizeof(modules[0]);
+size_t activeModuleIndex = 0;
+
+Module &activeModule() { return *modules[activeModuleIndex]; }
+
+bool isClockModuleActive() { return modules[activeModuleIndex] == &clockModule; }
+
+void drawActiveModule() {
   // Waveshare ePaper boards may need a shortened reset pulse.
   display.init(115200, true, 2, false);
-  if (activeScreen == Screen::kBoard) {
-    drawBoardScreen();
-  } else {
-    drawClockScreen();
-  }
+  activeModule().draw();
   display.hibernate();
 }
 
@@ -363,7 +375,7 @@ ClockStatus connectWiFiAndSyncTime() {
   return ClockStatus::kTimeSynced;
 }
 
-void runClockScreen() {
+void startHomeOS() {
   Serial.println();
   Serial.println("Starting HomeOS display.");
   Serial.println("If the display is not wired, disconnect USB and wire it before upload.");
@@ -371,7 +383,7 @@ void runClockScreen() {
   SPI.begin(kEPaperSckPin, -1, kEPaperMosiPin, kEPaperCsPin);
 
   clockStatus = connectWiFiAndSyncTime();
-  drawActiveScreen();
+  drawActiveModule();
 
   Serial.println("Display refresh command complete. Check the ePaper screen.");
 }
@@ -382,8 +394,8 @@ void refreshClockIfNeeded(unsigned long now) {
         now - lastClockSyncAttemptMs >= kClockRetryIntervalMs) {
       Serial.println("Retrying WiFi/NTP clock sync.");
       clockStatus = connectWiFiAndSyncTime();
-      if (activeScreen == Screen::kClock) {
-        drawActiveScreen();
+      if (isClockModuleActive()) {
+        drawActiveModule();
       }
     }
     return;
@@ -393,20 +405,20 @@ void refreshClockIfNeeded(unsigned long now) {
   if (!getLocalTime(&timeInfo, 50)) {
     Serial.println("Local time became unavailable.");
     clockStatus = ClockStatus::kTimeSyncFailed;
-    if (activeScreen == Screen::kClock) {
-      drawActiveScreen();
+    if (isClockModuleActive()) {
+      drawActiveModule();
     }
     return;
   }
 
-  if (activeScreen != Screen::kClock) {
+  if (!isClockModuleActive()) {
     return;
   }
 
   if (timeInfo.tm_min != lastRenderedMinute &&
       now - lastClockRefreshMs >= kClockRefreshIntervalMs) {
     Serial.println("Refreshing ePaper clock minute.");
-    drawActiveScreen();
+    drawActiveModule();
   }
 }
 
@@ -420,15 +432,15 @@ void beginButtons() {
   }
 }
 
-void changeScreen(Screen nextScreen) {
-  if (activeScreen == nextScreen) {
-    return;
-  }
+void changeModule(int direction) {
+  const int nextIndex = static_cast<int>(activeModuleIndex) + direction;
+  activeModuleIndex =
+      static_cast<size_t>((nextIndex + static_cast<int>(kModuleCount)) %
+                          static_cast<int>(kModuleCount));
 
-  activeScreen = nextScreen;
-  Serial.print("Active screen      : ");
-  Serial.println(screenName(activeScreen));
-  drawActiveScreen();
+  Serial.print("Active module      : ");
+  Serial.println(activeModule().name());
+  drawActiveModule();
 }
 
 void handleButtonPress(const ButtonState &button) {
@@ -437,17 +449,15 @@ void handleButtonPress(const ButtonState &button) {
 
   switch (button.action) {
     case ButtonAction::kPrevious:
-      changeScreen(activeScreen == Screen::kClock ? Screen::kBoard
-                                                  : Screen::kClock);
+      changeModule(-1);
       break;
     case ButtonAction::kNext:
-      changeScreen(activeScreen == Screen::kClock ? Screen::kBoard
-                                                  : Screen::kClock);
+      changeModule(1);
       break;
     case ButtonAction::kSelect:
       Serial.print("Select redraw      : ");
-      Serial.println(screenName(activeScreen));
-      drawActiveScreen();
+      Serial.println(activeModule().name());
+      drawActiveModule();
       break;
   }
 }
@@ -499,13 +509,13 @@ void setup() {
   printClockInfo();
 
   beginButtons();
-  runClockScreen();
+  startHomeOS();
 }
 
 void loop() {
   const unsigned long now = millis();
   scanButtons(now);
-  refreshClockIfNeeded(now);
+  activeModule().update(now);
 
   if (now - lastHeartbeatMs >= kHeartbeatIntervalMs) {
     lastHeartbeatMs = now;

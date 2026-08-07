@@ -15,6 +15,19 @@ Each module should support:
 - `hasAlert`: tell HomeOS if it needs attention
 - `onCommand`: respond to Telegram or serial commands
 
+## Version 0.4 Implementation
+
+Version 0.4 implements the smallest useful subset of the suggested lifecycle:
+`name()`, `draw()`, and `update(now)`. The base `Module` class supplies a no-op
+default `update`; `ClockModule` overrides it for the existing WiFi/NTP retry and
+minute refresh, while `StatusModule` only draws board diagnostics.
+
+The built-in registry contains Clock and Status. The active registry index is the
+current-module state. Previous and Next wrap through this registry, and Select
+redraws the active module. Future modules can be added to the registry without
+rewriting the Arduino `loop()`. Button callbacks, alerts, commands, and plugins
+remain out of scope.
+
 ## Core Modules
 
 ### Clock Module

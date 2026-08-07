@@ -1,12 +1,12 @@
 # Architecture
 
-## Current Implementation (Version 0.3)
+## Current Implementation (Version 0.4)
 
-HomeOS Version 0.3 is intentionally a small, single-file firmware implementation.
-`firmware/src/main.cpp` owns the current Button Input, Navigation, Clock, Board
-Diagnostics, Display, WiFi/NTP, and Serial Diagnostics responsibilities. The
-target architecture below remains a future direction; its proposed layers do not
-yet exist as separate firmware modules.
+HomeOS Version 0.4 remains a small, single-file firmware implementation, now with
+a fixed two-module registry. `firmware/src/main.cpp` owns Button Input,
+Navigation, Clock, Board Diagnostics, Display, WiFi/NTP, and Serial Diagnostics.
+The target architecture below remains a future direction; its proposed layers do
+not yet exist as separate firmware modules.
 
 ```mermaid
 flowchart LR
@@ -17,7 +17,8 @@ flowchart LR
   subgraph Firmware["ESP32-S3 Firmware: firmware/src/main.cpp"]
     Navigation["Navigation"]
     Clock["Clock"]
-    Board["Board Diagnostics"]
+    Registry["Module registry\nClockModule + StatusModule"]
+    Board["Board Diagnostics\nStatus module"]
     Display["Display"]
     Serial["Serial Diagnostics"]
     WiFiNTP["WiFi/NTP"]
@@ -27,8 +28,9 @@ flowchart LR
     NTP["NTP servers"]
   end
   Buttons --> Navigation
-  Navigation --> Clock
-  Navigation --> Board
+  Navigation --> Registry
+  Registry --> Clock
+  Registry --> Board
   Clock --> Display
   Board --> Display
   Display --> DisplayHW
@@ -42,7 +44,8 @@ flowchart LR
 Current behavior:
 
 - Button Input uses active-low GPIO inputs with internal pull-ups and 50 ms debounce.
-- Navigation lets Previous and Next switch between Clock and Board Diagnostics; Select redraws the current screen.
+- Navigation lets Previous and Next wrap through Clock and Status; Select redraws the active module.
+- The Clock module owns minute refresh and WiFi/NTP retry work; the Status module owns board diagnostics.
 - WiFi/NTP uses locally configured credentials when present and retries synchronization every five minutes after failure.
 - Display uses the verified SPI wiring and full refresh only; each draw ends in ePaper hibernation.
 - Serial Diagnostics reports startup board information, button activity, WiFi/NTP state, display activity, and a five-second heartbeat.

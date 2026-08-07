@@ -518,8 +518,11 @@ system architecture, or control flow, update every affected living map:
 - `docs/Code-Map.md`
 - `docs/visualizations/homeos-code-map.html`
 
-Review those documentation changes before committing. Do not update them for purely
+Review these documentation changes before committing. Do not update them for purely
 cosmetic formatting or comment-only changes. Keep diagrams small, readable, and
-based on verified implementation rather than future speculation. Do not introduce a
-documentation framework, server, dependency, or build pipeline unless separately
-approved.
+based on verified implementation rather than future speculation.
+
+Preserve the interactive code map's UI shell, side panels, and click behavior for
+ordinary firmware updates. Update its Version-specific `entries` and `flows` data
+instead. A UI redesign, documentation framework, server, dependency, or build
+pipeline requires separate approval.

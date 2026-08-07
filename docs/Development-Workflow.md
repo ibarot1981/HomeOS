@@ -174,6 +174,10 @@ Whenever implementing a task, Codex should:
 1. Review affected documentation.
 2. Implement the code.
 3. Update all affected Markdown files, including `Architecture.md`, `Code-Map.md`, and `visualizations/homeos-code-map.html` when the implementation materially changes system structure or code flow.
+
+For normal firmware evolution, update the interactive map's Version-specific data
+and flow entries while preserving its UI shell, side panels, and click behavior.
+Any UI redesign requires separate approval.
 4. Update `CHANGELOG.md` if appropriate.
 5. Report exactly which Markdown files were modified.
 6. Report any documentation that still requires manual input, such as hardware photos, measurements, purchase links, or markings printed on a component.

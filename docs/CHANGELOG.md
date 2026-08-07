@@ -4,7 +4,9 @@
 
 ### Added
 
-- Added living Architecture, static Code Map, and self-contained interactive code-map documentation for the verified Version 0.3 implementation.
+- Added living Architecture, static Code Map, and self-contained interactive code-map documentation.
+- Added the Version 0.4 built-in Clock and Status module registry, current-module
+  state, and draw/update lifecycle. Status retains the existing board diagnostics.
 - Added initial PlatformIO configuration for the Edgehax S3-PRO board diagnostics environment.
 - Added first firmware diagnostic sketch that prints chip, flash, heap, and PSRAM information over serial.
 - Added PR handoff instructions requiring a ready-to-paste pull request title and description whenever Codex asks the user to create a PR.
@@ -22,9 +24,13 @@
 - Documented Version 0.3 active-low button wiring for Previous, Select, and Next on GPIO4, GPIO5, and GPIO6.
 - Added Version 0.3 firmware support for debounced Previous, Select, and Next button presses.
 - Recorded successful Version 0.3 upload and hardware validation over `COM7`, including serial press logs and Clock/Board navigation.
+- Recorded Version 0.4 upload and hardware validation over `COM7`, including
+  Clock/Status navigation, Select redraws, and WiFi/NTP retry recovery.
 
 ### Changed
 
+- Replaced direct Clock/Board screen selection with Previous/Next module
+  navigation and retained Select as a full redraw of the active module.
 - Updated hardware, project context, ESP32, display, and wiring notes from purchase planning status to received-hardware verification status.
 - Updated microcontroller status after the first HomeOS PlatformIO upload verified UART serial, automatic upload, 16 MB flash, 8 MB-class PSRAM, and heartbeat serial output over `COM7`, while keeping native USB and GPIO mapping pending.
 - Kept the user-provided Waveshare photo PDF under `hardware/photos` and stored downloaded manuals under `hardware/datasheets`.

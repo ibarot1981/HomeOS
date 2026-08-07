@@ -124,6 +124,13 @@ Success criteria:
 
 - adding a new module does not require rewriting the main loop
 
+Result:
+
+- implemented on 2026-08-07 with Clock and Status as the two built-in modules
+- PlatformIO build passed
+- upload and hardware validation passed over `COM7`; Clock, Status, navigation,
+  Select redraws, and WiFi/NTP retry were verified with no rewiring
+
 ## Version 0.5: Display Modes
 
 Goal: implement slideshow, fixed, and smart display modes.
