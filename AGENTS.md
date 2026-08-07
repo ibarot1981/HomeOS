@@ -505,3 +505,21 @@ Leave the repository in a better state than you found it.
 Small, safe improvements are encouraged.
 
 Large unsolicited redesigns are not.
+
+---
+
+# 25. Living Architecture and Code Map
+
+When a task adds, removes, moves, or materially changes firmware files, functions,
+state, module boundaries, hardware interfaces, external services, GPIO assignments,
+system architecture, or control flow, update every affected living map:
+
+- `docs/Architecture.md`
+- `docs/Code-Map.md`
+- `docs/visualizations/homeos-code-map.html`
+
+Review those documentation changes before committing. Do not update them for purely
+cosmetic formatting or comment-only changes. Keep diagrams small, readable, and
+based on verified implementation rather than future speculation. Do not introduce a
+documentation framework, server, dependency, or build pipeline unless separately
+approved.

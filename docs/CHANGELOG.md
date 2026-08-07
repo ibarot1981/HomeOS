@@ -4,6 +4,7 @@
 
 ### Added
 
+- Added living Architecture, static Code Map, and self-contained interactive code-map documentation for the verified Version 0.3 implementation.
 - Added initial PlatformIO configuration for the Edgehax S3-PRO board diagnostics environment.
 - Added first firmware diagnostic sketch that prints chip, flash, heap, and PSRAM information over serial.
 - Added PR handoff instructions requiring a ready-to-paste pull request title and description whenever Codex asks the user to create a PR.
