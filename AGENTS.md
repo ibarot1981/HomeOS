@@ -40,6 +40,7 @@ Before beginning work, read the documents relevant to the task.
 
 At minimum, always read:
 
+- `docs/README.md`
 - `docs/Development-Workflow.md`
 
 Depending on the task, also read:
