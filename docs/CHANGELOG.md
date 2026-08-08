@@ -24,6 +24,9 @@
 - Documented Version 0.3 active-low button wiring for Previous, Select, and Next on GPIO4, GPIO5, and GPIO6.
 - Added Version 0.3 firmware support for debounced Previous, Select, and Next button presses.
 - Recorded successful Version 0.3 upload and hardware validation over `COM7`, including serial press logs and Clock/Board navigation.
+- Added a hardware integration plan for a serviceable carrier PCB and enclosure around the existing Edgehax S3-PRO, Waveshare 4.2 inch ePaper display, and three verified buttons.
+- Added a future carrier PCB and enclosure prototype roadmap note, intentionally deferred until after UI and physical layout needs are stable.
+- Added ADR-011 to prefer a carrier PCB before attempting a fully custom ESP32-S3 motherboard.
 - Recorded Version 0.4 upload and hardware validation over `COM7`, including
   Clock/Status navigation, Select redraws, and WiFi/NTP retry recovery.
 
@@ -40,6 +43,7 @@
 - Changed the synced clock footer from `IST via NTP` to `NTP synced` to avoid ambiguity on the ePaper font.
 - Scoped Version 0.3 to debounced button presses and simple built-in screen navigation, with long press deferred.
 - Added direct Clock/Board screen navigation while deferring the formal module manager to Version 0.4.
+- Documented that the future carrier PCB hardware integration should preserve the verified GPIO4 through GPIO12 map and continue using USB as the only power source.
 
 ### Fixed
 

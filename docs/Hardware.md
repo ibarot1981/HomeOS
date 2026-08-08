@@ -133,6 +133,8 @@ They are small but ideal for prototyping. Later, these can be replaced with nice
 Version 0.3 assigns these buttons to `GPIO4`, `GPIO5`, and `GPIO6` using
 active-low wiring with internal pull-ups. On 2026-08-06, the breadboard wiring,
 navigation behavior, debounce, and serial press logs were verified using USB power.
+Reference photos are stored in `hardware/photos/` for the button rear/contact
+layout and breadboard row/column numbering.
 
 ## Buzzer
 
@@ -167,6 +169,10 @@ During development, initially power the ESP32 from a computer USB port so firmwa
 
 Possible future additions:
 
+- custom carrier PCB for the current Edgehax S3-PRO, preserving the verified
+  GPIO4 to GPIO12 map and USB-only power path
+- 3D printed serviceable enclosure for the Edgehax board, Waveshare display, and
+  three buttons
 - ultrasonic or pressure-based water level sensor
 - current or voltage sensing module for power outage monitoring
 - DHT22, SHT31, or BME280 temperature/humidity sensor
@@ -175,7 +181,10 @@ Possible future additions:
 - magnetic reed switch for fridge or door monitor
 - relay module only after safety review
 - larger breadboard
-- 3D printed enclosure
+
+Do not design a fully custom ESP32-S3 motherboard until the carrier PCB and
+enclosure prototype have been built, documented, and used enough to reveal real
+limitations.
 
 ## Recommended Before Hardware Expansion
 

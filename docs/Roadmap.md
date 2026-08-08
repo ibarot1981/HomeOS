@@ -222,6 +222,28 @@ Features:
 - documented wiring
 - stable build and deployment guide
 
+## Future Hardware Integration: Carrier PCB and Enclosure Prototype
+
+Goal: move HomeOS from breadboard wiring to a serviceable enclosed prototype only
+after the UI, interaction model, and physical layout needs are stable enough to
+freeze.
+
+This milestone is intentionally not scheduled as Version 0.3.5. The project
+should continue through the software and UI milestones first, using the existing
+Edgehax S3-PRO, Waveshare ePaper display, and verified button wiring.
+
+Scope boundaries:
+
+- use a passive custom carrier PCB that accepts the Edgehax S3-PRO through headers
+- preserve GPIO4 Previous, GPIO5 Select, GPIO6 Next, and GPIO7 through GPIO12 for ePaper
+- keep USB through the Edgehax board as the only power source
+- add no relays, sensors, battery circuit, external power input, or mains wiring
+- defer a fully custom ESP32-S3 motherboard
+
+Reference:
+
+- `docs/Hardware-Integration-Plan.md`
+
 ## Post 1.0: Hardware Modules
 
 Possible modules:

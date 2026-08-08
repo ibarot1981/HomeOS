@@ -17,11 +17,12 @@ This folder is meant to be uploaded into a new ChatGPT Project and used as the s
 9. `Modules.md`
 10. `UI.md`
 11. `Wiring.md`
-12. `Roadmap.md`
-13. `Coding-Standards.md`
-14. `Testing.md`
-15. `Deployment.md`
-16. `Decisions.md`
+12. `Hardware-Integration-Plan.md`
+13. `Roadmap.md`
+14. `Coding-Standards.md`
+15. `Testing.md`
+16. `Deployment.md`
+17. `Decisions.md`
 
 ## Project Principle
 
@@ -41,8 +42,8 @@ Version 0.2 verified the first clock screen with local ignored WiFi credentials,
 
 Version 0.3 verified breadboard buttons on GPIO4, GPIO5, and GPIO6 using active-low wiring and internal pull-ups. Previous and Next navigate between the Clock and Board diagnostics screens, Select redraws the active screen, and normal button presses are debounced and logged once.
 
-Version 0.4 introduces a small built-in module registry. Clock and Status are the
-two current modules; Status retains the board diagnostics. Previous and Next wrap
+Version 0.4 is complete and hardware-validated. Clock and Status are the two
+current modules; Status retains the board diagnostics. Previous and Next wrap
 through the registry, Select redraws the active module, and ePaper refresh remains
 full-screen only.
 
@@ -52,6 +53,8 @@ Still pending:
 - broader usable GPIO list
 - ePaper partial refresh and fast refresh
 - exact physical `RESET` button behavior
+- carrier PCB and enclosure prototype, deliberately deferred until the UI and
+  physical layout are stable; see `Hardware-Integration-Plan.md`
 
 ## User Learning Profile
 
