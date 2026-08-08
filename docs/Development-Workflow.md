@@ -198,6 +198,19 @@ The handoff should include:
 
 This is required when Codex has pushed a branch but cannot create the pull request because of GitHub tool or permission limitations.
 
+## GitHub Pull Request Protection
+
+The `main` branch is protected through a GitHub branch rule. Changes must be
+merged through a pull request; no approving review is required while HomeOS has
+only one maintainer. The rule also requires resolved conversations, disallows
+force-pushes and branch deletion, and requires the `Build firmware` check.
+
+The required workflow always starts for pull requests targeting `main`. It runs
+the PlatformIO build only when firmware-related files, `platformio.ini`, or a
+workflow file changes. Documentation-only pull requests skip the build job and
+the skipped job reports success, so they are not blocked by an unnecessary
+firmware build.
+
 ## Release Philosophy
 
 HomeOS should always be releasable.
