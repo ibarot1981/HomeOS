@@ -52,7 +52,6 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-          cache: pip
 
       - name: Cache PlatformIO downloads
         uses: actions/cache@v4
