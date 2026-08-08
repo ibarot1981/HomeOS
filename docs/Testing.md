@@ -15,6 +15,18 @@ Unlike pure software, a firmware bug might be:
 
 Testing should isolate one variable at a time.
 
+## Pull Request Build Check
+
+GitHub Actions runs the `Build firmware` check for every pull request targeting
+`main` when firmware-related files, `platformio.ini`, or a workflow file changes.
+It installs PlatformIO and runs `pio run` using the checked-in configuration.
+This verifies that the firmware compiles without local WiFi credentials.
+
+Documentation-only pull requests still run the workflow's changed-file check,
+but skip the PlatformIO build successfully. GitHub Actions cannot upload to the
+physical ESP32-S3 or validate the display, buttons, WiFi, or NTP; those remain
+manual hardware checks.
+
 ## Version 0.1 Board Serial Test
 
 Goal:

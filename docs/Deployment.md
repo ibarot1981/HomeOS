@@ -13,6 +13,14 @@ Basic flow:
 5. observe logs
 6. verify display behavior
 
+## Pull Request Build Validation
+
+Before a pull request can be merged into `main`, GitHub Actions requires the
+`Build firmware` check when firmware-related files, `platformio.ini`, or a
+workflow file changes. The check runs `pio run` on a hosted Linux runner; it
+does not upload firmware or replace the USB deployment and hardware validation
+steps in this document.
+
 ## Preferred Tooling
 
 Use PlatformIO when possible.

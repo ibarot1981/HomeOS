@@ -184,3 +184,32 @@ Mains detection or control must use appropriately rated isolation hardware, encl
 Status:
 
 Accepted
+
+## ADR-011: Protect Main with Pull Requests and a Targeted Firmware Build
+
+Date: 2026-08-08
+
+Decision:
+
+Protect `main` by requiring pull requests, resolved conversations, and a
+successful `Build firmware` check. Require zero approving reviews while HomeOS
+has a single maintainer. Run the PlatformIO build only when firmware-related
+files, `platformio.ini`, or workflow files change; documentation-only pull
+requests skip that build successfully.
+
+Reason:
+
+This prevents accidental direct updates and compile regressions without making
+one-maintainer work or documentation corrections unnecessarily slow. Hardware
+validation remains local because a hosted runner cannot access the ESP32-S3 or
+connected peripherals.
+
+Alternatives considered:
+
+- require one approving review
+- run the PlatformIO build for every documentation-only pull request
+- run a post-merge build on every push to `main`
+
+Status:
+
+Accepted
