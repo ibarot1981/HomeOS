@@ -22,6 +22,13 @@ Every Markdown document in HomeOS is a living document.
 
 Documentation must represent the current implementation, current hardware assumptions, and current project decisions. Outdated documentation is considered a project defect because it can lead to wrong wiring, wrong expectations, unsafe assumptions, or wasted debugging time.
 
+## Documentation Location
+
+All project Markdown documentation lives in `docs/`. `AGENTS.md` is the only
+Markdown file allowed at the repository root. The canonical project overview is
+`docs/README.md`, and the canonical changelog is `docs/CHANGELOG.md`. Do not add
+or restore another root-level Markdown document without explicit user approval.
+
 When code and documentation disagree, the disagreement itself must be treated as something to fix.
 
 ## Documentation Update Matrix
@@ -40,9 +47,9 @@ When code and documentation disagree, the disagreement itself must be treated as
 | Major engineering decisions | `Decisions.md` |
 | Build or deployment | `Deployment.md` |
 | Testing procedure | `Testing.md` |
-| Project overview | `README.md` |
+| Project overview | `docs/README.md` |
 | Project scope | `Project.md` |
-| Milestone completion | `CHANGELOG.md` |
+| Milestone completion | `docs/CHANGELOG.md` |
 | Material system structure or code-flow change | `Architecture.md`, `Code-Map.md`, and `visualizations/homeos-code-map.html` |
 
 ## Definition of Done
@@ -53,7 +60,7 @@ A task is considered complete only when:
 - existing functionality is not broken
 - relevant documentation has been updated
 - architecture, static code map, and interactive code map have been reviewed and updated when system structure or code flow changed
-- `CHANGELOG.md` has been updated if the change is user-visible or milestone-worthy
+- `docs/CHANGELOG.md` has been updated if the change is user-visible or milestone-worthy
 - tests have been updated where appropriate
 - new files are documented
 - known limitations are documented
@@ -178,7 +185,7 @@ Whenever implementing a task, Codex should:
 For normal firmware evolution, update the interactive map's Version-specific data
 and flow entries while preserving its UI shell, side panels, and click behavior.
 Any UI redesign requires separate approval.
-4. Update `CHANGELOG.md` if appropriate.
+4. Update `docs/CHANGELOG.md` if appropriate.
 5. Report exactly which Markdown files were modified.
 6. Report any documentation that still requires manual input, such as hardware photos, measurements, purchase links, or markings printed on a component.
 

@@ -290,6 +290,8 @@ HomeOS/
 |   +-- test/
 |
 +-- docs/
+|   +-- README.md
+|   +-- CHANGELOG.md
 |   +-- Project.md
 |   +-- Architecture.md
 |   +-- Hardware.md
@@ -302,7 +304,7 @@ HomeOS/
 |
 +-- enclosure/
 +-- assets/
-+-- README.md
++-- AGENTS.md
 ```
 
 # Post-v1.0 Multi-Device Architectural Seam

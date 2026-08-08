@@ -46,6 +46,18 @@ two current modules; Status retains the board diagnostics. Previous and Next wra
 through the registry, Select redraws the active module, and ePaper refresh remains
 full-screen only.
 
+Version 0.5 adds compile-time Slideshow, Fixed, and Smart display modes.
+Slideshow advances through Clock and Status every 60 seconds; Fixed retains the
+module selected with Previous or Next; Smart temporarily shows Status for a
+configured WiFi/NTP failure, then returns to the prior module. Physical
+validation of these modes remains pending.
+
+## Documentation Layout
+
+All project Markdown documentation belongs in this `docs/` folder. `AGENTS.md`
+is the only Markdown file at the repository root. This file is the canonical
+project overview; `docs/CHANGELOG.md` is the canonical changelog.
+
 Still pending:
 
 - native USB behavior
