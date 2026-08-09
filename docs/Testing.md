@@ -356,6 +356,14 @@ Set `kDisplayMode` to `DisplayMode::kSlideshow`.
 - after a manual navigation action, confirm the next automatic advance waits a
   fresh 60 seconds
 
+Hardware result on 2026-08-09:
+
+- upload passed over `COM7`
+- Clock and Status both rendered; Previous, Select, and Next worked as intended
+- the automatic full refresh changed modules after 60 seconds
+- the corrected Status footer kept `Board diagnostics` on the left and
+  `Slideshow` on the right without overlap
+
 ### Fixed Mode
 
 Set `kDisplayMode` to `DisplayMode::kFixed`.

@@ -270,7 +270,8 @@ void drawClockScreen() {
 
     display.setFont(&FreeMono9pt7b);
     display.drawFastHLine(16, 236, 368, GxEPD_BLACK);
-    drawCenteredText(clockStatusMessage(), 264);
+    display.setCursor(16, 264);
+    display.print(clockStatusMessage());
     drawRightText(displayModeName(), 384, 264);
     drawCenteredText("Full refresh only", 288);
   } while (display.nextPage());
@@ -307,7 +308,8 @@ void drawStatusScreen() {
     drawCenteredText("Buttons: P4 S5 N6", 204);
 
     display.drawFastHLine(16, 236, 368, GxEPD_BLACK);
-    drawCenteredText("Board diagnostics", 264);
+    display.setCursor(16, 264);
+    display.print("Board diagnostics");
     drawRightText(displayModeName(), 384, 264);
     drawCenteredText("Full refresh only", 288);
   } while (display.nextPage());

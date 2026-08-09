@@ -184,6 +184,11 @@ when configured WiFi/NTP is unhealthy, then redraws the prior module. These mode
 changes are full-screen refreshes and require physical validation on the actual
 panel; partial and fast refresh remain untested and unused.
 
+Slideshow hardware validation passed over `COM7` on 2026-08-09: Clock and Status
+rendered correctly, buttons worked, the display advanced after 60 seconds, and
+the corrected Status footer kept its left label and right mode name separate.
+Fixed and Smart mode validation remain pending.
+
 ## Library
 
 Preferred library:

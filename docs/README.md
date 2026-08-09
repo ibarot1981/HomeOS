@@ -50,7 +50,8 @@ Version 0.5 adds compile-time Slideshow, Fixed, and Smart display modes.
 Slideshow advances through Clock and Status every 60 seconds; Fixed retains the
 module selected with Previous or Next; Smart temporarily shows Status for a
 configured WiFi/NTP failure, then returns to the prior module. Physical
-validation of these modes remains pending.
+validation confirmed Slideshow timing and button behavior on 2026-08-09; Fixed
+and Smart validation remain pending.
 
 ## Documentation Layout
 

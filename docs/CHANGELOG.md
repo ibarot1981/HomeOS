@@ -37,6 +37,7 @@
 
 - Updated registered modules every loop so Clock WiFi/NTP retry continues during
   a Smart Status override; Clock and Status footers now show the active mode.
+- Left-aligned the footer label so it cannot overlap the right-aligned mode name.
 - Made `docs/README.md` and `docs/CHANGELOG.md` the documented canonical
   locations; `AGENTS.md` is now the only root-level Markdown file.
 - Documented future seams for device identity, messaging transports, network and
