@@ -1,6 +1,6 @@
 # Code Map
 
-## Version 0.4 Firmware Flow
+## Version 0.5 Firmware Flow
 
 ```mermaid
 flowchart TD
@@ -10,9 +10,12 @@ flowchart TD
   Loop["loop()"] --> Buttons["scanButtons()\nactive-low, 50 ms debounce"]
   Buttons --> Navigation["changeModule(-1 or +1)\nSelect redraws"]
   Navigation --> Draw
-  Loop --> Update["activeModule().update(now)"]
+  Loop --> Update["updateModules(now)"]
   Update --> Clock["ClockModule\nWiFi/NTP retry + minute refresh"]
   Clock -->|minute changes| Draw
+  Loop --> Modes["updateDisplayMode(now)"]
+  Modes -->|Slideshow interval| Navigation
+  Modes -->|Smart alert begins/ends| Draw
   Draw --> Display["full ePaper refresh, then hibernate"]
 ```
 
@@ -20,18 +23,27 @@ flowchart TD
 
 | File | Responsibility |
 |---|---|
-| `firmware/src/main.cpp` | Version 0.4 application: startup diagnostics, display, WiFi/NTP clock, debounced buttons, module registry, Clock module, and Status diagnostics module. |
+| `firmware/src/main.cpp` | Version 0.5 application: startup diagnostics, display modes, WiFi/NTP clock, debounced buttons, module registry, Clock module, and Status diagnostics/alert module. |
 | `firmware/include/config.example.h` | Non-secret example for optional local WiFi configuration. |
 | `platformio.ini` | Edgehax S3-PRO build environment and GxEPD2 dependency. |
 
 ## Current Module Model
 
-`Module` has `name()`, `draw()`, and `update(now)`. `modules[]` contains static
-instances of `ClockModule` and `StatusModule`; `activeModuleIndex` selects one.
+`Module` has `name()`, `draw()`, `update(now)`, and a default-false `hasAlert()`.
+`modules[]` contains static instances of `ClockModule` and `StatusModule`;
+`activeModuleIndex` selects one and `updateModules(now)` updates both each loop.
 `drawActiveModule()` initializes the verified ePaper driver, draws the selected
 module, and hibernates it. The Clock module is the only module with periodic work:
 it performs one full refresh when the actual local-time minute differs from the
 minute it last rendered, independent of when the user opened Clock.
+
+`kDisplayMode` selects one build-time mode. Slideshow uses
+`kSlideshowIntervalMs` (60 seconds) to call the existing `changeModule(1)`.
+Fixed leaves the module selected by Previous or Next visible. Smart uses
+`StatusModule::hasAlert()` for configured WiFi/NTP failures, stores
+`smartAlertPreviousModuleIndex`, shows Status for `kSmartAlertDurationMs` (15
+seconds), then redraws the prior module. The smart alert is latched until the
+failure clears, preventing repeated full-refresh overrides.
 
 Buttons remain direct and hardware-specific: Previous GPIO4, Select GPIO5, and
 Next GPIO6 use `INPUT_PULLUP`, active-low presses, and the existing 50 ms debounce.

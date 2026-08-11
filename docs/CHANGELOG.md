@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added Version 0.5 display modes: 60-second Slideshow, button-selected Fixed,
+  and Smart Status overrides for configured WiFi/NTP failures.
+- Added the small `Module::hasAlert()` lifecycle seam, currently implemented by
+  Status for Smart mode.
 - Added post-v1.0 multi-device architectural guardrails while keeping HomeOS
   v1.0 explicitly single-device.
 - Added living Architecture, static Code Map, and self-contained interactive code-map documentation.
@@ -31,6 +35,11 @@
 
 ### Changed
 
+- Updated registered modules every loop so Clock WiFi/NTP retry continues during
+  a Smart Status override; Clock and Status footers now show the active mode.
+- Left-aligned the footer label so it cannot overlap the right-aligned mode name.
+- Made `docs/README.md` and `docs/CHANGELOG.md` the documented canonical
+  locations; `AGENTS.md` is now the only root-level Markdown file.
 - Documented future seams for device identity, messaging transports, network and
   storage boundaries, optional event/capability evolution, discovery/trust, and
   asynchronous voice messaging; no multi-device firmware was added.

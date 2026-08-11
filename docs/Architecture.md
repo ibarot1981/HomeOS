@@ -1,12 +1,12 @@
 # Architecture
 
-## Current Implementation (Version 0.4)
+## Current Implementation (Version 0.5)
 
-HomeOS Version 0.4 remains a small, single-file firmware implementation, now with
-a fixed two-module registry. `firmware/src/main.cpp` owns Button Input,
-Navigation, Clock, Board Diagnostics, Display, WiFi/NTP, and Serial Diagnostics.
-The target architecture below remains a future direction; its proposed layers do
-not yet exist as separate firmware modules.
+HomeOS Version 0.5 remains a small, single-file firmware implementation with a
+fixed two-module registry. `firmware/src/main.cpp` owns Button Input,
+Navigation, Display Modes, Clock, Board Diagnostics, Display, WiFi/NTP, and
+Serial Diagnostics. The target architecture below remains a future direction;
+its proposed layers do not yet exist as separate firmware modules.
 
 ```mermaid
 flowchart LR
@@ -16,6 +16,7 @@ flowchart LR
   end
   subgraph Firmware["ESP32-S3 Firmware: firmware/src/main.cpp"]
     Navigation["Navigation"]
+    Modes["Display Modes\nSlideshow · Fixed · Smart"]
     Clock["Clock"]
     Registry["Module registry\nClockModule + StatusModule"]
     Board["Board Diagnostics\nStatus module"]
@@ -29,6 +30,7 @@ flowchart LR
   end
   Buttons --> Navigation
   Navigation --> Registry
+  Modes --> Registry
   Registry --> Clock
   Registry --> Board
   Clock --> Display
@@ -45,7 +47,9 @@ Current behavior:
 
 - Button Input uses active-low GPIO inputs with internal pull-ups and 50 ms debounce.
 - Navigation lets Previous and Next wrap through Clock and Status; Select redraws the active module.
-- The Clock module owns minute refresh and WiFi/NTP retry work; the Status module owns board diagnostics.
+- `kDisplayMode` selects Slideshow, Fixed, or Smart at firmware build time. Slideshow changes modules every 60 seconds; Fixed retains the module selected by Previous or Next; Smart retains that manual selection except for a temporary alert override.
+- Every registered module receives `update(now)` each loop. The Clock module therefore keeps its minute refresh and WiFi/NTP retry work while Status is temporarily visible.
+- Status owns board diagnostics and is the current alerting module: when configured WiFi/NTP is unhealthy, Smart displays it once for 15 seconds during that uninterrupted failure, then restores the previously displayed module.
 - WiFi/NTP uses locally configured credentials when present and retries synchronization every five minutes after failure.
 - Display uses the verified SPI wiring and full refresh only; each draw ends in ePaper hibernation.
 - Serial Diagnostics reports startup board information, button activity, WiFi/NTP state, display activity, and a five-second heartbeat.
@@ -179,7 +183,9 @@ HomeOS should support three viewing modes.
 
 ### Slideshow Mode
 
-The device rotates through enabled modules at a configured interval, such as 30, 60, or 120 seconds.
+The device rotates through registered modules at a firmware-configured interval.
+Version 0.5 uses `kSlideshowIntervalMs`, currently 60 seconds. Manual Previous
+and Next navigation still works and restarts the slideshow interval.
 
 Good for:
 
@@ -189,7 +195,9 @@ Good for:
 
 ### Fixed Mode
 
-The user pins one module on screen.
+The user pins one module on screen. Version 0.5 does not add a settings menu:
+Previous and Next select the pinned module, and it stays on screen until the
+user selects another one.
 
 Good for:
 
@@ -200,7 +208,13 @@ Good for:
 
 ### Smart Mode
 
-The device normally shows a default module, but temporarily switches to important screens when something needs attention.
+The device normally retains the module selected by the user, but temporarily
+switches to an alerting module when something needs attention. Version 0.5
+implements the smallest real alert source: Status requests an alert when local
+WiFi credentials are configured and Clock's WiFi/NTP status is not synced.
+The override lasts `kSmartAlertDurationMs`, currently 15 seconds, and occurs
+once per uninterrupted failure so it does not continually refresh an ePaper
+screen. A later recovery followed by another failure can raise a new alert.
 
 Examples:
 
@@ -211,6 +225,8 @@ Examples:
 - Telegram message received
 
 After the alert window expires, the device returns to the previous screen.
+No event bus, scheduler, persistence, notification transport, or additional
+hardware is introduced for this milestone.
 
 ## Event Model
 
@@ -274,6 +290,8 @@ HomeOS/
 |   +-- test/
 |
 +-- docs/
+|   +-- README.md
+|   +-- CHANGELOG.md
 |   +-- Project.md
 |   +-- Architecture.md
 |   +-- Hardware.md
@@ -286,7 +304,7 @@ HomeOS/
 |
 +-- enclosure/
 +-- assets/
-+-- README.md
++-- AGENTS.md
 ```
 
 # Post-v1.0 Multi-Device Architectural Seam

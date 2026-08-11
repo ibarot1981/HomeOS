@@ -27,6 +27,8 @@ constexpr unsigned long kClockRetryIntervalMs = 5UL * 60UL * 1000UL;
 constexpr unsigned long kWiFiConnectTimeoutMs = 20000;
 constexpr unsigned long kTimeSyncTimeoutMs = 20000;
 constexpr unsigned long kButtonDebounceMs = 50;
+constexpr unsigned long kSlideshowIntervalMs = 60UL * 1000UL;
+constexpr unsigned long kSmartAlertDurationMs = 15UL * 1000UL;
 unsigned long lastHeartbeatMs = 0;
 unsigned long lastClockSyncAttemptMs = 0;
 int lastRenderedMinute = -1;
@@ -59,6 +61,15 @@ enum class ButtonAction {
   kNext,
 };
 
+enum class DisplayMode {
+  kSlideshow,
+  kFixed,
+  kSmart,
+};
+
+// Change this firmware constant to select the Version 0.5 display mode.
+constexpr DisplayMode kDisplayMode = DisplayMode::kSlideshow;
+
 struct ButtonState {
   const char *name;
   int pin;
@@ -73,6 +84,7 @@ class Module {
   virtual const char *name() const = 0;
   virtual void draw() = 0;
   virtual void update(unsigned long now) {}
+  virtual bool hasAlert() const { return false; }
 };
 
 ClockStatus clockStatus = ClockStatus::kWiFiNotConfigured;
@@ -200,6 +212,19 @@ const char *clockStatusMessage() {
   }
 }
 
+const char *displayModeName() {
+  switch (kDisplayMode) {
+    case DisplayMode::kSlideshow:
+      return "Slideshow";
+    case DisplayMode::kFixed:
+      return "Fixed";
+    case DisplayMode::kSmart:
+      return "Smart";
+  }
+
+  return "Unknown";
+}
+
 void drawClockScreen() {
   struct tm timeInfo;
   const bool hasTime =
@@ -245,7 +270,9 @@ void drawClockScreen() {
 
     display.setFont(&FreeMono9pt7b);
     display.drawFastHLine(16, 236, 368, GxEPD_BLACK);
-    drawCenteredText(clockStatusMessage(), 264);
+    display.setCursor(16, 264);
+    display.print(clockStatusMessage());
+    drawRightText(displayModeName(), 384, 264);
     drawCenteredText("Full refresh only", 288);
   } while (display.nextPage());
 
@@ -281,7 +308,9 @@ void drawStatusScreen() {
     drawCenteredText("Buttons: P4 S5 N6", 204);
 
     display.drawFastHLine(16, 236, 368, GxEPD_BLACK);
-    drawCenteredText("Board diagnostics", 264);
+    display.setCursor(16, 264);
+    display.print("Board diagnostics");
+    drawRightText(displayModeName(), 384, 264);
     drawCenteredText("Full refresh only", 288);
   } while (display.nextPage());
 }
@@ -299,6 +328,9 @@ class StatusModule final : public Module {
  public:
   const char *name() const override { return "Status"; }
   void draw() override { drawStatusScreen(); }
+  bool hasAlert() const override {
+    return hasWiFiCredentials() && clockStatus != ClockStatus::kTimeSynced;
+  }
 };
 
 ClockModule clockModule;
@@ -306,10 +338,25 @@ StatusModule statusModule;
 Module *const modules[] = {&clockModule, &statusModule};
 constexpr size_t kModuleCount = sizeof(modules) / sizeof(modules[0]);
 size_t activeModuleIndex = 0;
+size_t smartAlertPreviousModuleIndex = 0;
+unsigned long lastModuleChangeMs = 0;
+unsigned long smartAlertStartedMs = 0;
+bool smartAlertActive = false;
+bool smartAlertShownForCurrentFailure = false;
 
 Module &activeModule() { return *modules[activeModuleIndex]; }
 
 bool isClockModuleActive() { return modules[activeModuleIndex] == &clockModule; }
+
+size_t moduleIndex(const Module *module) {
+  for (size_t index = 0; index < kModuleCount; ++index) {
+    if (modules[index] == module) {
+      return index;
+    }
+  }
+
+  return 0;
+}
 
 void drawActiveModule() {
   // Waveshare ePaper boards may need a shortened reset pulse.
@@ -378,6 +425,7 @@ void startHomeOS() {
   SPI.begin(kEPaperSckPin, -1, kEPaperMosiPin, kEPaperCsPin);
 
   clockStatus = connectWiFiAndSyncTime();
+  lastModuleChangeMs = millis();
   drawActiveModule();
 
   Serial.println("Display refresh command complete. Check the ePaper screen.");
@@ -431,10 +479,64 @@ void changeModule(int direction) {
   activeModuleIndex =
       static_cast<size_t>((nextIndex + static_cast<int>(kModuleCount)) %
                           static_cast<int>(kModuleCount));
+  lastModuleChangeMs = millis();
 
   Serial.print("Active module      : ");
   Serial.println(activeModule().name());
   drawActiveModule();
+}
+
+void updateDisplayMode(unsigned long now) {
+  if (kDisplayMode == DisplayMode::kSlideshow) {
+    if (now - lastModuleChangeMs >= kSlideshowIntervalMs) {
+      changeModule(1);
+    }
+    return;
+  }
+
+  if (kDisplayMode != DisplayMode::kSmart) {
+    return;
+  }
+
+  if (!statusModule.hasAlert()) {
+    smartAlertShownForCurrentFailure = false;
+  }
+
+  if (smartAlertActive) {
+    if (now - smartAlertStartedMs >= kSmartAlertDurationMs) {
+      activeModuleIndex = smartAlertPreviousModuleIndex;
+      lastModuleChangeMs = now;
+      smartAlertActive = false;
+      Serial.print("Smart alert ended   : returning to ");
+      Serial.println(activeModule().name());
+      drawActiveModule();
+    }
+    return;
+  }
+
+  if (!statusModule.hasAlert() || smartAlertShownForCurrentFailure) {
+    return;
+  }
+
+  const size_t statusModuleIndex = moduleIndex(&statusModule);
+  if (activeModuleIndex == statusModuleIndex) {
+    return;
+  }
+
+  smartAlertPreviousModuleIndex = activeModuleIndex;
+  activeModuleIndex = statusModuleIndex;
+  smartAlertStartedMs = now;
+  smartAlertActive = true;
+  smartAlertShownForCurrentFailure = true;
+  Serial.print("Smart alert started : ");
+  Serial.println(activeModule().name());
+  drawActiveModule();
+}
+
+void updateModules(unsigned long now) {
+  for (Module *module : modules) {
+    module->update(now);
+  }
 }
 
 void handleButtonPress(const ButtonState &button) {
@@ -509,7 +611,8 @@ void setup() {
 void loop() {
   const unsigned long now = millis();
   scanButtons(now);
-  activeModule().update(now);
+  updateModules(now);
+  updateDisplayMode(now);
 
   if (now - lastHeartbeatMs >= kHeartbeatIntervalMs) {
     lastHeartbeatMs = now;

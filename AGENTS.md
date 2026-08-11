@@ -40,6 +40,7 @@ Before beginning work, read the documents relevant to the task.
 
 At minimum, always read:
 
+- `docs/README.md`
 - `docs/Development-Workflow.md`
 
 Depending on the task, also read:
@@ -59,6 +60,19 @@ Depending on the task, also read:
 Never invent architecture, wiring, workflows, or implementation details that contradict the documentation.
 
 When documentation and implementation disagree, stop and report the inconsistency.
+
+## Documentation Location
+
+`AGENTS.md` is the only Markdown file allowed at the repository root. All project
+Markdown documentation, including the canonical project overview and changelog,
+must live in `docs/`.
+
+- Project overview: `docs/README.md`
+- Changelog: `docs/CHANGELOG.md`
+
+Do not add or restore root-level `.md` files other than `AGENTS.md` without
+explicit user approval. When a project document is named without a path, resolve
+it under `docs/` unless the task explicitly says otherwise.
 
 ---
 
@@ -128,7 +142,7 @@ Common examples:
 - Workflow changed → update `docs/Development-Workflow.md`.
 - Design decision made → update `docs/Decisions.md`.
 - Milestone status changed → update `docs/Roadmap.md`.
-- User-visible change made → update `CHANGELOG.md` where appropriate.
+- User-visible change made → update `docs/CHANGELOG.md` where appropriate.
 
 Never leave documentation knowingly outdated.
 
@@ -484,7 +498,7 @@ A task is complete only when:
 
 - Code or documentation changes are implemented.
 - Relevant documentation is updated.
-- `CHANGELOG.md` is updated when appropriate.
+- `docs/CHANGELOG.md` is updated when appropriate.
 - Build passes where applicable.
 - Tests or validation checks are run where applicable.
 - Diff is reviewed.

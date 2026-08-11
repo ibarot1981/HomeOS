@@ -174,6 +174,21 @@ Button upload and display validation passed on 2026-08-06 after the physical
 button wiring matched `docs/Wiring.md`; the Clock and Board screens both rendered
 correctly after navigation.
 
+## Version 0.5 Display Modes
+
+Version 0.5 keeps the verified display driver, wiring, and full-refresh-only
+operation. Both built-in module screens show the configured mode in the footer.
+Slideshow changes modules after 60 seconds; Fixed remains on the module selected
+by Previous or Next; Smart can temporarily show the Status screen for 15 seconds
+when configured WiFi/NTP is unhealthy, then redraws the prior module. These mode
+changes are full-screen refreshes and require physical validation on the actual
+panel; partial and fast refresh remain untested and unused.
+
+Slideshow hardware validation passed over `COM7` on 2026-08-09: Clock and Status
+rendered correctly, buttons worked, the display advanced after 60 seconds, and
+the corrected Status footer kept its left label and right mode name separate.
+Fixed and Smart mode validation remain pending.
+
 ## Library
 
 Preferred library:

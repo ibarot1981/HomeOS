@@ -317,18 +317,80 @@ Manual smoke-test checklist for future regression testing:
 The test must use the existing active-low GPIO4/GPIO5/GPIO6 button wiring and USB
 power through the ESP32 board only. It must not enable partial or fast refresh.
 
-## Smart Mode Test
+## Version 0.5 Display Modes Build Test
 
-Goal:
+Build result:
 
-- alert modules temporarily override normal display
+- build date: 2026-08-08
+- environment: `edgehax_s3_pro_diagnostics`
+- build command: `& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run`
+- build result: passed
 
-Checklist:
+Version 0.5 uses the `kDisplayMode` firmware constant in
+`firmware/src/main.cpp`. Change only that constant, rebuild, and upload before
+testing each mode. The default checked-in value is `DisplayMode::kSlideshow`.
+Do not commit local WiFi credentials or generated build output.
 
-- simulated alert switches screen
-- buzzer sounds if enabled
-- Telegram notification sends if enabled
-- display returns to previous module
+## Version 0.5 Hardware Validation
+
+Use the existing active-low GPIO4/GPIO5/GPIO6 button wiring, verified ePaper
+wiring, and USB power through the ESP32 board only. The feature uses full-screen
+refresh only; do not enable partial or fast refresh during this validation.
+
+### Shared Regression Checklist
+
+- upload succeeds and serial monitor opens at 115200 baud
+- Clock and Status both render with the configured mode in their footer
+- Previous and Next each navigate once per normal press
+- Select redraws the active module once
+- Clock minute refresh and configured WiFi/NTP retry remain functional
+
+### Slideshow Mode
+
+Set `kDisplayMode` to `DisplayMode::kSlideshow`.
+
+- boot into Clock
+- wait 60 seconds and confirm one full refresh changes to Status
+- wait another 60 seconds and confirm it returns to Clock
+- press Previous or Next and confirm normal navigation still works
+- after a manual navigation action, confirm the next automatic advance waits a
+  fresh 60 seconds
+
+Hardware result on 2026-08-09:
+
+- upload passed over `COM7`
+- Clock and Status both rendered; Previous, Select, and Next worked as intended
+- the automatic full refresh changed modules after 60 seconds
+- the corrected Status footer kept `Board diagnostics` on the left and
+  `Slideshow` on the right without overlap
+
+### Fixed Mode
+
+Set `kDisplayMode` to `DisplayMode::kFixed`.
+
+- boot into Clock and wait longer than 60 seconds; confirm it remains Clock
+- press Next; confirm Status becomes the pinned screen
+- wait longer than 60 seconds; confirm Status remains visible
+- press Previous; confirm Clock becomes the pinned screen
+- press Select on each module; confirm a single full redraw
+
+### Smart Mode
+
+Set `kDisplayMode` to `DisplayMode::kSmart` and use valid local WiFi credentials.
+
+- confirm a healthy WiFi/NTP startup remains on the manually selected module
+- make WiFi/NTP unhealthy (for example, temporarily turn off the access point)
+  and wait for the existing retry path to record an unsynced status
+- confirm Status temporarily overrides the current module and serial logs
+  `Smart alert started`
+- confirm the Status override lasts about 15 seconds and then returns to the
+  module that was visible before the alert
+- keep the failure active and confirm it does not repeatedly override the screen
+- restore WiFi/NTP, confirm a successful recovery, then repeat the failure and
+  confirm a new Smart alert may occur
+
+No buzzer, Telegram notification, sensor, relay, persistence, or additional
+hardware is part of Version 0.5.
 
 ## Regression Tests
 

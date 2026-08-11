@@ -141,10 +141,12 @@ Version 0.3 starts with the same physical model but a smaller firmware behavior:
 Previous and Next cycle between built-in screens, while Select logs and redraws
 the active screen. Long press is deferred until settings or display modes exist.
 
-Version 0.4 names those built-in screens Clock and Status modules. Previous and
-Next wrap through the two-module registry; Select still performs a full redraw of
-the active module. Status presents the board diagnostics. This does not add menus
-or settings.
+Version 0.5 keeps Previous and Next wrapping through the two-module registry and
+Select performing a full redraw. The screen footer shows the active display mode.
+Mode selection remains a firmware constant, rather than a new menu or long-press
+interaction: Slideshow automatically advances after 60 seconds, Fixed keeps the
+module selected by Previous or Next, and Smart temporarily shows Status for a
+configured WiFi/NTP failure before returning to the prior module.
 
 Telegram can provide richer remote control:
 
@@ -167,9 +169,10 @@ Examples:
 Alert screen behavior:
 
 1. show alert module
-2. beep if sound is enabled
-3. send Telegram notification if configured
-4. return to previous screen after configured time
+2. return to previous screen after configured time
+
+Version 0.5 does not add a buzzer or Telegram notification. Its Status alert is
+limited to configured WiFi/NTP failure and uses a 15-second full-screen override.
 
 ## ePaper-Specific UI Rules
 
