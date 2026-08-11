@@ -51,7 +51,9 @@ Slideshow advances through Clock and Status every 60 seconds; Fixed retains the
 module selected with Previous or Next; Smart temporarily shows Status for a
 configured WiFi/NTP failure, then returns to the prior module. Physical
 validation confirmed Slideshow timing and button behavior on 2026-08-09; Fixed
-and Smart validation remain pending.
+and Smart hardware validation passed on 2026-08-11. Smart validation also found
+and fixed missing post-sync WiFi-loss detection so a recovered connection can
+raise a later new alert.
 
 ## Documentation Layout
 

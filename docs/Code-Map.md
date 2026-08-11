@@ -12,7 +12,8 @@ flowchart TD
   Navigation --> Draw
   Loop --> Update["updateModules(now)"]
   Update --> Clock["ClockModule\nWiFi/NTP retry + minute refresh"]
-  Clock -->|minute changes| Draw
+  Clock -->|minute changes or non-Smart WiFi loss| Draw
+  Clock -->|WiFi loss changes alert state| Modes
   Loop --> Modes["updateDisplayMode(now)"]
   Modes -->|Slideshow interval| Navigation
   Modes -->|Smart alert begins/ends| Draw
@@ -35,7 +36,10 @@ flowchart TD
 `drawActiveModule()` initializes the verified ePaper driver, draws the selected
 module, and hibernates it. The Clock module is the only module with periodic work:
 it performs one full refresh when the actual local-time minute differs from the
-minute it last rendered, independent of when the user opened Clock.
+minute it last rendered, independent of when the user opened Clock. After a
+successful sync, `refreshClockIfNeeded(now)` also detects loss of the WiFi
+connection, changes `clockStatus` to `kWiFiConnectFailed`, and schedules the
+existing five-minute WiFi/NTP retry path.
 
 `kDisplayMode` selects one build-time mode. Slideshow uses
 `kSlideshowIntervalMs` (60 seconds) to call the existing `changeModule(1)`.

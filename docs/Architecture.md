@@ -50,7 +50,9 @@ Current behavior:
 - `kDisplayMode` selects Slideshow, Fixed, or Smart at firmware build time. Slideshow changes modules every 60 seconds; Fixed retains the module selected by Previous or Next; Smart retains that manual selection except for a temporary alert override.
 - Every registered module receives `update(now)` each loop. The Clock module therefore keeps its minute refresh and WiFi/NTP retry work while Status is temporarily visible.
 - Status owns board diagnostics and is the current alerting module: when configured WiFi/NTP is unhealthy, Smart displays it once for 15 seconds during that uninterrupted failure, then restores the previously displayed module.
-- WiFi/NTP uses locally configured credentials when present and retries synchronization every five minutes after failure.
+- WiFi/NTP uses locally configured credentials when present. Clock detects a
+  lost WiFi connection after synchronization, marks it unhealthy for Smart
+  alerting, and retries WiFi/NTP synchronization every five minutes after failure.
 - Display uses the verified SPI wiring and full refresh only; each draw ends in ePaper hibernation.
 - Serial Diagnostics reports startup board information, button activity, WiFi/NTP state, display activity, and a five-second heartbeat.
 
