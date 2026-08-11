@@ -374,6 +374,16 @@ Set `kDisplayMode` to `DisplayMode::kFixed`.
 - press Previous; confirm Clock becomes the pinned screen
 - press Select on each module; confirm a single full redraw
 
+Hardware result on 2026-08-11:
+
+- PlatformIO build and upload passed over `COM7`
+- Clock remained visible beyond 60 seconds; its normal minute-boundary refresh
+  did not change the selected module
+- Status also remained pinned beyond 60 seconds with no automatic module change
+- Next selected Status and Previous selected Clock, with one serial button event
+  and one full-screen refresh for each tested press
+- Select logged one redraw and the ePaper visibly redrew the selected screen once
+
 ### Smart Mode
 
 Set `kDisplayMode` to `DisplayMode::kSmart` and use valid local WiFi credentials.
@@ -388,6 +398,39 @@ Set `kDisplayMode` to `DisplayMode::kSmart` and use valid local WiFi credentials
 - keep the failure active and confirm it does not repeatedly override the screen
 - restore WiFi/NTP, confirm a successful recovery, then repeat the failure and
   confirm a new Smart alert may occur
+
+Hardware result on 2026-08-11:
+
+- PlatformIO build and upload passed over `COM7` with local ignored credentials
+- healthy WiFi/NTP synchronized; Next manually selected Status, which remained
+  visible for about 75 seconds with no automatic override, and Previous returned
+  to Clock
+- validation found that the original implementation did not detect WiFi loss
+  after a successful sync because the ESP32 local clock kept `getLocalTime()`
+  available; `refreshClockIfNeeded(now)` was fixed to detect loss of
+  `WL_CONNECTED` and enter the existing failure/retry path
+- a temporary local validation build made Select call `WiFi.disconnect()` after
+  its normal redraw, disconnecting only the ESP32 without changing the access
+  point; this instrumentation was removed before the final build
+- the injected failure logged `WiFi connection lost` and
+  `Smart alert started : Status`; the ePaper visibly changed from Clock to Status
+- the alert ended after about 15 seconds, logged its return to Clock, and the
+  ePaper visibly restored Clock
+- the same uninterrupted failure produced no repeated Smart override or extra
+  alert refresh during the following five-minute retry interval
+- at the five-minute boundary, WiFi reconnected and NTP synchronized; a second
+  injected failure in the same runtime raised a new Status alert and again
+  returned to Clock after about 15 seconds
+- local credentials remained ignored and were neither printed nor committed
+
+Limitations and environment notes:
+
+- an NTP-only failure after a healthy sync was not separately injected; the
+  validated fault was loss of the ESP32 WiFi connection
+- the PC and ESP32 experienced a separate WiFi interruption during the session;
+  the user reports similar prior PC incidents, so Deco/PC WiFi stability remains
+  an environmental limitation and was not attributed to the ESP-only test hook
+- partial refresh and fast refresh remain untested and unused
 
 No buzzer, Telegram notification, sensor, relay, persistence, or additional
 hardware is part of Version 0.5.

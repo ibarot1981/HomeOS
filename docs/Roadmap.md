@@ -149,8 +149,13 @@ Result:
 - Fixed keeps the module selected with Previous or Next on screen
 - Smart temporarily shows Status for 15 seconds when configured WiFi/NTP is
   unhealthy, then restores the module that was displayed before the alert
-- PlatformIO build passed; Slideshow and button hardware validation passed over
-  `COM7` on 2026-08-09; Fixed and Smart validation remain required
+- PlatformIO builds and uploads passed over `COM7` for all three modes
+- Slideshow hardware validation passed on 2026-08-09; Fixed and Smart hardware
+  validation passed on 2026-08-11
+- Smart validation confirmed one 15-second override per uninterrupted WiFi
+  failure, five-minute WiFi/NTP recovery, and a new alert after a later failure
+- post-sync WiFi-loss detection was fixed during validation; NTP-only failure
+  after a healthy sync remains untested
 
 Success criteria:
 

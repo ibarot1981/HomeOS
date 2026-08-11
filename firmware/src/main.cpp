@@ -444,6 +444,16 @@ void refreshClockIfNeeded(unsigned long now) {
     return;
   }
 
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("WiFi connection lost.");
+    clockStatus = ClockStatus::kWiFiConnectFailed;
+    lastClockSyncAttemptMs = now;
+    if (isClockModuleActive() && kDisplayMode != DisplayMode::kSmart) {
+      drawActiveModule();
+    }
+    return;
+  }
+
   struct tm timeInfo;
   if (!getLocalTime(&timeInfo, 50)) {
     Serial.println("Local time became unavailable.");

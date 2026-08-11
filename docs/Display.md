@@ -187,7 +187,21 @@ panel; partial and fast refresh remain untested and unused.
 Slideshow hardware validation passed over `COM7` on 2026-08-09: Clock and Status
 rendered correctly, buttons worked, the display advanced after 60 seconds, and
 the corrected Status footer kept its left label and right mode name separate.
-Fixed and Smart mode validation remain pending.
+
+Fixed and Smart hardware validation passed over `COM7` on 2026-08-11. In Fixed
+mode, Clock and Status each remained pinned beyond 60 seconds, Previous and Next
+selected the expected screen, and Select caused one full redraw. In Smart mode,
+the ePaper visibly changed from Clock to Status for each injected ESP-only WiFi
+failure and returned to Clock after about 15 seconds. One uninterrupted failure
+did not repeatedly refresh the panel; WiFi/NTP recovered on the existing
+five-minute retry, and a later new failure produced a new Status override.
+
+The Smart test used a temporary local Select-button call to `WiFi.disconnect()`
+so only the ESP32 lost connectivity; that test instrumentation was removed after
+validation. An NTP-only failure after a healthy sync was not separately tested.
+The PC and ESP32 also experienced a separate pre-existing WiFi interruption
+during the session, so general Deco/PC connection stability remains an
+environmental limitation rather than a validated firmware property.
 
 ## Library
 

@@ -32,6 +32,9 @@
 - Recorded successful Version 0.3 upload and hardware validation over `COM7`, including serial press logs and Clock/Board navigation.
 - Recorded Version 0.4 upload and hardware validation over `COM7`, including
   Clock/Status navigation, Select redraws, and WiFi/NTP retry recovery.
+- Recorded successful Version 0.5 Fixed and Smart hardware validation over
+  `COM7`, including pinned screens, one-time 15-second Smart overrides,
+  five-minute recovery, and a new alert after a later failure.
 
 ### Changed
 
@@ -57,6 +60,8 @@
 
 ### Fixed
 
+- Fixed Smart mode so loss of WiFi after a successful NTP sync marks Clock
+  unhealthy, allowing the Status override and the existing retry path to run.
 - Fixed Clock full-refresh timing so the next redraw follows the actual minute
   boundary instead of being delayed by the time Clock was opened.
 ### Removed
