@@ -9,12 +9,12 @@
 | Breadboard | existing 30-point breadboard | Already owned - suitability to be checked | may help with buttons and small components |
 | Jumper wires | existing kit | Already owned | required for temporary wiring |
 | Buttons | tactile switches | Version 0.3 verified on GPIO4, GPIO5, and GPIO6 | active-low prototype navigation on breadboard |
-| Buzzer | SmartElex Passive Buzzer Module | Received on 2026-08-17; PCB and supplied reference PDF inspected | physical PCB labels conflict with the supplied generic pin table, so wiring and drive requirements remain unverified |
+| Buzzer | SmartElex Passive Buzzer Module | Pinout independently continuity-verified on 2026-08-17; 42.6 ohm DC coil resistance measured | requires a low-side driver and flyback diode; do not connect it directly to GPIO |
 | USB data cable | compatible with purchased ESP32-S3 board | Needed | must support both power and data for flashing |
 | Power | branded USB phone charger | Already owned | suitable for deployment after firmware is loaded |
 | Digital multimeter | basic digital multimeter | Recommended before hardware expansion | useful for voltage, continuity, and troubleshooting |
 | Component storage/labels | small box or labels | Optional | helps identify starter-kit parts later |
-| Buzzer/load driver parts | transistor, base/gate resistor, protection components | Buy only if required | needed if buzzer or other load exceeds safe GPIO drive |
+| Buzzer/load driver parts | BC337-25, 470 ohm and 10 kOhm resistors, 1N5819 diode, 3.3 V LDO module, and decoupling capacitors | Required before Version 0.6 wiring | isolates the ESP32 GPIO from the estimated 77 mA buzzer-coil current |
 
 ## Received Hardware Records
 
@@ -143,15 +143,34 @@ and the observed silkscreen labels are `-`, `NC`, and `S`; see the delivery
 photos in `hardware/photos/SmartElex Passive Buzzer Module/`.
 
 The supplied reference `hardware/datasheets/SmartElex-Passive-Buzzer-Module.pdf`
-describes a generic `VCC`, `GND`, `SIG / IN` interface, 3.3 V to 5 V operation,
-and PWM tones. Those labels do not match the delivered PCB. The document also
-does not state current consumption or show a schematic. Do not infer that `NC`
-means "not connected", that `-` is GND, or that `S` is a direct GPIO-safe input
-without manufacturer confirmation for this board.
+describes a generic `VCC`, `GND`, `SIG / IN` interface, which does not match the
+delivered PCB and is not used as the pinout source for this revision. The user
+independently verified the actual electrical connections by continuity testing:
 
-No buzzer wiring, soldering, GPIO assignment, or firmware control is verified
-yet. Obtain the exact module pinout and drive-current information from SmartElex
-or Robu before connecting it to HomeOS.
+| Measurement | Actual result | Meaning |
+|---|---:|---|
+| PCB `-` to buzzer lead 1 | 0.2 ohm | direct connection |
+| PCB `S` to buzzer lead 2 | 0.2 ohm | direct connection |
+| PCB `NC` to either buzzer lead | O.L. | genuinely not connected |
+| Between buzzer leads | 42.6 ohm | low-resistance magnetic coil |
+
+Lead 2 is next to the buzzer's moulded `+` mark. Therefore `S` is the positive
+coil terminal and `-` is the other coil terminal. `NC` is unused. At 3.3 V, the
+simple DC upper-bound calculation is `3.3 V / 42.6 ohm = 77 mA`; it is far above
+the current that this project will ask an ESP32 GPIO to supply. The module must
+use a low-side transistor driver and a flyback diode.
+
+The planned, not-yet-wired Version 0.6 circuit is a BC337-25 NPN low-side switch
+on verified available PWM-capable `GPIO17`. Its base will use a 470 ohm series
+resistor and 10 kOhm pull-down; a 1N5819 flyback diode will be fitted across the
+coil. The Edgehax board documentation does not specify spare capacity on its
+3.3 V rail, so the buzzer will receive 3.3 V from a separate AMS1117-3.3 LDO
+module powered from the board's USB-derived 5 V rail. Grounds will be common,
+but the LDO's 3.3 V output must never connect to the board's 3.3 V pin.
+
+No header soldering, physical wiring, firmware control, or hardware validation
+has occurred yet. Validate the 5 V input and isolated LDO 3.3 V output with the
+multimeter before connecting the buzzer or ESP32 GPIO.
 
 ## Power Supply
 

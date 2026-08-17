@@ -5,10 +5,14 @@
 ### Added
 
 - Added the supplied SmartElex passive-buzzer reference PDF and delivery photos.
-- Recorded the delivered SmartElex Passive Buzzer Module's observed `-`, `NC`,
-  and `S` PCB labels and the conflict with its generic `VCC`, `GND`, `SIG / IN`
-  reference table; buzzer wiring and firmware activation remain blocked pending
-  vendor pinout and current confirmation.
+- Recorded user-performed continuity measurements for the SmartElex Passive
+  Buzzer Module: `S` connects to the coil lead beside the moulded `+` mark,
+  `-` connects to the other coil lead, `NC` is unused, and the coil measures
+  42.6 ohm. The generic supplied `VCC`, `GND`, `SIG / IN` table is not used as
+  the pinout source for this physical revision.
+- Documented the planned Version 0.6 BC337-25 low-side driver, base resistors,
+  1N5819 flyback diode, and isolated 3.3 V buzzer supply. No physical wiring or
+  firmware activation has occurred.
 - Added Version 0.5 display modes: 60-second Slideshow, button-selected Fixed,
   and Smart Status overrides for configured WiFi/NTP failures.
 - Added the small `Module::hasAlert()` lifecycle seam, currently implemented by

@@ -230,10 +230,13 @@ Goal:
 
 Precondition:
 
-- the received SmartElex Passive Buzzer Module has PCB labels `-`, `NC`, and
-  `S`, which conflict with its supplied generic `VCC`, `GND`, `SIG / IN`
-  reference table; obtain the vendor pinout and current data before wiring or
-  beginning this test
+- continuity measurements have verified that `S` is the positive coil terminal,
+  `-` is the other coil terminal, and `NC` is unused; the coil measures 42.6 ohm
+- assemble and inspect the documented BC337-25 low-side driver, 1N5819 flyback
+  diode, base resistor, base pull-down, and independent 3.3 V LDO supply
+- before attaching the module, measure about 5 V at the LDO input and about
+  3.3 V at its output relative to common GND
+- do not connect the buzzer directly to an ESP32 GPIO or to the board 3.3 V rail
 
 Checklist:
 

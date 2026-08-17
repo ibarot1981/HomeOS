@@ -164,21 +164,71 @@ Before wiring buttons:
 
 ## Buzzer
 
-The received Version 0.6 candidate is a SmartElex Passive Buzzer Module. Its
-observed PCB labels are `-`, `NC`, and `S`, from left to right when viewed as in
-`hardware/photos/SmartElex Passive Buzzer Module/PXL_20260817_154237701.jpg`.
-The supplied PDF instead describes a generic `VCC`, `GND`, and `SIG / IN`
-interface. This conflict means all buzzer wiring is still TBD.
+The Version 0.6 SmartElex Passive Buzzer Module has three observed labels, from
+left to right in `hardware/photos/SmartElex Passive Buzzer Module/PXL_20260817_154237701.jpg`:
+`-`, `NC`, and `S`. The supplied generic PDF's `VCC`, `GND`, `SIG / IN` table is
+not valid for this physical revision.
 
-| Observed PCB Label | ESP32-S3 Connection |
-|---|---|
-| `-` | TBD - function not independently verified |
-| `NC` | TBD - function not independently verified |
-| `S` | TBD - function not independently verified |
+User-performed continuity measurements verified the actual module wiring:
 
-Do not solder the supplied header or connect the module to 3V3, 5V, GND, or a
-GPIO until SmartElex or Robu confirms the exact pinout and current requirement
-for this revision. Never connect the buzzer directly to 5 V through a GPIO.
+| PCB label | Confirmed function | Buzzer lead | HomeOS connection |
+|---|---|---|---|
+| `-` | negative coil terminal | lead 1 | BC337-25 collector and diode anode |
+| `NC` | no connection | none | leave unconnected |
+| `S` | positive coil terminal | lead 2 beside moulded `+` | dedicated LDO 3.3 V output and diode cathode |
+
+The two coil leads measure 42.6 ohm. The 3.3 V DC upper bound is about 77 mA;
+the ESP32 GPIO must not drive it directly.
+
+### Planned low-side driver (not yet wired)
+
+Required parts:
+
+- 1 x BC337-25 NPN transistor, through-hole TO-92 (buy a spare)
+- 1 x 470 ohm, 0.25 W resistor from `GPIO17` to the transistor base (buy spares)
+- 1 x 10 kOhm, 0.25 W resistor from base to common GND (buy spares)
+- 1 x 1N5819 Schottky diode (buy a spare); its band marks the cathode
+- 1 x AMS1117-3.3 fixed-output LDO module, rated at least 500 mA, powered from 5 V
+- 1 x 100 uF electrolytic capacitor rated at least 10 V, plus 1 x 100 nF ceramic
+  capacitor, across the LDO output near the buzzer
+- a solderless breadboard and suitable 2.54 mm jumper wires, if the existing
+  breadboard cannot hold the driver safely
+- soldering iron, rosin-core solder, and a stand to solder the supplied module
+  header before a reliable connection can be made
+
+Do not substitute a BC547/BC548 (their collector-current margin is inadequate)
+or an IRF520 module (it is not a suitable 3.3 V logic-level choice here).
+
+Planned electrical connections:
+
+```text
+Edgehax 5V (USB-powered only) ---- AMS1117 VIN
+Edgehax GND ---------------------- AMS1117 GND ---- BC337 emitter ---- common GND
+AMS1117 3V3 OUT ------------------ buzzer S (+ coil)
+
+buzzer - (other coil) ------------ BC337 collector
+GPIO17 ---- 470 ohm -------------- BC337 base
+BC337 base ---- 10 kOhm ---------- common GND
+
+1N5819 cathode (banded end) ------ buzzer S (+ coil)
+1N5819 anode --------------------- buzzer - / BC337 collector
+
+100 uF and 100 nF capacitors ----- between AMS1117 3V3 OUT and common GND
+NC -------------------------------- leave unconnected
+```
+
+The LDO's 3.3 V output powers only the buzzer circuit; do **not** join it to the
+ESP32 board's 3.3 V pin. The common ground is required so `GPIO17` has a valid
+base-drive reference. The base pull-down holds the transistor off during reset
+and boot. The flyback diode is reverse-biased while the buzzer is on and protects
+the transistor when PWM switches the magnetic coil off.
+
+Before any connection to the module or GPIO, disconnect USB, solder only the
+header with its pins facing down for breadboard use, inspect for solder bridges,
+then test the LDO by itself: board 5 V to GND must be approximately 5 V and LDO
+output to GND must be approximately 3.3 V. Do not power the circuit if either
+reading is outside expectation. Physical wiring remains unvalidated until this
+procedure is completed and recorded.
 
 ## Connection Verification Table
 

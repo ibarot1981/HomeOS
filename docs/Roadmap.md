@@ -167,11 +167,13 @@ Goal: add simple audible feedback.
 
 Hardware status:
 
-- SmartElex Passive Buzzer Module received on 2026-08-17
-- delivery photos and the supplied reference PDF are stored in the repository
-- physical PCB labels (`-`, `NC`, `S`) conflict with the PDF's generic
-  `VCC`, `GND`, `SIG / IN` table; no wiring, firmware control, or hardware
-  validation may begin until the vendor confirms the exact pinout and drive data
+- SmartElex Passive Buzzer Module received on 2026-08-17; delivery photos and
+  supplied reference PDF are stored in the repository
+- continuity measurements verify `S` as the positive coil terminal, `-` as the
+  other coil terminal, and `NC` as unused; coil resistance is 42.6 ohm
+- the resulting approximately 77 mA 3.3 V DC upper bound requires a BC337-25
+  low-side driver, flyback diode, and separate 3.3 V buzzer supply
+- physical driver wiring, firmware, and hardware validation remain pending
 
 Features:
 
