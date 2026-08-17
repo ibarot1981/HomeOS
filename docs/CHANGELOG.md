@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added the supplied SmartElex passive-buzzer reference PDF and delivery photos.
+- Recorded the delivered SmartElex Passive Buzzer Module's observed `-`, `NC`,
+  and `S` PCB labels and the conflict with its generic `VCC`, `GND`, `SIG / IN`
+  reference table; buzzer wiring and firmware activation remain blocked pending
+  vendor pinout and current confirmation.
 - Added Version 0.5 display modes: 60-second Slideshow, button-selected Fixed,
   and Smart Status overrides for configured WiFi/NTP failures.
 - Added the small `Module::hasAlert()` lifecycle seam, currently implemented by

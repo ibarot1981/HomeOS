@@ -228,6 +228,13 @@ Goal:
 
 - passive buzzer produces sound
 
+Precondition:
+
+- the received SmartElex Passive Buzzer Module has PCB labels `-`, `NC`, and
+  `S`, which conflict with its supplied generic `VCC`, `GND`, `SIG / IN`
+  reference table; obtain the vendor pinout and current data before wiring or
+  beginning this test
+
 Checklist:
 
 - short beep works

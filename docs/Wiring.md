@@ -164,16 +164,21 @@ Before wiring buttons:
 
 ## Buzzer
 
-All buzzer wiring is TBD until the buzzer type and current requirement are identified.
+The received Version 0.6 candidate is a SmartElex Passive Buzzer Module. Its
+observed PCB labels are `-`, `NC`, and `S`, from left to right when viewed as in
+`hardware/photos/SmartElex Passive Buzzer Module/PXL_20260817_154237701.jpg`.
+The supplied PDF instead describes a generic `VCC`, `GND`, and `SIG / IN`
+interface. This conflict means all buzzer wiring is still TBD.
 
-| Buzzer Pin | ESP32-S3 Connection |
+| Observed PCB Label | ESP32-S3 Connection |
 |---|---|
-| positive | TBD until identified |
-| negative | TBD until identified |
+| `-` | TBD - function not independently verified |
+| `NC` | TBD - function not independently verified |
+| `S` | TBD - function not independently verified |
 
-A bare piezo element is a small sound element that may need only a tiny current. A magnetic passive buzzer can need more current than an ESP32 GPIO should provide directly. A three-pin buzzer module may include extra parts and may have separate signal, power, and ground pins.
-
-If current demand is unknown, use a transistor driver rather than risking an ESP32 GPIO. Never connect the buzzer directly to 5 V through a GPIO.
+Do not solder the supplied header or connect the module to 3V3, 5V, GND, or a
+GPIO until SmartElex or Robu confirms the exact pinout and current requirement
+for this revision. Never connect the buzzer directly to 5 V through a GPIO.
 
 ## Connection Verification Table
 

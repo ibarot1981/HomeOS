@@ -9,7 +9,7 @@
 | Breadboard | existing 30-point breadboard | Already owned - suitability to be checked | may help with buttons and small components |
 | Jumper wires | existing kit | Already owned | required for temporary wiring |
 | Buttons | tactile switches | Version 0.3 verified on GPIO4, GPIO5, and GPIO6 | active-low prototype navigation on breadboard |
-| Buzzer | passive buzzer | Already owned - identify before connecting | type and current requirement must be checked |
+| Buzzer | SmartElex Passive Buzzer Module | Received on 2026-08-17; PCB and supplied reference PDF inspected | physical PCB labels conflict with the supplied generic pin table, so wiring and drive requirements remain unverified |
 | USB data cable | compatible with purchased ESP32-S3 board | Needed | must support both power and data for flashing |
 | Power | branded USB phone charger | Already owned | suitable for deployment after firmware is loaded |
 | Digital multimeter | basic digital multimeter | Recommended before hardware expansion | useful for voltage, continuity, and troubleshooting |
@@ -23,6 +23,7 @@ Received hardware evidence is stored in the repository:
 - ESP32-S3 photos: `hardware/photos/ESP32 S3 Devkit/`
 - Waveshare display photo: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/`
 - first wired display hello-world photos: `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172005639_sm.jpg` and `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172010729_sm.jpg`
+- SmartElex passive-buzzer delivery photos: `hardware/photos/SmartElex Passive Buzzer Module/`
 - Hardware reference documents: `hardware/datasheets/`
 
 Do not store purchase invoices in the public repository. They can contain personal billing or shipping details.
@@ -136,19 +137,21 @@ navigation behavior, debounce, and serial press logs were verified using USB pow
 
 ## Buzzer
 
-Use the existing passive buzzer only after identifying it.
+The delivered Version 0.6 candidate is a SmartElex Passive Buzzer Module. The
+PCB is marked `SmartElex Passive Buzzer`, has a three-position header footprint,
+and the observed silkscreen labels are `-`, `NC`, and `S`; see the delivery
+photos in `hardware/photos/SmartElex Passive Buzzer Module/`.
 
-A passive buzzer is often like a tiny speaker: the ESP32 must generate a changing signal to produce sound. However, not all passive buzzers can safely be driven directly by an ESP32 GPIO pin.
+The supplied reference `hardware/datasheets/SmartElex-Passive-Buzzer-Module.pdf`
+describes a generic `VCC`, `GND`, `SIG / IN` interface, 3.3 V to 5 V operation,
+and PWM tones. Those labels do not match the delivered PCB. The document also
+does not state current consumption or show a schematic. Do not infer that `NC`
+means "not connected", that `-` is GND, or that `S` is a direct GPIO-safe input
+without manufacturer confirmation for this board.
 
-Before connecting it, identify whether it is:
-
-- a bare piezo buzzer
-- a magnetic buzzer
-- a buzzer module with extra components
-
-Record its voltage and current requirement if printed or documented. A very small piezo element may be testable directly, but any uncertain or higher-current buzzer should use a transistor driver.
-
-Do not connect the buzzer until it has been identified by photograph or part marking.
+No buzzer wiring, soldering, GPIO assignment, or firmware control is verified
+yet. Obtain the exact module pinout and drive-current information from SmartElex
+or Robu before connecting it to HomeOS.
 
 ## Power Supply
 

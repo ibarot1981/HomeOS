@@ -165,12 +165,26 @@ Success criteria:
 
 Goal: add simple audible feedback.
 
+Hardware status:
+
+- SmartElex Passive Buzzer Module received on 2026-08-17
+- delivery photos and the supplied reference PDF are stored in the repository
+- physical PCB labels (`-`, `NC`, `S`) conflict with the PDF's generic
+  `VCC`, `GND`, `SIG / IN` table; no wiring, firmware control, or hardware
+  validation may begin until the vendor confirms the exact pinout and drive data
+
 Features:
 
 - short beep
 - alert tone
 - silent mode
 - notification queue
+
+First-increment boundary:
+
+- prove one short, non-blocking Select confirmation tone only
+- retain a simple compile-time sound enable/disable constant
+- do not add an alert tone or notification queue until the proof is validated
 
 Learning:
 

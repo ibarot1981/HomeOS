@@ -11,6 +11,7 @@ Do not store invoices, order confirmations, address labels, private emails, or o
 | `edgehax-s3-pro-esp32-s3-wroom-n16r8-pinout.pdf` | Edgehax S3-PRO ESP32-S3 DevKit | `https://edgehax.com/wp-content/uploads/2026/02/ESP32-S3-WROOM-N16R8-Pinout.pdf` | Board-level pinout reference from the Edgehax S3-PRO GitHub documentation. |
 | `espressif-esp32-s3-wroom-1-wroom-1u-datasheet.pdf` | ESP32-S3-WROOM-1 module | `https://documentation.espressif.com/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf` | Official Espressif module datasheet. |
 | `waveshare-4.2inch-epaper-module-manual.pdf` | Waveshare 4.2 inch ePaper Module | `https://m.media-amazon.com/images/I/A11RTM39fZL.pdf` | Downloadable PDF export of the Waveshare manual content. Keep the live Waveshare wiki as the current vendor source. |
+| `SmartElex-Passive-Buzzer-Module.pdf` | SmartElex Passive Buzzer Module | supplied by the user with the delivered module | States 3.3 V to 5 V PWM use and a generic `VCC`/`GND`/`SIG` interface, but the received PCB is marked `-`/`NC`/`S`; do not use it alone to finalize wiring. |
 
 ## Online References
 
