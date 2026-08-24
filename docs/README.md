@@ -32,9 +32,10 @@ This project should be built like a small product, not like a one-file Arduino e
 - Controller: received Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8
 - Display: received Waveshare 4.2 inch black-and-white SPI ePaper Module V2, Rev2.2, 400 x 300
 - Interaction: three tactile buttons plus Telegram commands
-- Alert output: received SmartElex Passive Buzzer Module; continuity testing
-  confirms its two coil terminals and unused `NC` pad. Version 0.6 awaits the
-  documented low-side driver parts and safe physical validation.
+- Alert output: received SmartElex Passive Buzzer Module and low-side-driver
+  parts. Receipt checks verified the resistor values, flyback-diode direction,
+  and breadboard topology; header soldering, regulator-output validation, wiring,
+  firmware, and safe physical buzzer validation remain pending.
 - Power: good-quality USB phone charger, typically 5 V / 1 A or better
 
 Version 0.1 verified UART upload/serial on `COM7`, 16 MB flash, 8 MB-class PSRAM, the GxEPD2 display driver class, and the first ePaper wiring in `docs/Wiring.md`.

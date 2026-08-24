@@ -4,6 +4,11 @@
 
 ### Added
 
+- Added permanent purchase, photo, datasheet, and measurement records for the
+  received Version 0.6 buzzer-driver parts.
+- Recorded receipt validation: 459 ohm for the 470 ohm resistor, 9.92 kOhm for
+  the 10 kOhm resistor, 0.177 V forward/O.L. reverse for the flyback diode, and
+  the 840-point breadboard's terminal-strip and split-rail continuity results.
 - Added the supplied SmartElex passive-buzzer reference PDF and delivery photos.
 - Recorded user-performed continuity measurements for the SmartElex Passive
   Buzzer Module: `S` connects to the coil lead beside the moulded `+` mark,

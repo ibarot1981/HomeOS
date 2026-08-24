@@ -196,6 +196,11 @@ Required parts:
 - soldering iron, rosin-core solder, and a stand to solder the supplied module
   header before a reliable connection can be made
 
+Receipt status on 2026-08-24: the 840-point breadboard and male-to-female jumper
+wires are available; its power rails are split into upper and lower sections, so
+use one verified section at a time. The received `HW-122` AMS1117 module supplied
+a 1x4 header, cut into two 1x2 pieces, but the header is not yet soldered.
+
 Do not substitute a BC547/BC548 (their collector-current margin is inadequate)
 or an IRF520 module (it is not a suitable 3.3 V logic-level choice here).
 
@@ -223,12 +228,13 @@ base-drive reference. The base pull-down holds the transistor off during reset
 and boot. The flyback diode is reverse-biased while the buzzer is on and protects
 the transistor when PWM switches the magnetic coil off.
 
-Before any connection to the module or GPIO, disconnect USB, solder only the
-header with its pins facing down for breadboard use, inspect for solder bridges,
-then test the LDO by itself: board 5 V to GND must be approximately 5 V and LDO
-output to GND must be approximately 3.3 V. Do not power the circuit if either
-reading is outside expectation. Physical wiring remains unvalidated until this
-procedure is completed and recorded.
+Before any connection to the module or GPIO, disconnect USB, split the supplied
+header into two 1x2 pieces, then solder only those headers with their long pins
+facing down for breadboard use. Inspect for solder bridges, then test the LDO by
+itself: board 5 V to GND must be approximately 5 V and LDO output to GND must be
+approximately 3.3 V. Do not power the circuit if either reading is outside
+expectation. Physical wiring remains unvalidated until this procedure is completed
+and recorded.
 
 ## Connection Verification Table
 

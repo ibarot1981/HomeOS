@@ -6,15 +6,15 @@
 |---|---|---:|---|
 | Microcontroller | Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8 | Received - UART serial, PlatformIO upload, 16 MB flash, PSRAM, Version 0.2 clock-screen upload, and USB power-cycle recovery verified | native USB behavior, physical RESET behavior, and board pinout still must be verified |
 | Display | Waveshare 4.2 inch black-and-white SPI ePaper module V2, Rev2.2, 400 x 300 | Received - full-refresh hello-world and Version 0.2 clock screen verified | ideal dashboard size; partial refresh and fast refresh behavior still must be tested |
-| Breadboard | existing 30-point breadboard | Already owned - suitability to be checked | may help with buttons and small components |
-| Jumper wires | existing kit | Already owned | required for temporary wiring |
+| Breadboard | new 840-point solderless breadboard | Received - terminal strips and split power rails meter-verified on 2026-08-24 | adequate space for the Version 0.6 driver; each rail has independent upper/lower sections |
+| Jumper wires | male-to-female 2.54 mm kit | Already owned - user confirmed | required for temporary wiring |
 | Buttons | tactile switches | Version 0.3 verified on GPIO4, GPIO5, and GPIO6 | active-low prototype navigation on breadboard |
 | Buzzer | SmartElex Passive Buzzer Module | Pinout independently continuity-verified on 2026-08-17; 42.6 ohm DC coil resistance measured | requires a low-side driver and flyback diode; do not connect it directly to GPIO |
 | USB data cable | compatible with purchased ESP32-S3 board | Needed | must support both power and data for flashing |
 | Power | branded USB phone charger | Already owned | suitable for deployment after firmware is loaded |
 | Digital multimeter | basic digital multimeter | Recommended before hardware expansion | useful for voltage, continuity, and troubleshooting |
 | Component storage/labels | small box or labels | Optional | helps identify starter-kit parts later |
-| Buzzer/load driver parts | BC337-25, 470 ohm and 10 kOhm resistors, 1N5819 diode, 3.3 V LDO module, and decoupling capacitors | Required before Version 0.6 wiring | isolates the ESP32 GPIO from the estimated 77 mA buzzer-coil current |
+| Buzzer/load driver parts | BC337-25, 470 ohm and 10 kOhm resistors, 1N5819 diode, 3.3 V LDO module, and decoupling capacitors | Received - core parts receipt-checked and key resistor/diode measurements recorded | isolates the ESP32 GPIO from the estimated 77 mA buzzer-coil current |
 
 ## Received Hardware Records
 
@@ -24,6 +24,8 @@ Received hardware evidence is stored in the repository:
 - Waveshare display photo: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/`
 - first wired display hello-world photos: `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172005639_sm.jpg` and `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172010729_sm.jpg`
 - SmartElex passive-buzzer delivery photos: `hardware/photos/SmartElex Passive Buzzer Module/`
+- Version 0.6 driver receipt photos: `hardware/photos/Version 0.6 Buzzer Driver Parts/`
+- Version 0.6 driver receipt validation: `hardware/measurements/version-0.6-buzzer-driver-receipt-validation.md`
 - Hardware reference documents: `hardware/datasheets/`
 
 Do not store purchase invoices in the public repository. They can contain personal billing or shipping details.
@@ -111,15 +113,14 @@ Why SPI:
 
 A breadboard is a temporary construction board for circuits. It lets components and jumper wires be plugged in without soldering.
 
-The existing "30-point" breadboard may be usable, but its suitability should be checked before planning around it. "30-point" may be an informal or mistaken description, and small breadboards vary greatly.
+The received 840-point breadboard has adequate room for the Version 0.6 driver.
+The user continuity-tested its terminal strips: `a10` to `e10` and `f10` to
+`j10` are connected, while `e10` to `f10` and `a10` to `a11` are open.
 
-A wide ESP32-S3 DevKit may not fit across the centre channel of a tiny breadboard. This is common with development boards because they are wider than simple chips.
-
-The display can initially connect directly to the ESP32 using suitable female-to-female jumper wires, so the breadboard may not be required for Version 0.1. Buttons and small components can still use the small breadboard.
-
-Before deciding whether to buy a larger breadboard, record a photo or dimensions of the existing breadboard and the purchased ESP32-S3 DevKit.
-
-Later, a larger 400-point or 830-point breadboard may be useful when adding sensors.
+Each of its four outer power rails is split in two. The first five visible
+five-hole groups are continuous with each other; groups six through ten are also
+continuous with each other; there is no continuity across that boundary. Use only
+one tested rail section for any first circuit and never assume power crosses it.
 
 ## Buttons
 
@@ -168,9 +169,11 @@ coil. The Edgehax board documentation does not specify spare capacity on its
 module powered from the board's USB-derived 5 V rail. Grounds will be common,
 but the LDO's 3.3 V output must never connect to the board's 3.3 V pin.
 
-No header soldering, physical wiring, firmware control, or hardware validation
-has occurred yet. Validate the 5 V input and isolated LDO 3.3 V output with the
-multimeter before connecting the buzzer or ESP32 GPIO.
+The received `HW-122` regulator board has visible `VIN`, `VOUT`, and `GND`
+labels. Its supplied 1x4 header was cut into two 1x2 pieces for its separated
+input and output hole pairs. No soldering, physical wiring, firmware control, or
+powered hardware validation has occurred yet. Validate the 5 V input and isolated
+LDO 3.3 V output with the multimeter before connecting the buzzer or ESP32 GPIO.
 
 ## Power Supply
 

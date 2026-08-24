@@ -173,7 +173,11 @@ Hardware status:
   other coil terminal, and `NC` as unused; coil resistance is 42.6 ohm
 - the resulting approximately 77 mA 3.3 V DC upper bound requires a BC337-25
   low-side driver, flyback diode, and separate 3.3 V buzzer supply
-- physical driver wiring, firmware, and hardware validation remain pending
+- driver parts arrived and receipt validation verified the 470 ohm and 10 kOhm
+  resistors, a forward/reverse diode response, and the 840-point breadboard's
+  split-rail topology; photos and measurements are stored in the repository
+- header soldering, isolated LDO-output validation, physical driver wiring,
+  firmware, and buzzer hardware validation remain pending
 
 Features:
 
