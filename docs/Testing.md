@@ -238,7 +238,7 @@ Precondition:
   3.3 V at its output relative to common GND
 - do not connect the buzzer directly to an ESP32 GPIO or to the board 3.3 V rail
 
-Receipt-validation result on 2026-08-23 to 2026-08-24:
+Receipt and isolated-regulator validation results on 2026-08-23 to 2026-08-26:
 
 - a received 470 ohm resistor measured 459 ohm; a received 10 kOhm resistor
   measured 9.92 kOhm
@@ -247,8 +247,12 @@ Receipt-validation result on 2026-08-23 to 2026-08-24:
   flyback-diode orientation
 - the received 840-point breadboard's terminal strips were verified and every
   outer rail was found split into two independent sections
-- the regulator has not yet been soldered or powered, so no LDO-output, driver,
-  buzzer, or firmware result is claimed
+- the AMS1117's two 1x2 headers were soldered and visually inspected; unpowered
+  `VIN`-to-`GND` and `VOUT`-to-`GND` checks did not give a continuity beep
+- with no ESP32 or buzzer connected, a USB-derived 5.03 V input produced 3.36 V
+  at `VOUT` relative to output `GND`; the module's red LED lit
+- after the USB source was switched off, the LED remained lit for approximately
+  40 to 60 seconds; no load, heating, driver, buzzer, or firmware result is claimed
 
 Checklist:
 

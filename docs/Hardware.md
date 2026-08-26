@@ -171,9 +171,13 @@ but the LDO's 3.3 V output must never connect to the board's 3.3 V pin.
 
 The received `HW-122` regulator board has visible `VIN`, `VOUT`, and `GND`
 labels. Its supplied 1x4 header was cut into two 1x2 pieces for its separated
-input and output hole pairs. No soldering, physical wiring, firmware control, or
-powered hardware validation has occurred yet. Validate the 5 V input and isolated
-LDO 3.3 V output with the multimeter before connecting the buzzer or ESP32 GPIO.
+input and output hole pairs. The two headers were soldered and visually inspected
+on 2026-08-26. With no ESP32 or buzzer connected, a USB-derived 5.03 V input
+produced 3.36 V at `VOUT` relative to output `GND`; the module's red LED lit.
+After the USB source was switched off, the LED remained lit for approximately
+40 to 60 seconds. This is recorded as an unloaded observation, not a load or
+thermal qualification. The complete driver, ESP32 connection, firmware control,
+and buzzer validation remain untested.
 
 ## Power Supply
 

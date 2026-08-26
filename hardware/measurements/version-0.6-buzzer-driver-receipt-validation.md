@@ -1,6 +1,6 @@
 # Version 0.6 Buzzer Driver Receipt Validation
 
-Date of user-performed checks: 2026-08-23 to 2026-08-24.
+Date of user-performed checks: 2026-08-23 to 2026-08-26.
 
 This record distinguishes received-item evidence and meter observations from
 future powered-circuit and firmware validation.
@@ -9,7 +9,7 @@ future powered-circuit and firmware validation.
 
 | Item | Actual result | Status |
 |---|---|---|
-| AMS1117 module | PCB marked `HW-122`; input marked `VIN`/`GND`, output marked `VOUT`/`GND`; supplied 1x4 header cut into two 1x2 pieces | received; unpowered, unsoldered |
+| AMS1117 module | PCB marked `HW-122`; input marked `VIN`/`GND`, output marked `VOUT`/`GND`; supplied 1x4 header cut into two 1x2 pieces | headers soldered and visually inspected on 2026-08-26 |
 | NPN transistor | body marked `JCHC 33725 T20` | received; BC337-25 grade visually consistent |
 | 1N5819 diode pack | two axial, banded diodes; body marking visually consistent with the received pack | received; polarity meter-verified below |
 | 470 ohm resistor | colour bands visually consistent with yellow-violet-brown-gold | received; value meter-verified below |
@@ -36,9 +36,20 @@ All readings were obtained by the user with no powered driver circuit assembled.
 | Breadboard `a10` to `a11` | no beep, O.L. | adjacent numbered rows are separate |
 | Each of four power rails | first five visible five-hole groups continuous; groups six to ten continuous; no continuity across the boundary | treat every rail as two independent sections |
 
+## Isolated regulator validation
+
+The user tested the assembled regulator with no ESP32, buzzer, driver parts, or
+load connected.
+
+| Test | Actual result | Interpretation |
+|---|---:|---|
+| Unpowered `VIN` to input `GND` | no continuity beep | no persistent input short observed |
+| Unpowered `VOUT` to output `GND` | no continuity beep | no persistent output short observed |
+| USB-derived input | 5.03 V DC | suitable isolated input for this no-load test |
+| `VOUT` to output `GND` with input applied | 3.36 V DC | regulator output is within the expected 3.3 V range |
+| Regulator LED | red LED lit while input was applied; remained lit about 40 to 60 seconds after power-off | user observation; no load or thermal conclusion drawn |
+
 ## Still untested
 
-- Header solder joints and bridge inspection.
-- AMS1117 output voltage with a 5 V input and no buzzer attached.
 - Complete low-side driver wiring.
 - PWM tone generation, sound, heating, and firmware behavior.

@@ -34,7 +34,8 @@ This project should be built like a small product, not like a one-file Arduino e
 - Interaction: three tactile buttons plus Telegram commands
 - Alert output: received SmartElex Passive Buzzer Module and low-side-driver
   parts. Receipt checks verified the resistor values, flyback-diode direction,
-  and breadboard topology; header soldering, regulator-output validation, wiring,
+  and breadboard topology. The AMS1117 headers are soldered and an isolated
+  regulator test measured 5.03 V input and 3.36 V output; driver wiring,
   firmware, and safe physical buzzer validation remain pending.
 - Power: good-quality USB phone charger, typically 5 V / 1 A or better
 

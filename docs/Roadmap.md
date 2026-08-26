@@ -176,8 +176,9 @@ Hardware status:
 - driver parts arrived and receipt validation verified the 470 ohm and 10 kOhm
   resistors, a forward/reverse diode response, and the 840-point breadboard's
   split-rail topology; photos and measurements are stored in the repository
-- header soldering, isolated LDO-output validation, physical driver wiring,
-  firmware, and buzzer hardware validation remain pending
+- the AMS1117 headers were soldered and an isolated no-load test measured 5.03 V
+  input and 3.36 V output; no ESP32 or buzzer was connected
+- physical driver wiring, firmware, and buzzer hardware validation remain pending
 
 Features:
 

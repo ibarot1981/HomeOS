@@ -199,7 +199,8 @@ Required parts:
 Receipt status on 2026-08-24: the 840-point breadboard and male-to-female jumper
 wires are available; its power rails are split into upper and lower sections, so
 use one verified section at a time. The received `HW-122` AMS1117 module supplied
-a 1x4 header, cut into two 1x2 pieces, but the header is not yet soldered.
+a 1x4 header, cut into two 1x2 pieces. Both headers were soldered and visually
+inspected on 2026-08-26.
 
 Do not substitute a BC547/BC548 (their collector-current margin is inadequate)
 or an IRF520 module (it is not a suitable 3.3 V logic-level choice here).
@@ -231,10 +232,9 @@ the transistor when PWM switches the magnetic coil off.
 Before any connection to the module or GPIO, disconnect USB, split the supplied
 header into two 1x2 pieces, then solder only those headers with their long pins
 facing down for breadboard use. Inspect for solder bridges, then test the LDO by
-itself: board 5 V to GND must be approximately 5 V and LDO output to GND must be
-approximately 3.3 V. Do not power the circuit if either reading is outside
-expectation. Physical wiring remains unvalidated until this procedure is completed
-and recorded.
+itself. This isolated test passed on 2026-08-26: a 5.03 V USB-derived input
+produced 3.36 V at `VOUT`, with no ESP32 or buzzer attached. The output must not
+be joined to the ESP32 3.3 V pin. Complete driver wiring remains unvalidated.
 
 ## Connection Verification Table
 
