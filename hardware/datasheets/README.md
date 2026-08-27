@@ -17,7 +17,7 @@ Do not store invoices, order confirmations, address labels, private emails, or o
 | `mcc-1n5817-to-1n5819-datasheet.pdf` | MCC 1N5819 diode family | MCC product datasheet saved during pre-order review | 1N5819 is a 40 V, 1 A Schottky diode. The received diode showed 0.177 V forward and O.L. reverse in diode-test mode. |
 | `rubycon-yxj-series-datasheet.pdf` | Rubycon YXJ electrolytic capacitor series | Rubycon series datasheet saved during pre-order review | Received capacitor marking is 100 uF, 16 V, 105 C; it is polarized. |
 | `robu-ams1117-datasheet.pdf` | AMS1117 regulator IC family | Robu download saved during pre-order review | IC-family datasheet only; it does not prove the received `HW-122` module pinout. The observed PCB labels are the wiring source. |
-| `robu-bc337-attachment.pdf` | BC337 / BC338 transistor family | Robu attachment saved during pre-order review | Use its TO-92 pin drawing with the physical package orientation. The received transistor is marked `JCHC 33725 T20`; the cart manufacturer identity is not independently verified. |
+| `robu-bc337-attachment.pdf` | BC337 / BC338 transistor family | Robu attachment saved during pre-order review | Use its TO-92 pin drawing with the physical package orientation. The received transistor is marked `JCBC 33725 T20`; the cart manufacturer identity is not independently verified. |
 | `murata-gcm1555c1h220ja16-reference-sheet.pdf` | Murata GCM1555C1H220JA16J | Murata reference sheet saved during pre-order review | Complimentary 22 pF, 50 V, 0402 capacitor; unrelated to the Version 0.6 breadboard driver. |
 
 ## Online References

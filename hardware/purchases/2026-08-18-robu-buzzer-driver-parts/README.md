@@ -39,7 +39,7 @@ must not be substituted for the 100 nF through-hole capacitor.
 | 6 | AMS1117 3.3 V power-supply module | 1 | INR 16 / 16 | separate buzzer supply from USB 5 V | received; `VIN`, `VOUT`, and `GND` labels observed; output still unpowered/untested |
 | 7 | Noel Super 25 W LED soldering iron | 1 | INR 129 / 129 | solder the supplied 2.54 mm header | suitable if received label states 220-240 V AC |
 | 8 | C-4 soldering iron stand with sponge | 1 | INR 177 / 177 | hot-iron support and tip cleaning | suitable |
-| 9 | listed onsemi BC33725TA, NPN, TO-92-3 LF | 2 | INR 13 / 26 | low-side switch | received; body marked `JCHC 33725 T20`; BC337-25 grade visually consistent |
+| 9 | listed onsemi BC33725TA, NPN, TO-92-3 LF | 2 | INR 13 / 26 | low-side switch | received; body marked `JCBC 33725 T20`; BC337-25 grade visually consistent |
 | 10 | 100 nF, 50 V through-hole disc capacitor | 8 | INR 1.25 / 10 | local high-frequency decoupling | suitable; expect `104` marking |
 | 11 | Murata GCM1555C1H220JA16J, 22 pF, 50 V, 0402 | 8 free | free | none | unrelated SMD promotion |
 | 12 | 0.8 mm 60/40 tin-lead rosin-core solder, 14 g | 1 | INR 126 / 126 | header soldering | suitable; use ventilation and wash hands |

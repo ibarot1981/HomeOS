@@ -14,7 +14,7 @@
 - Saved datasheet: `hardware/datasheets/robu-bc337-attachment.pdf`
 - Saved image: `robu-generic-package-reference.jpg`
 - Image warning: the cart image is a generic TO-92 package drawing
-- Receipt result: the body is marked `JCHC 33725 T20`; the visible `33725` marking
+- Receipt result: the body is marked `JCBC 33725 T20`; the visible `33725` marking
   is consistent with the required BC337-25 grade. The body marking does not
   independently prove the manufacturer identity in the cart listing.
 - Remaining check: determine physical pin order from the exact package drawing

@@ -10,7 +10,7 @@ future powered-circuit and firmware validation.
 | Item | Actual result | Status |
 |---|---|---|
 | AMS1117 module | PCB marked `HW-122`; input marked `VIN`/`GND`, output marked `VOUT`/`GND`; supplied 1x4 header cut into two 1x2 pieces | headers soldered and visually inspected on 2026-08-26 |
-| NPN transistor | body marked `JCHC 33725 T20` | received; BC337-25 grade visually consistent |
+| NPN transistor | body marked `JCBC 33725 T20` | received; BC337-25 grade visually consistent |
 | 1N5819 diode pack | two axial, banded diodes; body marking visually consistent with the received pack | received; polarity meter-verified below |
 | 470 ohm resistor | colour bands visually consistent with yellow-violet-brown-gold | received; value meter-verified below |
 | 10 kOhm resistor | five bands visually consistent with brown-black-black-red-brown | received; value meter-verified below |
