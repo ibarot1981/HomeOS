@@ -7,6 +7,8 @@
 - Recorded the Version 0.6 AMS1117 header-soldering inspection and isolated
   regulator test: 5.03 V USB-derived input, 3.36 V output, and a lit module LED
   with no ESP32 or buzzer connected.
+- Corrected the received transistor marking to `JCBC 33725 T20` and recorded its
+  unpowered NPN and collector-base-emitter pin-order validation.
 - Added permanent purchase, photo, datasheet, and measurement records for the
   received Version 0.6 buzzer-driver parts.
 - Recorded receipt validation: 459 ohm for the 470 ohm resistor, 9.92 kOhm for

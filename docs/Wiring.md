@@ -196,6 +196,11 @@ Required parts:
 - soldering iron, rosin-core solder, and a stand to solder the supplied module
   header before a reliable connection can be made
 
+The received transistor's physical pin order was meter-verified on 2026-08-27.
+With its flat `JCBC 33725 T20` face toward the user and its leads pointing down,
+the order from left to right is collector, base, emitter. Do not mirror this
+view when placing the transistor on the breadboard.
+
 Receipt status on 2026-08-24: the 840-point breadboard and male-to-female jumper
 wires are available; its power rails are split into upper and lower sections, so
 use one verified section at a time. The received `HW-122` AMS1117 module supplied

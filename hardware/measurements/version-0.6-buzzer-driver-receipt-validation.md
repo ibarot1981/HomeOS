@@ -1,6 +1,6 @@
 # Version 0.6 Buzzer Driver Receipt Validation
 
-Date of user-performed checks: 2026-08-23 to 2026-08-26.
+Date of user-performed checks: 2026-08-23 to 2026-08-27.
 
 This record distinguishes received-item evidence and meter observations from
 future powered-circuit and firmware validation.
@@ -10,7 +10,7 @@ future powered-circuit and firmware validation.
 | Item | Actual result | Status |
 |---|---|---|
 | AMS1117 module | PCB marked `HW-122`; input marked `VIN`/`GND`, output marked `VOUT`/`GND`; supplied 1x4 header cut into two 1x2 pieces | headers soldered and visually inspected on 2026-08-26 |
-| NPN transistor | body marked `JCBC 33725 T20` | received; BC337-25 grade visually consistent |
+| NPN transistor | body marked `JCBC 33725 T20` | received; NPN type and physical pin order meter-verified on 2026-08-27 |
 | 1N5819 diode pack | two axial, banded diodes; body marking visually consistent with the received pack | received; polarity meter-verified below |
 | 470 ohm resistor | colour bands visually consistent with yellow-violet-brown-gold | received; value meter-verified below |
 | 10 kOhm resistor | five bands visually consistent with brown-black-black-red-brown | received; value meter-verified below |
@@ -48,6 +48,24 @@ load connected.
 | USB-derived input | 5.03 V DC | suitable isolated input for this no-load test |
 | `VOUT` to output `GND` with input applied | 3.36 V DC | regulator output is within the expected 3.3 V range |
 | Regulator LED | red LED lit while input was applied; remained lit about 40 to 60 seconds after power-off | user observation; no load or thermal conclusion drawn |
+
+## Transistor identification and pin-order validation
+
+The received transistor was tested unpowered with its flat marked face toward
+the user and its leads pointing down. In that viewing direction, the leads are
+left collector, middle base, and right emitter.
+
+| Test | Actual result | Interpretation |
+|---|---:|---|
+| Red probe on middle, black on left | 0.656 V | forward-biased base-to-collector junction |
+| Red probe on middle, black on right | 0.658 V | forward-biased base-to-emitter junction |
+| Red probe on left, black on middle | O.L. | reverse junction blocks |
+| Red probe on right, black on middle | O.L. | reverse junction blocks |
+| hFE socket: left to `C`, middle to `B`, right to `E` | 274 | clear higher-gain NPN orientation; not a datasheet-condition gain qualification |
+| hFE socket with left/right swapped | 12 | reverse outer-lead orientation; not used |
+
+The transistor was stabilized in separate breadboard rows and connected to the
+meter's NPN hFE socket with jumper wires. No external power was applied.
 
 ## Still untested
 

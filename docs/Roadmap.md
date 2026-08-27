@@ -178,6 +178,8 @@ Hardware status:
   split-rail topology; photos and measurements are stored in the repository
 - the AMS1117 headers were soldered and an isolated no-load test measured 5.03 V
   input and 3.36 V output; no ESP32 or buzzer was connected
+- unpowered diode-mode and hFE tests verified the received transistor as NPN and
+  confirmed its flat-face, leads-down order as collector, base, emitter
 - physical driver wiring, firmware, and buzzer hardware validation remain pending
 
 Features:

@@ -17,5 +17,7 @@
 - Receipt result: the body is marked `JCBC 33725 T20`; the visible `33725` marking
   is consistent with the required BC337-25 grade. The body marking does not
   independently prove the manufacturer identity in the cart listing.
-- Remaining check: determine physical pin order from the exact package drawing
-  while viewing the transistor in the documented direction
+- Meter validation on 2026-08-27 confirmed an NPN device. With the flat marked
+  face toward the user and leads pointing down, the physical order is collector,
+  base, emitter from left to right. The correct hFE orientation measured 274;
+  swapping collector and emitter measured 12.

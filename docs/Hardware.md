@@ -169,6 +169,12 @@ coil. The Edgehax board documentation does not specify spare capacity on its
 module powered from the board's USB-derived 5 V rail. Grounds will be common,
 but the LDO's 3.3 V output must never connect to the board's 3.3 V pin.
 
+The received transistor is marked `JCBC 33725 T20`. Meter testing on 2026-08-27
+confirmed it as NPN and verified that, with the flat marked face toward the user
+and leads pointing down, the physical order is collector, base, emitter from
+left to right. The correct hFE orientation measured 274; the reversed outer-lead
+orientation measured 12. No external power was used for this identification.
+
 The received `HW-122` regulator board has visible `VIN`, `VOUT`, and `GND`
 labels. Its supplied 1x4 header was cut into two 1x2 pieces for its separated
 input and output hole pairs. The two headers were soldered and visually inspected

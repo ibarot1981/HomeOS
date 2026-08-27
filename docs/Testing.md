@@ -253,6 +253,10 @@ Receipt and isolated-regulator validation results on 2026-08-23 to 2026-08-26:
   at `VOUT` relative to output `GND`; the module's red LED lit
 - after the USB source was switched off, the LED remained lit for approximately
   40 to 60 seconds; no load, heating, driver, buzzer, or firmware result is claimed
+- diode-mode and hFE tests confirmed the received `JCBC 33725 T20` transistor as
+  NPN; flat marked face toward the user and leads down gives collector, base,
+  emitter from left to right, with hFE 274 versus 12 when the outer leads were
+  reversed
 
 Checklist:
 
