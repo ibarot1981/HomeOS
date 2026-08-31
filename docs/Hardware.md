@@ -161,7 +161,7 @@ simple DC upper-bound calculation is `3.3 V / 42.6 ohm = 77 mA`; it is far above
 the current that this project will ask an ESP32 GPIO to supply. The module must
 use a low-side transistor driver and a flyback diode.
 
-The planned, not-yet-wired Version 0.6 circuit is a BC337-25 NPN low-side switch
+The Version 0.6 prototype circuit uses a BC337-25 NPN low-side switch
 on verified available PWM-capable `GPIO17`. Its base will use a 470 ohm series
 resistor and 10 kOhm pull-down; a 1N5819 flyback diode will be fitted across the
 coil. The Edgehax board documentation does not specify spare capacity on its
@@ -182,8 +182,17 @@ on 2026-08-26. With no ESP32 or buzzer connected, a USB-derived 5.03 V input
 produced 3.36 V at `VOUT` relative to output `GND`; the module's red LED lit.
 After the USB source was switched off, the LED remained lit for approximately
 40 to 60 seconds. This is recorded as an unloaded observation, not a load or
-thermal qualification. The complete driver, ESP32 connection, firmware control,
-and buzzer validation remain untested.
+thermal qualification.
+
+On 2026-08-31, the user assembled the complete driver power path without an
+ESP32. The buzzer measured 43.4 ohm through its soldered `S` and `-` header pins
+and 44.8 ohm through the installed breadboard path. With the input released, the
+rail and collector both measured 3.36 V and the buzzer stayed silent. Temporarily
+driving the base through the installed 470 ohm resistor pulled the collector to
+56.2 mV, confirming static transistor switching. The buzzer produced no sound
+under steady DC; this was not a PWM tone test. The buzzer's electrically unused
+`NC` header pin remains unsoldered. ESP32 connection, PWM firmware control,
+audible output, and heating remain untested.
 
 ## Power Supply
 

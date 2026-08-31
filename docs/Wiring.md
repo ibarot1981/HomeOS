@@ -180,7 +180,7 @@ User-performed continuity measurements verified the actual module wiring:
 The two coil leads measure 42.6 ohm. The 3.3 V DC upper bound is about 77 mA;
 the ESP32 GPIO must not drive it directly.
 
-### Planned low-side driver (not yet wired)
+### Low-side driver
 
 Required parts:
 
@@ -239,7 +239,16 @@ header into two 1x2 pieces, then solder only those headers with their long pins
 facing down for breadboard use. Inspect for solder bridges, then test the LDO by
 itself. This isolated test passed on 2026-08-26: a 5.03 V USB-derived input
 produced 3.36 V at `VOUT`, with no ESP32 or buzzer attached. The output must not
-be joined to the ESP32 3.3 V pin. Complete driver wiring remains unvalidated.
+be joined to the ESP32 3.3 V pin.
+
+On 2026-08-31, the documented driver was assembled on a continuity-verified rail
+section without an ESP32. The installed buzzer path measured 44.8 ohm. With the
+base input released, the collector measured 3.36 V and the buzzer remained
+silent. A temporary 3.3 V drive applied at the input side of the installed
+470 ohm resistor pulled the collector to 56.2 mV. The temporary drive was then
+removed. No audible result occurred under steady DC, and no PWM or GPIO test has
+yet been performed. Only buzzer header pins `S` and `-` are soldered; the unused
+`NC` pin remains unsoldered and unconnected.
 
 ## Connection Verification Table
 

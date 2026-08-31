@@ -1,9 +1,9 @@
 # Version 0.6 Buzzer Driver Receipt Validation
 
-Date of user-performed checks: 2026-08-23 to 2026-08-27.
+Date of user-performed checks: 2026-08-23 to 2026-08-31.
 
 This record distinguishes received-item evidence and meter observations from
-future powered-circuit and firmware validation.
+future ESP32 and PWM-tone validation.
 
 ## Receipt and visual evidence
 
@@ -67,7 +67,39 @@ left collector, middle base, and right emitter.
 The transistor was stabilized in separate breadboard rows and connected to the
 meter's NPN hFE socket with jumper wires. No external power was applied.
 
+## Breadboard driver and static switching validation
+
+The user assembled the documented low-side driver on one continuity-verified
+section of the breadboard. The test used the separate `HW-122` regulator supply;
+no ESP32 was connected. The transistor occupied rows 30 to 32 as collector,
+base, and emitter. A 470 ohm resistor connected the base to the temporary input
+at row 25, a 10 kOhm resistor pulled the base to common ground, and the 1N5819
+was fitted with its banded cathode at 3.3 V and its anode at the collector.
+The 100 uF and 100 nF capacitors were fitted across the regulator output.
+
+The buzzer header currently has its `S` and `-` pins soldered; its electrically
+unused `NC` pin remains unsoldered. The coil measured 43.4 ohm through the
+soldered header pins and 44.8 ohm through the installed breadboard path.
+
+| Test | Actual result | Interpretation |
+|---|---:|---|
+| 10 kOhm pull-down in circuit | 9.79 kOhm | base pull-down path present |
+| 470 ohm base resistor in circuit | 0.460 kOhm | base-drive resistor path present |
+| Installed 1N5819, red at collector and black at 3.3 V | 0.178 V | forward path matches intended flyback orientation |
+| Installed 1N5819, probes reversed | 1.390 V | assembled-network reading; no short conclusion drawn |
+| Unpowered 3.3 V rail to GND, both probe directions | O.L. | no persistent rail short observed |
+| Powered rail voltage with row 25 unconnected | 3.36 V | regulator remained at expected output under the assembled load |
+| Buzzer with row 25 unconnected | silent | pull-down held the transistor in its default-off state |
+| Collector to GND with row 25 temporarily connected to 3.3 V through 470 ohm | settled at 56.2 mV | transistor switched on and pulled the collector low |
+| Buzzer during the same steady-DC test | no click, buzz, or tone observed | no acoustic result claimed; steady DC was not a PWM tone test |
+| Collector to GND after removing the temporary drive | 3.36 V | transistor returned to its default-off state |
+
+The temporary row-25-to-3.3 V jumper was removed after the test. The charger was
+switched off and unplugged between wiring changes.
+
 ## Still untested
 
-- Complete low-side driver wiring.
-- PWM tone generation, sound, heating, and firmware behavior.
+- Soldering and inspection of the mechanically useful but electrically unused
+  buzzer `NC` header pin.
+- ESP32/common-ground connection and `GPIO17` drive.
+- PWM tone generation, audible output, buzzer heating, and firmware behavior.

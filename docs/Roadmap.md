@@ -180,7 +180,13 @@ Hardware status:
   input and 3.36 V output; no ESP32 or buzzer was connected
 - unpowered diode-mode and hFE tests verified the received transistor as NPN and
   confirmed its flat-face, leads-down order as collector, base, emitter
-- physical driver wiring, firmware, and buzzer hardware validation remain pending
+- the no-ESP32 breadboard driver passed unpowered short checks and static
+  switching: 3.36 V collector when released and 56.2 mV when driven through the
+  installed 470 ohm resistor; the buzzer remained silent under steady DC
+- the buzzer `S` and `-` header joints and coil path were validated; the unused
+  `NC` pin remains unsoldered
+- ESP32 connection, PWM firmware, audible tone, and heating validation remain
+  pending
 
 Features:
 

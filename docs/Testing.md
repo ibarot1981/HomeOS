@@ -238,7 +238,8 @@ Precondition:
   3.3 V at its output relative to common GND
 - do not connect the buzzer directly to an ESP32 GPIO or to the board 3.3 V rail
 
-Receipt and isolated-regulator validation results on 2026-08-23 to 2026-08-26:
+Receipt, regulator, and static-driver validation results on 2026-08-23 to
+2026-08-31:
 
 - a received 470 ohm resistor measured 459 ohm; a received 10 kOhm resistor
   measured 9.92 kOhm
@@ -257,6 +258,15 @@ Receipt and isolated-regulator validation results on 2026-08-23 to 2026-08-26:
   NPN; flat marked face toward the user and leads down gives collector, base,
   emitter from left to right, with hFE 274 versus 12 when the outer leads were
   reversed
+- the buzzer measured 43.4 ohm through its soldered `S` and `-` header pins and
+  44.8 ohm through the installed breadboard path; `NC` remains unsoldered and
+  unconnected
+- the assembled 3.3 V and GND rails read O.L. in both continuity-test directions
+- with the driver input released, the supply and collector measured 3.36 V and
+  the buzzer stayed silent
+- temporarily applying 3.3 V at the input side of the installed 470 ohm resistor
+  pulled the collector to 56.2 mV; no sound occurred under this steady-DC test,
+  so no PWM-tone or acoustic result is claimed
 
 Checklist:
 
