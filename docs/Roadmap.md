@@ -165,12 +165,41 @@ Success criteria:
 
 Goal: add simple audible feedback.
 
+Hardware status:
+
+- SmartElex Passive Buzzer Module received on 2026-08-17; delivery photos and
+  supplied reference PDF are stored in the repository
+- continuity measurements verify `S` as the positive coil terminal, `-` as the
+  other coil terminal, and `NC` as unused; coil resistance is 42.6 ohm
+- the resulting approximately 77 mA 3.3 V DC upper bound requires a BC337-25
+  low-side driver, flyback diode, and separate 3.3 V buzzer supply
+- driver parts arrived and receipt validation verified the 470 ohm and 10 kOhm
+  resistors, a forward/reverse diode response, and the 840-point breadboard's
+  split-rail topology; photos and measurements are stored in the repository
+- the AMS1117 headers were soldered and an isolated no-load test measured 5.03 V
+  input and 3.36 V output; no ESP32 or buzzer was connected
+- unpowered diode-mode and hFE tests verified the received transistor as NPN and
+  confirmed its flat-face, leads-down order as collector, base, emitter
+- the no-ESP32 breadboard driver passed unpowered short checks and static
+  switching: 3.36 V collector when released and 56.2 mV when driven through the
+  installed 470 ohm resistor; the buzzer remained silent under steady DC
+- the buzzer `S` and `-` header joints and coil path were validated; the unused
+  `NC` pin remains unsoldered
+- ESP32 connection, PWM firmware, audible tone, and heating validation remain
+  pending
+
 Features:
 
 - short beep
 - alert tone
 - silent mode
 - notification queue
+
+First-increment boundary:
+
+- prove one short, non-blocking Select confirmation tone only
+- retain a simple compile-time sound enable/disable constant
+- do not add an alert tone or notification queue until the proof is validated
 
 Learning:
 

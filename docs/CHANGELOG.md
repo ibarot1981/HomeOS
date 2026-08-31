@@ -4,6 +4,29 @@
 
 ### Added
 
+- Recorded the no-ESP32 Version 0.6 breadboard-driver validation: 44.8 ohm
+  installed buzzer path, 3.36 V collector in the default-off state, and 56.2 mV
+  collector under temporary base drive. The passive buzzer remained silent
+  under steady DC; PWM sound and heating are still untested.
+- Recorded the Version 0.6 AMS1117 header-soldering inspection and isolated
+  regulator test: 5.03 V USB-derived input, 3.36 V output, and a lit module LED
+  with no ESP32 or buzzer connected.
+- Corrected the received transistor marking to `JCBC 33725 T20` and recorded its
+  unpowered NPN and collector-base-emitter pin-order validation.
+- Added permanent purchase, photo, datasheet, and measurement records for the
+  received Version 0.6 buzzer-driver parts.
+- Recorded receipt validation: 459 ohm for the 470 ohm resistor, 9.92 kOhm for
+  the 10 kOhm resistor, 0.177 V forward/O.L. reverse for the flyback diode, and
+  the 840-point breadboard's terminal-strip and split-rail continuity results.
+- Added the supplied SmartElex passive-buzzer reference PDF and delivery photos.
+- Recorded user-performed continuity measurements for the SmartElex Passive
+  Buzzer Module: `S` connects to the coil lead beside the moulded `+` mark,
+  `-` connects to the other coil lead, `NC` is unused, and the coil measures
+  42.6 ohm. The generic supplied `VCC`, `GND`, `SIG / IN` table is not used as
+  the pinout source for this physical revision.
+- Documented the Version 0.6 BC337-25 low-side driver, base resistors, 1N5819
+  flyback diode, and isolated 3.3 V buzzer supply. No ESP32 connection or
+  firmware activation has occurred.
 - Added Version 0.5 display modes: 60-second Slideshow, button-selected Fixed,
   and Smart Status overrides for configured WiFi/NTP failures.
 - Added the small `Module::hasAlert()` lifecycle seam, currently implemented by

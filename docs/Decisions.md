@@ -244,3 +244,32 @@ Preferred future direction:
 Status:
 
 Accepted
+
+## ADR-013: Drive the Version 0.6 Buzzer Through a Low-Side Switch
+
+Date: 2026-08-17
+
+Decision:
+
+Drive the continuity-verified SmartElex passive buzzer coil through a BC337-25
+NPN low-side transistor, using `GPIO17` only as the PWM base-drive signal. Use a
+470 ohm base resistor, 10 kOhm base pull-down, 1N5819 flyback diode, and a
+separate 3.3 V LDO supply for the buzzer circuit with common ground.
+
+Reason:
+
+The module's `S` and `-` pads connect directly to a 42.6 ohm magnetic coil;
+`NC` is genuinely unused. A simple 3.3 V DC calculation gives an upper bound of
+about 77 mA, which must not be sourced by an ESP32 GPIO. The board documentation
+does not state available spare current on its existing 3.3 V rail.
+
+Alternatives considered:
+
+- direct GPIO drive
+- a BC547/BC548 low-side transistor
+- a generic three-wire buzzer-module assumption
+- taking buzzer power from the board's undocumented 3.3 V rail
+
+Status:
+
+Accepted for the Version 0.6 proof, pending physical assembly and validation.

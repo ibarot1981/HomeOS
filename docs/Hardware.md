@@ -6,15 +6,15 @@
 |---|---|---:|---|
 | Microcontroller | Edgehax S3-PRO with ESP32-S3-WROOM-1 module marked MCN16R8 | Received - UART serial, PlatformIO upload, 16 MB flash, PSRAM, Version 0.2 clock-screen upload, and USB power-cycle recovery verified | native USB behavior, physical RESET behavior, and board pinout still must be verified |
 | Display | Waveshare 4.2 inch black-and-white SPI ePaper module V2, Rev2.2, 400 x 300 | Received - full-refresh hello-world and Version 0.2 clock screen verified | ideal dashboard size; partial refresh and fast refresh behavior still must be tested |
-| Breadboard | existing 30-point breadboard | Already owned - suitability to be checked | may help with buttons and small components |
-| Jumper wires | existing kit | Already owned | required for temporary wiring |
+| Breadboard | new 840-point solderless breadboard | Received - terminal strips and split power rails meter-verified on 2026-08-24 | adequate space for the Version 0.6 driver; each rail has independent upper/lower sections |
+| Jumper wires | male-to-female 2.54 mm kit | Already owned - user confirmed | required for temporary wiring |
 | Buttons | tactile switches | Version 0.3 verified on GPIO4, GPIO5, and GPIO6 | active-low prototype navigation on breadboard |
-| Buzzer | passive buzzer | Already owned - identify before connecting | type and current requirement must be checked |
+| Buzzer | SmartElex Passive Buzzer Module | Pinout independently continuity-verified on 2026-08-17; 42.6 ohm DC coil resistance measured | requires a low-side driver and flyback diode; do not connect it directly to GPIO |
 | USB data cable | compatible with purchased ESP32-S3 board | Needed | must support both power and data for flashing |
 | Power | branded USB phone charger | Already owned | suitable for deployment after firmware is loaded |
 | Digital multimeter | basic digital multimeter | Recommended before hardware expansion | useful for voltage, continuity, and troubleshooting |
 | Component storage/labels | small box or labels | Optional | helps identify starter-kit parts later |
-| Buzzer/load driver parts | transistor, base/gate resistor, protection components | Buy only if required | needed if buzzer or other load exceeds safe GPIO drive |
+| Buzzer/load driver parts | BC337-25, 470 ohm and 10 kOhm resistors, 1N5819 diode, 3.3 V LDO module, and decoupling capacitors | Received - core parts receipt-checked and key resistor/diode measurements recorded | isolates the ESP32 GPIO from the estimated 77 mA buzzer-coil current |
 
 ## Received Hardware Records
 
@@ -23,6 +23,9 @@ Received hardware evidence is stored in the repository:
 - ESP32-S3 photos: `hardware/photos/ESP32 S3 Devkit/`
 - Waveshare display photo: `hardware/photos/Waveshare 4.2-inch e-Ink Paper Display module with SPI Interface/`
 - first wired display hello-world photos: `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172005639_sm.jpg` and `hardware/photos/ESP32 S3 Devkit/PXL_20260803_172010729_sm.jpg`
+- SmartElex passive-buzzer delivery photos: `hardware/photos/SmartElex Passive Buzzer Module/`
+- Version 0.6 driver receipt photos: `hardware/photos/Version 0.6 Buzzer Driver Parts/`
+- Version 0.6 driver receipt validation: `hardware/measurements/version-0.6-buzzer-driver-receipt-validation.md`
 - Hardware reference documents: `hardware/datasheets/`
 
 Do not store purchase invoices in the public repository. They can contain personal billing or shipping details.
@@ -110,15 +113,14 @@ Why SPI:
 
 A breadboard is a temporary construction board for circuits. It lets components and jumper wires be plugged in without soldering.
 
-The existing "30-point" breadboard may be usable, but its suitability should be checked before planning around it. "30-point" may be an informal or mistaken description, and small breadboards vary greatly.
+The received 840-point breadboard has adequate room for the Version 0.6 driver.
+The user continuity-tested its terminal strips: `a10` to `e10` and `f10` to
+`j10` are connected, while `e10` to `f10` and `a10` to `a11` are open.
 
-A wide ESP32-S3 DevKit may not fit across the centre channel of a tiny breadboard. This is common with development boards because they are wider than simple chips.
-
-The display can initially connect directly to the ESP32 using suitable female-to-female jumper wires, so the breadboard may not be required for Version 0.1. Buttons and small components can still use the small breadboard.
-
-Before deciding whether to buy a larger breadboard, record a photo or dimensions of the existing breadboard and the purchased ESP32-S3 DevKit.
-
-Later, a larger 400-point or 830-point breadboard may be useful when adding sensors.
+Each of its four outer power rails is split in two. The first five visible
+five-hole groups are continuous with each other; groups six through ten are also
+continuous with each other; there is no continuity across that boundary. Use only
+one tested rail section for any first circuit and never assume power crosses it.
 
 ## Buttons
 
@@ -136,19 +138,61 @@ navigation behavior, debounce, and serial press logs were verified using USB pow
 
 ## Buzzer
 
-Use the existing passive buzzer only after identifying it.
+The delivered Version 0.6 candidate is a SmartElex Passive Buzzer Module. The
+PCB is marked `SmartElex Passive Buzzer`, has a three-position header footprint,
+and the observed silkscreen labels are `-`, `NC`, and `S`; see the delivery
+photos in `hardware/photos/SmartElex Passive Buzzer Module/`.
 
-A passive buzzer is often like a tiny speaker: the ESP32 must generate a changing signal to produce sound. However, not all passive buzzers can safely be driven directly by an ESP32 GPIO pin.
+The supplied reference `hardware/datasheets/SmartElex-Passive-Buzzer-Module.pdf`
+describes a generic `VCC`, `GND`, `SIG / IN` interface, which does not match the
+delivered PCB and is not used as the pinout source for this revision. The user
+independently verified the actual electrical connections by continuity testing:
 
-Before connecting it, identify whether it is:
+| Measurement | Actual result | Meaning |
+|---|---:|---|
+| PCB `-` to buzzer lead 1 | 0.2 ohm | direct connection |
+| PCB `S` to buzzer lead 2 | 0.2 ohm | direct connection |
+| PCB `NC` to either buzzer lead | O.L. | genuinely not connected |
+| Between buzzer leads | 42.6 ohm | low-resistance magnetic coil |
 
-- a bare piezo buzzer
-- a magnetic buzzer
-- a buzzer module with extra components
+Lead 2 is next to the buzzer's moulded `+` mark. Therefore `S` is the positive
+coil terminal and `-` is the other coil terminal. `NC` is unused. At 3.3 V, the
+simple DC upper-bound calculation is `3.3 V / 42.6 ohm = 77 mA`; it is far above
+the current that this project will ask an ESP32 GPIO to supply. The module must
+use a low-side transistor driver and a flyback diode.
 
-Record its voltage and current requirement if printed or documented. A very small piezo element may be testable directly, but any uncertain or higher-current buzzer should use a transistor driver.
+The Version 0.6 prototype circuit uses a BC337-25 NPN low-side switch
+on verified available PWM-capable `GPIO17`. Its base will use a 470 ohm series
+resistor and 10 kOhm pull-down; a 1N5819 flyback diode will be fitted across the
+coil. The Edgehax board documentation does not specify spare capacity on its
+3.3 V rail, so the buzzer will receive 3.3 V from a separate AMS1117-3.3 LDO
+module powered from the board's USB-derived 5 V rail. Grounds will be common,
+but the LDO's 3.3 V output must never connect to the board's 3.3 V pin.
 
-Do not connect the buzzer until it has been identified by photograph or part marking.
+The received transistor is marked `JCBC 33725 T20`. Meter testing on 2026-08-27
+confirmed it as NPN and verified that, with the flat marked face toward the user
+and leads pointing down, the physical order is collector, base, emitter from
+left to right. The correct hFE orientation measured 274; the reversed outer-lead
+orientation measured 12. No external power was used for this identification.
+
+The received `HW-122` regulator board has visible `VIN`, `VOUT`, and `GND`
+labels. Its supplied 1x4 header was cut into two 1x2 pieces for its separated
+input and output hole pairs. The two headers were soldered and visually inspected
+on 2026-08-26. With no ESP32 or buzzer connected, a USB-derived 5.03 V input
+produced 3.36 V at `VOUT` relative to output `GND`; the module's red LED lit.
+After the USB source was switched off, the LED remained lit for approximately
+40 to 60 seconds. This is recorded as an unloaded observation, not a load or
+thermal qualification.
+
+On 2026-08-31, the user assembled the complete driver power path without an
+ESP32. The buzzer measured 43.4 ohm through its soldered `S` and `-` header pins
+and 44.8 ohm through the installed breadboard path. With the input released, the
+rail and collector both measured 3.36 V and the buzzer stayed silent. Temporarily
+driving the base through the installed 470 ohm resistor pulled the collector to
+56.2 mV, confirming static transistor switching. The buzzer produced no sound
+under steady DC; this was not a PWM tone test. The buzzer's electrically unused
+`NC` header pin remains unsoldered. ESP32 connection, PWM firmware control,
+audible output, and heating remain untested.
 
 ## Power Supply
 

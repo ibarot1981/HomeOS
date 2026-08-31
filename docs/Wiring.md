@@ -164,16 +164,91 @@ Before wiring buttons:
 
 ## Buzzer
 
-All buzzer wiring is TBD until the buzzer type and current requirement are identified.
+The Version 0.6 SmartElex Passive Buzzer Module has three observed labels, from
+left to right in `hardware/photos/SmartElex Passive Buzzer Module/PXL_20260817_154237701.jpg`:
+`-`, `NC`, and `S`. The supplied generic PDF's `VCC`, `GND`, `SIG / IN` table is
+not valid for this physical revision.
 
-| Buzzer Pin | ESP32-S3 Connection |
-|---|---|
-| positive | TBD until identified |
-| negative | TBD until identified |
+User-performed continuity measurements verified the actual module wiring:
 
-A bare piezo element is a small sound element that may need only a tiny current. A magnetic passive buzzer can need more current than an ESP32 GPIO should provide directly. A three-pin buzzer module may include extra parts and may have separate signal, power, and ground pins.
+| PCB label | Confirmed function | Buzzer lead | HomeOS connection |
+|---|---|---|---|
+| `-` | negative coil terminal | lead 1 | BC337-25 collector and diode anode |
+| `NC` | no connection | none | leave unconnected |
+| `S` | positive coil terminal | lead 2 beside moulded `+` | dedicated LDO 3.3 V output and diode cathode |
 
-If current demand is unknown, use a transistor driver rather than risking an ESP32 GPIO. Never connect the buzzer directly to 5 V through a GPIO.
+The two coil leads measure 42.6 ohm. The 3.3 V DC upper bound is about 77 mA;
+the ESP32 GPIO must not drive it directly.
+
+### Low-side driver
+
+Required parts:
+
+- 1 x BC337-25 NPN transistor, through-hole TO-92 (buy a spare)
+- 1 x 470 ohm, 0.25 W resistor from `GPIO17` to the transistor base (buy spares)
+- 1 x 10 kOhm, 0.25 W resistor from base to common GND (buy spares)
+- 1 x 1N5819 Schottky diode (buy a spare); its band marks the cathode
+- 1 x AMS1117-3.3 fixed-output LDO module, rated at least 500 mA, powered from 5 V
+- 1 x 100 uF electrolytic capacitor rated at least 10 V, plus 1 x 100 nF ceramic
+  capacitor, across the LDO output near the buzzer
+- a solderless breadboard and suitable 2.54 mm jumper wires, if the existing
+  breadboard cannot hold the driver safely
+- soldering iron, rosin-core solder, and a stand to solder the supplied module
+  header before a reliable connection can be made
+
+The received transistor's physical pin order was meter-verified on 2026-08-27.
+With its flat `JCBC 33725 T20` face toward the user and its leads pointing down,
+the order from left to right is collector, base, emitter. Do not mirror this
+view when placing the transistor on the breadboard.
+
+Receipt status on 2026-08-24: the 840-point breadboard and male-to-female jumper
+wires are available; its power rails are split into upper and lower sections, so
+use one verified section at a time. The received `HW-122` AMS1117 module supplied
+a 1x4 header, cut into two 1x2 pieces. Both headers were soldered and visually
+inspected on 2026-08-26.
+
+Do not substitute a BC547/BC548 (their collector-current margin is inadequate)
+or an IRF520 module (it is not a suitable 3.3 V logic-level choice here).
+
+Planned electrical connections:
+
+```text
+Edgehax 5V (USB-powered only) ---- AMS1117 VIN
+Edgehax GND ---------------------- AMS1117 GND ---- BC337 emitter ---- common GND
+AMS1117 3V3 OUT ------------------ buzzer S (+ coil)
+
+buzzer - (other coil) ------------ BC337 collector
+GPIO17 ---- 470 ohm -------------- BC337 base
+BC337 base ---- 10 kOhm ---------- common GND
+
+1N5819 cathode (banded end) ------ buzzer S (+ coil)
+1N5819 anode --------------------- buzzer - / BC337 collector
+
+100 uF and 100 nF capacitors ----- between AMS1117 3V3 OUT and common GND
+NC -------------------------------- leave unconnected
+```
+
+The LDO's 3.3 V output powers only the buzzer circuit; do **not** join it to the
+ESP32 board's 3.3 V pin. The common ground is required so `GPIO17` has a valid
+base-drive reference. The base pull-down holds the transistor off during reset
+and boot. The flyback diode is reverse-biased while the buzzer is on and protects
+the transistor when PWM switches the magnetic coil off.
+
+Before any connection to the module or GPIO, disconnect USB, split the supplied
+header into two 1x2 pieces, then solder only those headers with their long pins
+facing down for breadboard use. Inspect for solder bridges, then test the LDO by
+itself. This isolated test passed on 2026-08-26: a 5.03 V USB-derived input
+produced 3.36 V at `VOUT`, with no ESP32 or buzzer attached. The output must not
+be joined to the ESP32 3.3 V pin.
+
+On 2026-08-31, the documented driver was assembled on a continuity-verified rail
+section without an ESP32. The installed buzzer path measured 44.8 ohm. With the
+base input released, the collector measured 3.36 V and the buzzer remained
+silent. A temporary 3.3 V drive applied at the input side of the installed
+470 ohm resistor pulled the collector to 56.2 mV. The temporary drive was then
+removed. No audible result occurred under steady DC, and no PWM or GPIO test has
+yet been performed. Only buzzer header pins `S` and `-` are soldered; the unused
+`NC` pin remains unsoldered and unconnected.
 
 ## Connection Verification Table
 

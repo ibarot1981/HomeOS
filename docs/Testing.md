@@ -228,6 +228,46 @@ Goal:
 
 - passive buzzer produces sound
 
+Precondition:
+
+- continuity measurements have verified that `S` is the positive coil terminal,
+  `-` is the other coil terminal, and `NC` is unused; the coil measures 42.6 ohm
+- assemble and inspect the documented BC337-25 low-side driver, 1N5819 flyback
+  diode, base resistor, base pull-down, and independent 3.3 V LDO supply
+- before attaching the module, measure about 5 V at the LDO input and about
+  3.3 V at its output relative to common GND
+- do not connect the buzzer directly to an ESP32 GPIO or to the board 3.3 V rail
+
+Receipt, regulator, and static-driver validation results on 2026-08-23 to
+2026-08-31:
+
+- a received 470 ohm resistor measured 459 ohm; a received 10 kOhm resistor
+  measured 9.92 kOhm
+- a received diode measured 0.177 V with red on its anode and black on its
+  banded cathode, and O.L. when reversed; this is consistent with the required
+  flyback-diode orientation
+- the received 840-point breadboard's terminal strips were verified and every
+  outer rail was found split into two independent sections
+- the AMS1117's two 1x2 headers were soldered and visually inspected; unpowered
+  `VIN`-to-`GND` and `VOUT`-to-`GND` checks did not give a continuity beep
+- with no ESP32 or buzzer connected, a USB-derived 5.03 V input produced 3.36 V
+  at `VOUT` relative to output `GND`; the module's red LED lit
+- after the USB source was switched off, the LED remained lit for approximately
+  40 to 60 seconds; no load, heating, driver, buzzer, or firmware result is claimed
+- diode-mode and hFE tests confirmed the received `JCBC 33725 T20` transistor as
+  NPN; flat marked face toward the user and leads down gives collector, base,
+  emitter from left to right, with hFE 274 versus 12 when the outer leads were
+  reversed
+- the buzzer measured 43.4 ohm through its soldered `S` and `-` header pins and
+  44.8 ohm through the installed breadboard path; `NC` remains unsoldered and
+  unconnected
+- the assembled 3.3 V and GND rails read O.L. in both continuity-test directions
+- with the driver input released, the supply and collector measured 3.36 V and
+  the buzzer stayed silent
+- temporarily applying 3.3 V at the input side of the installed 470 ohm resistor
+  pulled the collector to 56.2 mV; no sound occurred under this steady-DC test,
+  so no PWM-tone or acoustic result is claimed
+
 Checklist:
 
 - short beep works
