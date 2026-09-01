@@ -33,6 +33,11 @@ reports whether it is alerting. Future modules can be added to the registry
 without rewriting the Arduino `loop()`. Button callbacks, commands, and plugins
 remain out of scope.
 
+Version 0.6 keeps the same module model. Select still redraws the active module
+and now also requests one asynchronous 2 kHz, 100 ms confirmation tone when the
+compile-time sound switch is enabled. The tone is direct button feedback, not a
+module lifecycle method, notification queue, or new framework.
+
 ## Core Modules
 
 ### Clock Module

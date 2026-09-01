@@ -9,7 +9,7 @@
 | Breadboard | new 840-point solderless breadboard | Received - terminal strips and split power rails meter-verified on 2026-08-24 | adequate space for the Version 0.6 driver; each rail has independent upper/lower sections |
 | Jumper wires | male-to-female 2.54 mm kit | Already owned - user confirmed | required for temporary wiring |
 | Buttons | tactile switches | Version 0.3 verified on GPIO4, GPIO5, and GPIO6 | active-low prototype navigation on breadboard |
-| Buzzer | SmartElex Passive Buzzer Module | Pinout independently continuity-verified on 2026-08-17; 42.6 ohm DC coil resistance measured | requires a low-side driver and flyback diode; do not connect it directly to GPIO |
+| Buzzer | SmartElex Passive Buzzer Module | Pinout and static low-side-driver switching verified; Version 0.6 GPIO17 tone firmware builds but has not been uploaded or connected | requires the documented low-side driver and flyback diode; do not connect it directly to GPIO |
 | USB data cable | compatible with purchased ESP32-S3 board | Needed | must support both power and data for flashing |
 | Power | branded USB phone charger | Already owned | suitable for deployment after firmware is loaded |
 | Digital multimeter | basic digital multimeter | Recommended before hardware expansion | useful for voltage, continuity, and troubleshooting |
@@ -192,7 +192,11 @@ driving the base through the installed 470 ohm resistor pulled the collector to
 56.2 mV, confirming static transistor switching. The buzzer produced no sound
 under steady DC; this was not a PWM tone test. The buzzer's electrically unused
 `NC` header pin remains unsoldered. ESP32 connection, PWM firmware control,
-audible output, and heating remain untested.
+audible output, and heating remain untested. On 2026-09-01, the smallest
+firmware proof was added and built successfully: Select requests an asynchronous
+2 kHz tone for 100 ms on GPIO17 when the compile-time sound switch is enabled.
+This is a software build result only; no upload or new physical connection is
+claimed.
 
 ## Power Supply
 

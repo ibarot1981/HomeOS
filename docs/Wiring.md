@@ -210,7 +210,8 @@ inspected on 2026-08-26.
 Do not substitute a BC547/BC548 (their collector-current margin is inadequate)
 or an IRF520 module (it is not a suitable 3.3 V logic-level choice here).
 
-Planned electrical connections:
+Version 0.6 firmware-proof connection contract (not yet physically connected to
+the ESP32):
 
 ```text
 Edgehax 5V (USB-powered only) ---- AMS1117 VIN
@@ -249,6 +250,13 @@ silent. A temporary 3.3 V drive applied at the input side of the installed
 removed. No audible result occurred under steady DC, and no PWM or GPIO test has
 yet been performed. Only buzzer header pins `S` and `-` are soldered; the unused
 `NC` pin remains unsoldered and unconnected.
+
+The 2026-09-01 firmware proof assigns GPIO17 as the only buzzer signal and builds
+with a 2 kHz, 100 ms asynchronous Select tone. That build does not validate any
+wire. Before adding the two ESP32-side connections, all power must be removed:
+one ESP32 `GND` goes to the already documented driver common-ground rail, and
+GPIO17 goes to the input side of the installed 470 ohm base resistor at row 25.
+The separate AMS1117 3.3 V output must never connect to the ESP32 3.3 V pin.
 
 ## Connection Verification Table
 

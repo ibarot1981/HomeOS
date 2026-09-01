@@ -29,6 +29,9 @@ constexpr unsigned long kTimeSyncTimeoutMs = 20000;
 constexpr unsigned long kButtonDebounceMs = 50;
 constexpr unsigned long kSlideshowIntervalMs = 60UL * 1000UL;
 constexpr unsigned long kSmartAlertDurationMs = 15UL * 1000UL;
+constexpr unsigned int kSelectToneFrequencyHz = 2000;
+constexpr unsigned long kSelectToneDurationMs = 100;
+constexpr bool kSoundEnabled = true;
 unsigned long lastHeartbeatMs = 0;
 unsigned long lastClockSyncAttemptMs = 0;
 int lastRenderedMinute = -1;
@@ -43,6 +46,7 @@ constexpr int kEPaperSckPin = 12;
 constexpr int kPreviousButtonPin = 4;
 constexpr int kSelectButtonPin = 5;
 constexpr int kNextButtonPin = 6;
+constexpr int kBuzzerPin = 17;
 
 constexpr const char *kTimeZone = "IST-5:30";
 constexpr const char *kNtpServer1 = "pool.ntp.org";
@@ -164,6 +168,18 @@ void printButtonInfo() {
   Serial.println(kNextButtonPin);
   Serial.print("Button debounce    : ");
   Serial.print(kButtonDebounceMs);
+  Serial.println(" ms");
+}
+
+void printBuzzerInfo() {
+  Serial.print("Buzzer signal      : GPIO");
+  Serial.println(kBuzzerPin);
+  Serial.print("Sound enabled      : ");
+  Serial.println(kSoundEnabled ? "yes" : "no");
+  Serial.print("Select tone        : ");
+  Serial.print(kSelectToneFrequencyHz);
+  Serial.print(" Hz for ");
+  Serial.print(kSelectToneDurationMs);
   Serial.println(" ms");
 }
 
@@ -484,6 +500,20 @@ void beginButtons() {
   }
 }
 
+void beginBuzzer() {
+  pinMode(kBuzzerPin, OUTPUT);
+  digitalWrite(kBuzzerPin, LOW);
+}
+
+void playSelectTone() {
+  if (!kSoundEnabled) {
+    return;
+  }
+
+  Serial.println("Select tone        : started");
+  tone(kBuzzerPin, kSelectToneFrequencyHz, kSelectToneDurationMs);
+}
+
 void changeModule(int direction) {
   const int nextIndex = static_cast<int>(activeModuleIndex) + direction;
   activeModuleIndex =
@@ -563,6 +593,7 @@ void handleButtonPress(const ButtonState &button) {
     case ButtonAction::kSelect:
       Serial.print("Select redraw      : ");
       Serial.println(activeModule().name());
+      playSelectTone();
       drawActiveModule();
       break;
   }
@@ -612,8 +643,10 @@ void setup() {
   printMemoryInfo();
   printDisplayInfo();
   printButtonInfo();
+  printBuzzerInfo();
   printClockInfo();
 
+  beginBuzzer();
   beginButtons();
   startHomeOS();
 }
