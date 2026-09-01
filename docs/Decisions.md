@@ -272,4 +272,6 @@ Alternatives considered:
 
 Status:
 
-Accepted for the Version 0.6 proof, pending physical assembly and validation.
+Accepted for the Version 0.6 proof. Static driver switching passed without an
+ESP32. The smallest GPIO17 tone firmware builds, but ESP32/common-ground wiring,
+upload, audible output, and heating validation remain pending.

@@ -187,6 +187,9 @@ Hardware status:
   `NC` pin remains unsoldered
 - ESP32 connection, PWM firmware, audible tone, and heating validation remain
   pending
+- the smallest firmware proof was implemented and built on 2026-09-01: Select
+  requests an asynchronous 2 kHz, 100 ms tone on GPIO17 when a compile-time
+  sound switch is enabled; no upload or physical result is claimed
 
 Features:
 

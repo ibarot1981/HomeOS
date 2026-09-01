@@ -268,6 +268,24 @@ Receipt, regulator, and static-driver validation results on 2026-08-23 to
   pulled the collector to 56.2 mV; no sound occurred under this steady-DC test,
   so no PWM-tone or acoustic result is claimed
 
+Firmware proof build result on 2026-09-01:
+
+- PlatformIO environment `edgehax_s3_pro_diagnostics` built successfully
+- GPIO17 is configured low during startup and used only as the transistor
+  base-drive signal through the installed 470 ohm resistor
+- when `kSoundEnabled` is true, a Select press requests one asynchronous 2 kHz,
+  100 ms tone and continues with the existing module redraw
+- no ESP32 connection, upload, PWM waveform, audible tone, or heating result is
+  claimed by this build
+
+Manual hardware validation remains confirmation-gated. With all power removed,
+first review and add only the documented common-ground connection. Review and
+add GPIO17 to row 25 only after that result is confirmed. Before power is
+restored, verify that the AMS1117 output is isolated from the ESP32 3.3 V pin.
+During the first powered Select test, disconnect immediately for heat, smell,
+unstable behavior, continuous sound, or any sound materially longer than the
+configured 100 ms.
+
 Checklist:
 
 - short beep works

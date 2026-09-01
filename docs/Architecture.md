@@ -1,18 +1,21 @@
 # Architecture
 
-## Current Implementation (Version 0.5)
+## Current Implementation (Version 0.6 Firmware Proof)
 
-HomeOS Version 0.5 remains a small, single-file firmware implementation with a
+HomeOS Version 0.6 remains a small, single-file firmware implementation with a
 fixed two-module registry. `firmware/src/main.cpp` owns Button Input,
-Navigation, Display Modes, Clock, Board Diagnostics, Display, WiFi/NTP, and
-Serial Diagnostics. The target architecture below remains a future direction;
-its proposed layers do not yet exist as separate firmware modules.
+Navigation, Display Modes, Clock, Board Diagnostics, Display, WiFi/NTP, Serial
+Diagnostics, and the smallest buzzer proof. Select requests one asynchronous
+GPIO17 tone and redraws the active module. The target architecture below remains
+a future direction; its proposed layers do not yet exist as separate firmware
+modules.
 
 ```mermaid
 flowchart LR
   subgraph Hardware
     Buttons["Button Input<br/>Previous GPIO4 · Select GPIO5 · Next GPIO6"]
     DisplayHW["SPI ePaper<br/>GPIO7–GPIO12"]
+    BuzzerHW["BC337 buzzer driver<br/>GPIO17 signal"]
   end
   subgraph Firmware["ESP32-S3 Firmware: firmware/src/main.cpp"]
     Navigation["Navigation"]
@@ -23,12 +26,14 @@ flowchart LR
     Display["Display"]
     Serial["Serial Diagnostics"]
     WiFiNTP["WiFi/NTP"]
+    Buzzer["Select tone<br/>2 kHz · 100 ms"]
   end
   subgraph External["External services"]
     WiFi["WiFi network"]
     NTP["NTP servers"]
   end
   Buttons --> Navigation
+  Buttons -->|Select| Buzzer
   Navigation --> Registry
   Modes --> Registry
   Registry --> Clock
@@ -36,6 +41,7 @@ flowchart LR
   Clock --> Display
   Board --> Display
   Display --> DisplayHW
+  Buzzer --> BuzzerHW
   WiFi --> WiFiNTP --> NTP
   WiFiNTP --> Clock
   Navigation --> Serial
@@ -47,6 +53,9 @@ Current behavior:
 
 - Button Input uses active-low GPIO inputs with internal pull-ups and 50 ms debounce.
 - Navigation lets Previous and Next wrap through Clock and Status; Select redraws the active module.
+- When the compile-time sound switch is enabled, Select also requests one 2 kHz,
+  100 ms tone through the Arduino asynchronous tone facility on GPIO17. GPIO17
+  is initialized low; no notification queue or general buzzer framework exists.
 - `kDisplayMode` selects Slideshow, Fixed, or Smart at firmware build time. Slideshow changes modules every 60 seconds; Fixed retains the module selected by Previous or Next; Smart retains that manual selection except for a temporary alert override.
 - Every registered module receives `update(now)` each loop. The Clock module therefore keeps its minute refresh and WiFi/NTP retry work while Status is temporarily visible.
 - Status owns board diagnostics and is the current alerting module: when configured WiFi/NTP is unhealthy, Smart displays it once for 15 seconds during that uninterrupted failure, then restores the previously displayed module.
@@ -55,6 +64,8 @@ Current behavior:
   alerting, and retries WiFi/NTP synchronization every five minutes after failure.
 - Display uses the verified SPI wiring and full refresh only; each draw ends in ePaper hibernation.
 - Serial Diagnostics reports startup board information, button activity, WiFi/NTP state, display activity, and a five-second heartbeat.
+- The GPIO17 firmware path built on 2026-09-01, but no ESP32 connection, upload,
+  audible output, or heating validation has occurred.
 
 For a file and function-level view, see [Code-Map.md](Code-Map.md). The optional local interactive companion is [homeos-code-map.html](visualizations/homeos-code-map.html).
 

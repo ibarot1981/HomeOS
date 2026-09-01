@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added the smallest Version 0.6 firmware proof: an asynchronous 2 kHz, 100 ms
+  Select-confirmation tone on GPIO17 with a compile-time sound enable switch.
+  The PlatformIO build passes; no ESP32 connection, upload, audible output, or
+  heating result is claimed.
 - Recorded the no-ESP32 Version 0.6 breadboard-driver validation: 44.8 ohm
   installed buzzer path, 3.36 V collector in the default-off state, and 56.2 mV
   collector under temporary base drive. The passive buzzer remained silent
