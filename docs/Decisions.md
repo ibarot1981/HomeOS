@@ -272,4 +272,9 @@ Alternatives considered:
 
 Status:
 
-Accepted for the Version 0.6 proof, pending physical assembly and validation.
+Accepted for the Version 0.6 proof. Static driver switching passed without an
+ESP32. The proof uses common ground through an existing button-ground node, with
+GPIO17 driving the installed 470 ohm base resistor and a separate USB charger
+powering the AMS1117; the two 5 V rails and AMS1117 output remain isolated from
+the ESP32 supply rails. The first Select tone and two repeat tones passed after
+explicit LEDC initialization. Heating validation remains pending.

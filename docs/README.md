@@ -37,8 +37,11 @@ This project should be built like a small product, not like a one-file Arduino e
   and breadboard topology. The AMS1117 headers are soldered and an isolated
   regulator test measured 5.03 V input and 3.36 V output. The no-ESP32 driver
   prototype subsequently switched its collector between 3.36 V off and
-  56.2 mV on. ESP32/PWM firmware, audible output, and heating validation remain
-  pending.
+  56.2 mV on. Version 0.6 then proved one asynchronous 2 kHz, 100 ms
+  Select tone on GPIO17: the ESP32 and driver share ground, while the AMS1117 is
+  powered by its separately validated USB charger and its 3.3 V output remains
+  isolated from the ESP32 3.3 V rail. The first tone initializes reliably after
+  an explicit LEDC setup. Heating validation remains pending.
 - Power: good-quality USB phone charger, typically 5 V / 1 A or better
 
 Version 0.1 verified UART upload/serial on `COM7`, 16 MB flash, 8 MB-class PSRAM, the GxEPD2 display driver class, and the first ePaper wiring in `docs/Wiring.md`.
@@ -60,6 +63,11 @@ validation confirmed Slideshow timing and button behavior on 2026-08-09; Fixed
 and Smart hardware validation passed on 2026-08-11. Smart validation also found
 and fixed missing post-sync WiFi-loss detection so a recovered connection can
 raise a later new alert.
+
+Version 0.6 firmware proof adds only a short, non-blocking Select-confirmation
+tone on GPIO17. Physical validation on 2026-09-09 confirmed the first press and
+two repeat presses are audible and each redraws the active module. No alert tone,
+notification queue, or heating test is part of this increment.
 
 ## Documentation Layout
 

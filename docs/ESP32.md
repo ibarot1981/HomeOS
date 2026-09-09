@@ -138,6 +138,23 @@ ePaper display pins, ESP32-S3 strapping pins, USB pins, UART0 pins, and the
 onboard LED/JTAG-sensitive pins noted in the board pinout. Button hardware
 testing passed on 2026-08-06 using active-low breadboard wiring and USB power.
 
+Version 0.6 buzzer signal selection:
+
+- `GPIO17` is the PWM-capable signal pin documented for the BC337-25 base driver
+- firmware drives GPIO17 low at startup and requests only a 2 kHz, 100 ms
+  asynchronous Select tone when the compile-time sound switch is enabled
+- GPIO17 must connect through the documented 470 ohm resistor; it must never
+  drive the buzzer coil directly
+- the ESP32 and driver must share ground, but the separate AMS1117 3.3 V output
+  must never connect to the ESP32 3.3 V pin
+- LEDC channel 0 is initialized during startup before the asynchronous tone
+  request, avoiding the initial uninitialized-LEDC failure observed in the first
+  hardware attempt
+- the firmware was uploaded over `COM8` on 2026-09-09; the first Select press
+  and two repeat presses produced the expected short tone and ePaper redraw
+- the proof uses a common-ground bridge and separate AMS1117 USB-charger input;
+  its 3.3 V output is continuity-isolated from ESP32 3.3 V
+
 A USB cable used for firmware flashing must support data. Some phone charging cables provide power only, and the board may turn on but not appear on the computer.
 
 ## WiFi

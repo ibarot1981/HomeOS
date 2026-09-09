@@ -4,6 +4,15 @@
 
 ### Added
 
+- Added the smallest Version 0.6 firmware proof: an asynchronous 2 kHz, 100 ms
+  Select-confirmation tone on GPIO17 with a compile-time sound enable switch.
+  The initial PlatformIO build established the software-only baseline before the
+  later physical proof; heating remains untested.
+- Recorded the Version 0.6 GPIO17 PWM/acoustic proof: after an explicit LEDC
+  initialization fix, the first Select press and two repeat presses each produced
+  the short tone and normal ePaper redraw. The proof uses a common-ground bridge
+  and separate AMS1117 USB-charger input; the AMS1117 output remains isolated
+  from ESP32 3.3 V. Heating remains untested.
 - Recorded the no-ESP32 Version 0.6 breadboard-driver validation: 44.8 ohm
   installed buzzer path, 3.36 V collector in the default-off state, and 56.2 mV
   collector under temporary base drive. The passive buzzer remained silent
@@ -83,6 +92,9 @@
 
 ### Fixed
 
+- Initialized the buzzer LEDC channel before the first asynchronous tone request,
+  fixing the initial silent Select press and `LEDC is not initialized` serial
+  error.
 - Fixed Smart mode so loss of WiFi after a successful NTP sync marks Clock
   unhealthy, allowing the Status override and the existing retry path to run.
 - Fixed Clock full-refresh timing so the next redraw follows the actual minute
