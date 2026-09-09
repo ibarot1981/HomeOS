@@ -1,9 +1,9 @@
 # Version 0.6 Buzzer Driver Receipt Validation
 
-Date of user-performed checks: 2026-08-23 to 2026-08-31.
+Date of user-performed checks: 2026-08-23 to 2026-09-09.
 
-This record distinguishes received-item evidence and meter observations from
-future ESP32 and PWM-tone validation.
+This record distinguishes received-item evidence and meter observations from the
+completed GPIO17 Select-tone proof. Heating validation remains separate.
 
 ## Receipt and visual evidence
 
@@ -97,9 +97,36 @@ soldered header pins and 44.8 ohm through the installed breadboard path.
 The temporary row-25-to-3.3 V jumper was removed after the test. The charger was
 switched off and unplugged between wiring changes.
 
+## ESP32 connection and GPIO17 PWM proof
+
+The existing Edgehax button/ePaper breadboard was left intact. All four Edgehax
+GND pins were already occupied, so the new driver used an electrically equivalent
+branch from the existing Previous-button ground node: a jumper from free `B8`
+beside the ground wire at `A8` to the verified lower driver ground rail nearest
+column A. This joins the BC337 emitter, AMS1117 output GND, and 10 kOhm pull-down
+to the Edgehax ground reference.
+
+A female-to-male jumper connects Edgehax `GPIO17` to `E25`, the input side of the
+installed 470 ohm base resistor. The Edgehax remained powered through its `UART`
+computer USB connection; the separately validated USB charger powers AMS1117
+`VIN`. The two 5 V rails are not joined, and the AMS1117 3.3 V output is not
+joined to the Edgehax 3.3 V rail.
+
+| Test | Actual result | Interpretation |
+|---|---|---|
+| AMS1117 output rail to Edgehax 3.3 V, continuity mode in both probe directions | no beep, O.L. | no direct output-to-ESP32-3.3 V connection observed before power-on |
+| Charger on with Edgehax USB off for 10 seconds | AMS1117 LED on; buzzer silent; no heat or smell reported | driver remained default-off through the pull-down with the ESP32 unpowered |
+| Firmware upload | PlatformIO upload over `COM8` succeeded; boot diagnostics, WiFi/NTP, ePaper, and buzzer configuration printed | GPIO17 proof firmware ran on the physical Edgehax board |
+| First Select attempt from original firmware | silent; serial logged `LEDC is not initialized` | PWM channel required explicit initialization before the first asynchronous tone request |
+| Corrected first Select attempt | short audible tone; normal ePaper redraw; serial logged `Button pressed`, `Select redraw`, and `Select tone : started`; no LEDC error | first-press PWM/acoustic proof passed |
+| Two corrected repeat Select attempts | short audible tone, normal ePaper redraw, and matching serial logs each time | repeat Select-tone behavior passed for the observed presses |
+
+The firmware now initializes LEDC channel 0 at startup before `tone()` is used.
+After the proof, the AMS1117 charger was unplugged and its LED was confirmed dark.
+
 ## Still untested
 
 - Soldering and inspection of the mechanically useful but electrically unused
   buzzer `NC` header pin.
-- ESP32/common-ground connection and `GPIO17` drive.
-- PWM tone generation, audible output, buzzer heating, and firmware behavior.
+- Buzzer heating during a deliberately bounded or extended test.
+- Alert tone, silent-mode behavior, and any notification queue.

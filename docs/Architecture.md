@@ -54,8 +54,9 @@ Current behavior:
 - Button Input uses active-low GPIO inputs with internal pull-ups and 50 ms debounce.
 - Navigation lets Previous and Next wrap through Clock and Status; Select redraws the active module.
 - When the compile-time sound switch is enabled, Select also requests one 2 kHz,
-  100 ms tone through the Arduino asynchronous tone facility on GPIO17. GPIO17
-  is initialized low; no notification queue or general buzzer framework exists.
+  100 ms tone through the Arduino asynchronous tone facility on GPIO17.
+  `beginBuzzer()` initializes LEDC channel 0 and GPIO17 low before any request;
+  no notification queue or general buzzer framework exists.
 - `kDisplayMode` selects Slideshow, Fixed, or Smart at firmware build time. Slideshow changes modules every 60 seconds; Fixed retains the module selected by Previous or Next; Smart retains that manual selection except for a temporary alert override.
 - Every registered module receives `update(now)` each loop. The Clock module therefore keeps its minute refresh and WiFi/NTP retry work while Status is temporarily visible.
 - Status owns board diagnostics and is the current alerting module: when configured WiFi/NTP is unhealthy, Smart displays it once for 15 seconds during that uninterrupted failure, then restores the previously displayed module.
@@ -64,8 +65,9 @@ Current behavior:
   alerting, and retries WiFi/NTP synchronization every five minutes after failure.
 - Display uses the verified SPI wiring and full refresh only; each draw ends in ePaper hibernation.
 - Serial Diagnostics reports startup board information, button activity, WiFi/NTP state, display activity, and a five-second heartbeat.
-- The GPIO17 firmware path built on 2026-09-01, but no ESP32 connection, upload,
-  audible output, or heating validation has occurred.
+- The GPIO17 firmware path was uploaded and audibly validated on 2026-09-09: the
+  first Select press and two repeat presses passed after the LEDC initialization
+  correction. Heating validation has not occurred.
 
 For a file and function-level view, see [Code-Map.md](Code-Map.md). The optional local interactive companion is [homeos-code-map.html](visualizations/homeos-code-map.html).
 

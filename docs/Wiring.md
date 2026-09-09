@@ -210,12 +210,12 @@ inspected on 2026-08-26.
 Do not substitute a BC547/BC548 (their collector-current margin is inadequate)
 or an IRF520 module (it is not a suitable 3.3 V logic-level choice here).
 
-Version 0.6 firmware-proof connection contract (not yet physically connected to
-the ESP32):
+Version 0.6 GPIO17 proof connection contract (physically validated on
+2026-09-09):
 
 ```text
-Edgehax 5V (USB-powered only) ---- AMS1117 VIN
-Edgehax GND ---------------------- AMS1117 GND ---- BC337 emitter ---- common GND
+Separate validated USB charger ---- AMS1117 VIN
+Edgehax GND via Previous button A8/B8 ---- BC337 emitter ---- common GND
 AMS1117 3V3 OUT ------------------ buzzer S (+ coil)
 
 buzzer - (other coil) ------------ BC337 collector
@@ -230,10 +230,11 @@ NC -------------------------------- leave unconnected
 ```
 
 The LDO's 3.3 V output powers only the buzzer circuit; do **not** join it to the
-ESP32 board's 3.3 V pin. The common ground is required so `GPIO17` has a valid
-base-drive reference. The base pull-down holds the transistor off during reset
-and boot. The flyback diode is reverse-biased while the buzzer is on and protects
-the transistor when PWM switches the magnetic coil off.
+ESP32 board's 3.3 V pin. The separate charger 5 V rail also remains separate
+from the Edgehax USB 5 V rail. The common ground is required so `GPIO17` has a
+valid base-drive reference. The base pull-down holds the transistor off during
+reset and boot. The flyback diode is reverse-biased while the buzzer is on and
+protects the transistor when PWM switches the magnetic coil off.
 
 Before any connection to the module or GPIO, disconnect USB, split the supplied
 header into two 1x2 pieces, then solder only those headers with their long pins
@@ -251,12 +252,14 @@ removed. No audible result occurred under steady DC, and no PWM or GPIO test has
 yet been performed. Only buzzer header pins `S` and `-` are soldered; the unused
 `NC` pin remains unsoldered and unconnected.
 
-The 2026-09-01 firmware proof assigns GPIO17 as the only buzzer signal and builds
-with a 2 kHz, 100 ms asynchronous Select tone. That build does not validate any
-wire. Before adding the two ESP32-side connections, all power must be removed:
-one ESP32 `GND` goes to the already documented driver common-ground rail, and
-GPIO17 goes to the input side of the installed 470 ohm base resistor at row 25.
-The separate AMS1117 3.3 V output must never connect to the ESP32 3.3 V pin.
+The 2026-09-09 proof used an existing active-low button ground as the common
+reference rather than disturbing the working ePaper/button wiring: the free
+hole at `B8` beside the Previous-button ground wire at `A8` was bridged to the
+verified lower driver ground rail nearest column A. A female-to-male jumper runs
+from Edgehax `GPIO17` to `E25`, the input side of the installed 470 ohm resistor.
+An unpowered AMS1117-output-to-Edgehax-3.3 V continuity check gave no beep/O.L.
+in both directions. The separate AMS1117 3.3 V output must never connect to the
+ESP32 3.3 V pin.
 
 ## Connection Verification Table
 
@@ -276,6 +279,8 @@ The separate AMS1117 3.3 V output must never connect to the ESP32 3.3 V pin.
 | 12 | Select button | other side | Edgehax S3-PRO | GND | ground when pressed | user wiring | display and serial test | 2026-08-06 |
 | 13 | Next button | one side | Edgehax S3-PRO | GPIO6 | active-low input with internal pull-up | user wiring | display and serial test | 2026-08-06 |
 | 14 | Next button | other side | Edgehax S3-PRO | GND | ground when pressed | user wiring | display and serial test | 2026-08-06 |
+| 15 | Previous button ground row | B8 | Buzzer-driver breadboard | lower ground rail nearest A | common ground | user jumper | manual trace and PWM proof | 2026-09-09 |
+| 16 | Edgehax S3-PRO | GPIO17 | Buzzer-driver breadboard | E25, 470 ohm input | 2 kHz, 100 ms PWM base drive | user jumper | serial and audible PWM proof | 2026-09-09 |
 
 ## Power
 

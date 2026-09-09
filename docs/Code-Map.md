@@ -55,6 +55,6 @@ Next GPIO6 use `INPUT_PULLUP`, active-low presses, and the existing 50 ms deboun
 The verified SPI ePaper mapping remains GPIO7-GPIO12 and uses full refresh only.
 Select calls `playSelectTone()` before the existing redraw. When `kSoundEnabled`
 is true, Arduino `tone()` requests 2 kHz for 100 ms on GPIO17 asynchronously;
-`beginBuzzer()` sets the signal low during startup. The separate low-side driver,
-not GPIO17, carries the buzzer-coil current. No alert tone, notification queue,
-or general buzzer abstraction exists.
+`beginBuzzer()` initializes LEDC channel 0, then sets the signal low during
+startup. The separate low-side driver, not GPIO17, carries the buzzer-coil
+current. No alert tone, notification queue, or general buzzer abstraction exists.

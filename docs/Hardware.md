@@ -9,7 +9,7 @@
 | Breadboard | new 840-point solderless breadboard | Received - terminal strips and split power rails meter-verified on 2026-08-24 | adequate space for the Version 0.6 driver; each rail has independent upper/lower sections |
 | Jumper wires | male-to-female 2.54 mm kit | Already owned - user confirmed | required for temporary wiring |
 | Buttons | tactile switches | Version 0.3 verified on GPIO4, GPIO5, and GPIO6 | active-low prototype navigation on breadboard |
-| Buzzer | SmartElex Passive Buzzer Module | Pinout and static low-side-driver switching verified; Version 0.6 GPIO17 tone firmware builds but has not been uploaded or connected | requires the documented low-side driver and flyback diode; do not connect it directly to GPIO |
+| Buzzer | SmartElex Passive Buzzer Module | Pinout, static low-side-driver switching, and GPIO17 2 kHz Select-tone proof verified | requires the documented low-side driver and flyback diode; do not connect it directly to GPIO |
 | USB data cable | compatible with purchased ESP32-S3 board | Needed | must support both power and data for flashing |
 | Power | branded USB phone charger | Already owned | suitable for deployment after firmware is loaded |
 | Digital multimeter | basic digital multimeter | Recommended before hardware expansion | useful for voltage, continuity, and troubleshooting |
@@ -162,12 +162,14 @@ the current that this project will ask an ESP32 GPIO to supply. The module must
 use a low-side transistor driver and a flyback diode.
 
 The Version 0.6 prototype circuit uses a BC337-25 NPN low-side switch
-on verified available PWM-capable `GPIO17`. Its base will use a 470 ohm series
-resistor and 10 kOhm pull-down; a 1N5819 flyback diode will be fitted across the
+on verified available PWM-capable `GPIO17`. Its base uses a 470 ohm series
+resistor and 10 kOhm pull-down; a 1N5819 flyback diode is fitted across the
 coil. The Edgehax board documentation does not specify spare capacity on its
-3.3 V rail, so the buzzer will receive 3.3 V from a separate AMS1117-3.3 LDO
-module powered from the board's USB-derived 5 V rail. Grounds will be common,
-but the LDO's 3.3 V output must never connect to the board's 3.3 V pin.
+3.3 V rail, so the buzzer receives 3.3 V from a separate AMS1117-3.3 LDO.
+The proof used the previously validated separate USB charger to power AMS1117
+`VIN`, while the Edgehax remained on computer USB. Grounds are common, but the
+LDO's 3.3 V output must never connect to the board's 3.3 V pin or either 5 V
+source to the other.
 
 The received transistor is marked `JCBC 33725 T20`. Meter testing on 2026-08-27
 confirmed it as NPN and verified that, with the flat marked face toward the user
@@ -192,11 +194,16 @@ driving the base through the installed 470 ohm resistor pulled the collector to
 56.2 mV, confirming static transistor switching. The buzzer produced no sound
 under steady DC; this was not a PWM tone test. The buzzer's electrically unused
 `NC` header pin remains unsoldered. ESP32 connection, PWM firmware control,
-audible output, and heating remain untested. On 2026-09-01, the smallest
-firmware proof was added and built successfully: Select requests an asynchronous
-2 kHz tone for 100 ms on GPIO17 when the compile-time sound switch is enabled.
-This is a software build result only; no upload or new physical connection is
-claimed.
+audible output, and heating remained untested until the GPIO17 proof on
+2026-09-09. The Edgehax was uploaded over `COM8`; its `GPIO17` connected through
+the installed 470 ohm resistor at `E25`, and the new driver ground rail was
+bridged to the existing Previous-button ground row at `A8/B8`. The AMS1117
+output-to-Edgehax-3.3 V continuity check read O.L. both ways. The first attempt
+exposed an `LEDC is not initialized` serial error and was silent; firmware now
+initializes LEDC before requesting the asynchronous 2 kHz, 100 ms tone. After
+that re-upload, the first Select press and two repeat presses each produced the
+short tone, triggered the normal ePaper redraw, and logged the expected serial
+event. No heating test was performed.
 
 ## Power Supply
 

@@ -32,6 +32,8 @@ constexpr unsigned long kSmartAlertDurationMs = 15UL * 1000UL;
 constexpr unsigned int kSelectToneFrequencyHz = 2000;
 constexpr unsigned long kSelectToneDurationMs = 100;
 constexpr bool kSoundEnabled = true;
+constexpr uint8_t kBuzzerPwmChannel = 0;
+constexpr uint8_t kBuzzerPwmResolutionBits = 8;
 unsigned long lastHeartbeatMs = 0;
 unsigned long lastClockSyncAttemptMs = 0;
 int lastRenderedMinute = -1;
@@ -501,6 +503,8 @@ void beginButtons() {
 }
 
 void beginBuzzer() {
+  ledcSetup(kBuzzerPwmChannel, kSelectToneFrequencyHz,
+            kBuzzerPwmResolutionBits);
   pinMode(kBuzzerPin, OUTPUT);
   digitalWrite(kBuzzerPin, LOW);
 }

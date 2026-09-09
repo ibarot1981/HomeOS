@@ -185,11 +185,16 @@ Hardware status:
   installed 470 ohm resistor; the buzzer remained silent under steady DC
 - the buzzer `S` and `-` header joints and coil path were validated; the unused
   `NC` pin remains unsoldered
-- ESP32 connection, PWM firmware, audible tone, and heating validation remain
+- ESP32/common-ground and GPIO17 connections were manually traced and validated;
+  AMS1117 output-to-ESP32-3.3 V was O.L. in both continuity-test directions
+- the smallest firmware proof was built and uploaded over `COM8`; Select requests
+  an asynchronous 2 kHz, 100 ms tone on GPIO17 when a compile-time sound switch
+  is enabled
+- an initial LEDC initialization error made the first attempt silent; an explicit
+  LEDC setup was added, rebuilt, and uploaded
+- after the correction, the first Select press and two repeat presses produced
+  the short audible tone and normal ePaper redraw; heating validation remains
   pending
-- the smallest firmware proof was implemented and built on 2026-09-01: Select
-  requests an asynchronous 2 kHz, 100 ms tone on GPIO17 when a compile-time
-  sound switch is enabled; no upload or physical result is claimed
 
 Features:
 

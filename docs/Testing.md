@@ -278,13 +278,33 @@ Firmware proof build result on 2026-09-01:
 - no ESP32 connection, upload, PWM waveform, audible tone, or heating result is
   claimed by this build
 
-Manual hardware validation remains confirmation-gated. With all power removed,
-first review and add only the documented common-ground connection. Review and
-add GPIO17 to row 25 only after that result is confirmed. Before power is
-restored, verify that the AMS1117 output is isolated from the ESP32 3.3 V pin.
-During the first powered Select test, disconnect immediately for heat, smell,
-unstable behavior, continuous sound, or any sound materially longer than the
-configured 100 ms.
+GPIO17 PWM and audible proof on 2026-09-09:
+
+- the Edgehax remained powered through its `UART` computer USB connection on
+  `COM8`; the separately validated USB charger powered only AMS1117 `VIN`
+- the common-ground bridge runs from the existing Previous-button ground row
+  `A8/B8` to the verified lower driver ground rail; GPIO17 connects to `E25`,
+  the installed 470 ohm resistor input
+- AMS1117 `VOUT` to Edgehax 3.3 V gave no continuity beep/O.L. in both probe
+  directions before power was applied
+- with the charger on and the Edgehax off, the AMS1117 LED lit and the buzzer
+  remained silent for the 10-second check
+- the initial Select attempt after the first upload was silent and logged
+  `LEDC is not initialized`; later Select presses were audible
+- firmware was corrected to initialize LEDC before the asynchronous tone request,
+  rebuilt, and uploaded successfully over `COM8`
+- after the correction, the first Select press and two repeat presses each made
+  the short tone, refreshed the ePaper normally, and logged `Button pressed`,
+  `Select redraw`, and `Select tone : started`; no LEDC initialization error was
+  logged
+- no heating test, long-duration tone, alert tone, or notification queue was
+  tested
+
+Further hardware work remains confirmation-gated. Before any wiring change,
+remove power and verify that the AMS1117 LED is dark. Keep the AMS1117 output
+isolated from ESP32 3.3 V, retain separate 5 V sources, and stop immediately for
+heat, smell, unstable behavior, continuous sound, or any sound materially longer
+than the configured 100 ms.
 
 Checklist:
 
