@@ -193,8 +193,11 @@ Hardware status:
 - an initial LEDC initialization error made the first attempt silent; an explicit
   LEDC setup was added, rebuilt, and uploaded
 - after the correction, the first Select press and two repeat presses produced
-  the short audible tone and normal ePaper redraw; heating validation remains
-  pending
+  the short audible tone and normal ePaper redraw
+- a bounded ten-press check on 2026-09-10 produced the short tone and normal
+  redraw after each settled display; the user subsequently reported the buzzer,
+  BC337, and AMS1117 cool with no abnormal smell
+- PWM waveform measurement remains pending
 
 Features:
 

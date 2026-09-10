@@ -297,8 +297,13 @@ GPIO17 PWM and audible proof on 2026-09-09:
   the short tone, refreshed the ePaper normally, and logged `Button pressed`,
   `Select redraw`, and `Select tone : started`; no LEDC initialization error was
   logged
-- no heating test, long-duration tone, alert tone, or notification queue was
-  tested
+- on 2026-09-10, a confirmation-gated thermal/stability check retained separate
+  5 V sources and the isolated AMS1117 output; ten counted Select presses made
+  only after display settling each produced the short tone and normal redraw
+- after unplugging the AMS1117 charger and confirming its LED dark, the user
+  reported the buzzer, BC337, and AMS1117 cool with no abnormal smell
+- PWM waveform measurement, long-duration tone, alert tone, and notification
+  queue remain untested
 
 Further hardware work remains confirmation-gated. Before any wiring change,
 remove power and verify that the AMS1117 LED is dark. Keep the AMS1117 output

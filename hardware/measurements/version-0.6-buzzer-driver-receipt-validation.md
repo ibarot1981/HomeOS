@@ -1,9 +1,10 @@
 # Version 0.6 Buzzer Driver Receipt Validation
 
-Date of user-performed checks: 2026-08-23 to 2026-09-09.
+Date of user-performed checks: 2026-08-23 to 2026-09-10.
 
 This record distinguishes received-item evidence and meter observations from the
-completed GPIO17 Select-tone proof. Heating validation remains separate.
+completed GPIO17 Select-tone proof and the bounded thermal/stability check.
+PWM waveform measurement remains separate.
 
 ## Receipt and visual evidence
 
@@ -124,9 +125,30 @@ joined to the Edgehax 3.3 V rail.
 The firmware now initializes LEDC channel 0 at startup before `tone()` is used.
 After the proof, the AMS1117 charger was unplugged and its LED was confirmed dark.
 
+## Bounded thermal and stability check
+
+On 2026-09-10, the user first confirmed the separate charger unplugged, the
+AMS1117 LED dark, and all meter/crocodile leads removed. With the Edgehax on its
+existing computer USB, the user reported normal display and serial behavior. The
+separate charger was then connected only to AMS1117 `VIN`; for the ten-second
+baseline observation, the LED was on and there was no sound, smell, or instability.
+
+The user confirmed ten counted Select presses after each display redraw had
+settled. Each produced one short beep and a normal screen redraw. During an
+uncounted attempt, presses spaced about three seconds apart could be missed while
+the slideshow display was still refreshing; after the display settled and a
+further ten seconds elapsed, the subsequent presses each produced a beep. This is
+recorded as an observation of the existing synchronous display-refresh boundary,
+not as a prolonged-tone or power-fault result.
+
+After the bounded tone check, the charger was unplugged and the AMS1117 LED was
+dark. The user then reported the buzzer, BC337, and AMS1117 cool with no abnormal
+smell. Wiring was not changed; the two 5 V sources and the AMS1117/ESP32 3.3 V
+rails remained separate throughout.
+
 ## Still untested
 
 - Soldering and inspection of the mechanically useful but electrically unused
   buzzer `NC` header pin.
-- Buzzer heating during a deliberately bounded or extended test.
+- PWM waveform measurement at GPIO17 or the buzzer/collector circuit.
 - Alert tone, silent-mode behavior, and any notification queue.
