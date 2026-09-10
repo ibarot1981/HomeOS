@@ -277,4 +277,6 @@ ESP32. The proof uses common ground through an existing button-ground node, with
 GPIO17 driving the installed 470 ohm base resistor and a separate USB charger
 powering the AMS1117; the two 5 V rails and AMS1117 output remain isolated from
 the ESP32 supply rails. The first Select tone and two repeat tones passed after
-explicit LEDC initialization. Heating validation remains pending.
+explicit LEDC initialization. A confirmation-gated ten-press check subsequently
+found normal redraws and user-reported cool buzzer, BC337, and AMS1117 components
+after power-off. PWM waveform measurement remains pending.

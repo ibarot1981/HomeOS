@@ -41,7 +41,9 @@ This project should be built like a small product, not like a one-file Arduino e
   Select tone on GPIO17: the ESP32 and driver share ground, while the AMS1117 is
   powered by its separately validated USB charger and its 3.3 V output remains
   isolated from the ESP32 3.3 V rail. The first tone initializes reliably after
-  an explicit LEDC setup. Heating validation remains pending.
+  an explicit LEDC setup. A bounded ten-press thermal/stability check found
+  normal redraws and cool driver components; PWM waveform measurement remains
+  untested.
 - Power: good-quality USB phone charger, typically 5 V / 1 A or better
 
 Version 0.1 verified UART upload/serial on `COM7`, 16 MB flash, 8 MB-class PSRAM, the GxEPD2 display driver class, and the first ePaper wiring in `docs/Wiring.md`.
@@ -66,8 +68,10 @@ raise a later new alert.
 
 Version 0.6 firmware proof adds only a short, non-blocking Select-confirmation
 tone on GPIO17. Physical validation on 2026-09-09 confirmed the first press and
-two repeat presses are audible and each redraws the active module. No alert tone,
-notification queue, or heating test is part of this increment.
+two repeat presses are audible and each redraws the active module. A bounded
+ten-press thermal/stability check on 2026-09-10 found normal redraws and cool
+driver components. No alert tone, notification queue, or PWM waveform measurement
+is part of this increment.
 
 ## Documentation Layout
 

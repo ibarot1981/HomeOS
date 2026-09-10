@@ -4,19 +4,24 @@
 
 ### Added
 
+- Recorded the Version 0.6 confirmation-gated thermal/stability check: ten
+  counted Select presses after display settling each made the configured short
+  tone and normal redraw. After charger removal and AMS1117 LED-dark confirmation,
+  the buzzer, BC337, and AMS1117 were reported cool with no abnormal smell. PWM
+  waveform measurement remains untested.
 - Added the smallest Version 0.6 firmware proof: an asynchronous 2 kHz, 100 ms
   Select-confirmation tone on GPIO17 with a compile-time sound enable switch.
   The initial PlatformIO build established the software-only baseline before the
-  later physical proof; heating remains untested.
+  later physical proof; PWM waveform measurement remains untested.
 - Recorded the Version 0.6 GPIO17 PWM/acoustic proof: after an explicit LEDC
   initialization fix, the first Select press and two repeat presses each produced
   the short tone and normal ePaper redraw. The proof uses a common-ground bridge
   and separate AMS1117 USB-charger input; the AMS1117 output remains isolated
-  from ESP32 3.3 V. Heating remains untested.
+  from ESP32 3.3 V. PWM waveform measurement remains untested.
 - Recorded the no-ESP32 Version 0.6 breadboard-driver validation: 44.8 ohm
   installed buzzer path, 3.36 V collector in the default-off state, and 56.2 mV
   collector under temporary base drive. The passive buzzer remained silent
-  under steady DC; PWM sound and heating are still untested.
+  under steady DC; this static result does not replace PWM waveform measurement.
 - Recorded the Version 0.6 AMS1117 header-soldering inspection and isolated
   regulator test: 5.03 V USB-derived input, 3.36 V output, and a lit module LED
   with no ESP32 or buzzer connected.
