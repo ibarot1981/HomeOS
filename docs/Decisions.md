@@ -279,4 +279,7 @@ powering the AMS1117; the two 5 V rails and AMS1117 output remain isolated from
 the ESP32 supply rails. The first Select tone and two repeat tones passed after
 explicit LEDC initialization. A confirmation-gated ten-press check subsequently
 found normal redraws and user-reported cool buzzer, BC337, and AMS1117 components
-after power-off. PWM waveform measurement remains pending.
+after power-off. Electrical PWM waveform capture is not an acceptance gate for
+Version 0.6: no oscilloscope or logic analyzer is available within this milestone
+scope, and the available multimeter cannot resolve the 2 kHz, 100 ms signal. It
+is deferred as an optional future diagnostic.

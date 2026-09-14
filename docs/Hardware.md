@@ -9,10 +9,10 @@
 | Breadboard | new 840-point solderless breadboard | Received - terminal strips and split power rails meter-verified on 2026-08-24 | adequate space for the Version 0.6 driver; each rail has independent upper/lower sections |
 | Jumper wires | male-to-female 2.54 mm kit | Already owned - user confirmed | required for temporary wiring |
 | Buttons | tactile switches | Version 0.3 verified on GPIO4, GPIO5, and GPIO6 | active-low prototype navigation on breadboard |
-| Buzzer | SmartElex Passive Buzzer Module | Pinout, static low-side-driver switching, GPIO17 2 kHz Select-tone proof, and bounded ten-press thermal/stability check verified | requires the documented low-side driver and flyback diode; do not connect it directly to GPIO |
+| Buzzer | SmartElex Passive Buzzer Module | Pinout, static low-side-driver switching, GPIO17 2 kHz Select-tone proof, and bounded ten-press thermal/stability check verified | requires the documented low-side driver and flyback diode; do not connect it directly to GPIO; electrical waveform capture is deferred from Version 0.6 |
 | USB data cable | compatible with purchased ESP32-S3 board | Needed | must support both power and data for flashing |
 | Power | branded USB phone charger | Already owned | suitable for deployment after firmware is loaded |
-| Digital multimeter | basic digital multimeter | Recommended before hardware expansion | useful for voltage, continuity, and troubleshooting |
+| Digital multimeter | basic digital multimeter | Available for the recorded voltage, continuity, diode, and resistance checks | useful for those checks, but not for resolving the 2 kHz, 100 ms PWM waveform |
 | Component storage/labels | small box or labels | Optional | helps identify starter-kit parts later |
 | Buzzer/load driver parts | BC337-25, 470 ohm and 10 kOhm resistors, 1N5819 diode, 3.3 V LDO module, and decoupling capacitors | Received - core parts receipt-checked and key resistor/diode measurements recorded | isolates the ESP32 GPIO from the estimated 77 mA buzzer-coil current |
 
@@ -207,7 +207,9 @@ event. On 2026-09-10, ten counted Select presses were made only after the displa
 had settled; each made the short tone and refreshed normally. After the AMS1117
 charger was unplugged and its LED went dark, the user reported the buzzer,
 BC337, and AMS1117 cool with no abnormal smell. This bounded observation is not
-a PWM waveform measurement.
+an electrical PWM waveform measurement. No oscilloscope or logic analyzer is
+available within the Version 0.6 scope, so waveform capture is deferred as an
+optional future diagnostic rather than a release gate.
 
 ## Power Supply
 

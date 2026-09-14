@@ -4,6 +4,11 @@
 
 ### Added
 
+- Closed the Version 0.6 buzzer proof on its documented static, audible, and
+  bounded thermal/stability evidence. Electrical PWM waveform capture is
+  explicitly deferred as an optional future diagnostic because no
+  waveform-capable instrument is in this milestone's scope; the available
+  multimeter cannot resolve the 2 kHz, 100 ms signal.
 - Recorded the Version 0.6 confirmation-gated thermal/stability check: ten
   counted Select presses after display settling each made the configured short
   tone and normal redraw. After charger removal and AMS1117 LED-dark confirmation,

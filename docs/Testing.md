@@ -302,8 +302,11 @@ GPIO17 PWM and audible proof on 2026-09-09:
   only after display settling each produced the short tone and normal redraw
 - after unplugging the AMS1117 charger and confirming its LED dark, the user
   reported the buzzer, BC337, and AMS1117 cool with no abnormal smell
-- PWM waveform measurement, long-duration tone, alert tone, and notification
-  queue remain untested
+- no electrical PWM waveform measurement was performed: the available digital
+  multimeter cannot resolve the 2 kHz, 100 ms signal, and no oscilloscope or
+  logic analyzer is in the Version 0.6 scope. Waveform capture is deferred as
+  an optional future diagnostic, not an acceptance gate
+- long-duration tone, alert tone, and notification queue remain untested
 
 Further hardware work remains confirmation-gated. Before any wiring change,
 remove power and verify that the AMS1117 LED is dark. Keep the AMS1117 output
@@ -314,9 +317,9 @@ than the configured 100 ms.
 Checklist:
 
 - short beep works
-- alert tone works
-- silent mode works
-- buzzer does not heat
+- alert tone and silent mode are deferred
+- bounded ten-press thermal/stability observation passed; this is not a
+  long-duration thermal qualification
 
 ## WiFi Test
 
