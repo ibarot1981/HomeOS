@@ -4,7 +4,8 @@ Date of user-performed checks: 2026-08-23 to 2026-09-10.
 
 This record distinguishes received-item evidence and meter observations from the
 completed GPIO17 Select-tone proof and the bounded thermal/stability check.
-PWM waveform measurement remains separate.
+Electrical PWM waveform capture remains a separate optional future diagnostic;
+it is not a Version 0.6 acceptance gate.
 
 ## Receipt and visual evidence
 
@@ -146,9 +147,14 @@ dark. The user then reported the buzzer, BC337, and AMS1117 cool with no abnorma
 smell. Wiring was not changed; the two 5 V sources and the AMS1117/ESP32 3.3 V
 rails remained separate throughout.
 
-## Still untested
+## Deferred and still untested
 
 - Soldering and inspection of the mechanically useful but electrically unused
   buzzer `NC` header pin.
-- PWM waveform measurement at GPIO17 or the buzzer/collector circuit.
+- Electrical PWM waveform capture at GPIO17 or the buzzer/collector circuit.
+  On 2026-09-14, the user confirmed that no oscilloscope or logic analyzer is
+  available and that purchasing one is outside this milestone's scope. The
+  available digital multimeter cannot resolve a 2 kHz, 100 ms waveform. No
+  waveform result is claimed; capture is deferred as an optional future
+  diagnostic rather than a Version 0.6 release gate.
 - Alert tone, silent-mode behavior, and any notification queue.

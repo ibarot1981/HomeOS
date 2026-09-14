@@ -197,14 +197,20 @@ Hardware status:
 - a bounded ten-press check on 2026-09-10 produced the short tone and normal
   redraw after each settled display; the user subsequently reported the buzzer,
   BC337, and AMS1117 cool with no abnormal smell
-- PWM waveform measurement remains pending
+- electrical PWM waveform capture is deferred as an optional future diagnostic:
+  no oscilloscope or logic analyzer is available within the Version 0.6 scope,
+  and the available multimeter cannot resolve the 2 kHz, 100 ms signal
 
-Features:
+Implemented feature:
 
 - short beep
+
+Deferred beyond this increment:
+
 - alert tone
 - silent mode
 - notification queue
+- electrical PWM waveform capture, unless suitable equipment is later available
 
 First-increment boundary:
 
