@@ -38,6 +38,7 @@ void TelegramService::poll(unsigned long now, bool networkReady) {
   if (!initialPollComplete_) {
     initialPollComplete_ = true;
     if (messageCount > 0) {
+      lastHandledUpdateId_ = bot_.messages[messageCount - 1].update_id;
       Serial.println("Telegram             : discarded queued updates at startup");
     }
     return;
@@ -45,6 +46,12 @@ void TelegramService::poll(unsigned long now, bool networkReady) {
 
   for (int index = 0; index < messageCount; ++index) {
     const telegramMessage &message = bot_.messages[index];
+    if (message.update_id <= lastHandledUpdateId_) {
+      Serial.println("Telegram             : ignored duplicate update");
+      continue;
+    }
+    lastHandledUpdateId_ = message.update_id;
+
     // A private user message has the sender's ID as its chat ID. Group and
     // supergroup messages use a distinct chat ID, so do not authorize them.
     if (message.type != "message" || message.chat_id != message.from_id ||

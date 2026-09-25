@@ -26,5 +26,6 @@ class TelegramService {
   WiFiClientSecure client_;
   UniversalTelegramBot bot_;
   unsigned long lastPollMs_ = 0;
+  int lastHandledUpdateId_ = 0;
   bool initialPollComplete_ = false;
 };

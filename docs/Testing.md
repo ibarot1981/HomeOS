@@ -544,6 +544,8 @@ Manual checklist after upload:
   the test commands only after the startup discard message
 - from an allowlisted private chat, send `/status` and confirm the response
   reports WiFi/NTP, module, mode, and sound state without credentials
+- send each command once and confirm it produces one reply; a repeated Telegram
+  update must not trigger a second command response
 - verify `/module clock`, `/module status`, `/mode slideshow`, `/mode fixed`,
   `/mode smart`, and `/beep`; confirm existing buttons and the ePaper remain
   functional after every command

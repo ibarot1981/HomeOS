@@ -63,9 +63,11 @@ failure clears, preventing repeated full-refresh overrides.
 `TelegramService` is enabled only when both local Telegram configuration values
 are non-empty. Its `begin()` configures the library's Telegram root certificate;
 `poll(now, networkReady)` runs once per second only after WiFi/NTP is healthy.
-Its first poll discards queued pre-boot updates. It identifies a private message
-by matching its chat and sender IDs, accepts exact allowlisted private chat IDs
-from the local comma-separated list, rejects group and supergroup updates, and
+Its first poll records and discards queued pre-boot updates. It records the last
+handled update ID so a repeated Telegram delivery cannot issue a second command
+reply. It identifies a private message by matching its chat and sender IDs,
+accepts exact allowlisted private chat IDs from the local comma-separated list,
+rejects group and supergroup updates, and
 forwards text to `handleTelegramCommand()`. The handler exposes `/status`, the
 two existing module names, three runtime modes, and `/beep`; it neither accepts
 arbitrary module names nor changes the Version 0.6 tone implementation. A
