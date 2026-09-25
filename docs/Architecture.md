@@ -67,7 +67,12 @@ Current behavior:
 - Serial Diagnostics reports startup board information, button activity, WiFi/NTP state, display activity, and a five-second heartbeat.
 - The GPIO17 firmware path was uploaded and audibly validated on 2026-09-09: the
   first Select press and two repeat presses passed after the LEDC initialization
-  correction. Heating validation has not occurred.
+  correction. A confirmation-gated, bounded thermal/stability check on
+  2026-09-10 recorded ten post-settle Select tones with normal redraws; after
+  charger removal and AMS1117 LED-dark confirmation, the buzzer, BC337, and
+  AMS1117 were reported cool with no abnormal smell. This is not a long-duration
+  thermal qualification. Electrical PWM waveform capture remains an optional,
+  deferred diagnostic.
 
 For a file and function-level view, see [Code-Map.md](Code-Map.md). The optional local interactive companion is [homeos-code-map.html](visualizations/homeos-code-map.html).
 

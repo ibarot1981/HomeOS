@@ -102,6 +102,9 @@
 
 ### Fixed
 
+- Corrected the Version 0.6 Architecture summary to record the completed,
+  bounded thermal/stability check without overstating it as a long-duration
+  thermal qualification; electrical PWM waveform capture remains deferred.
 - Initialized the buzzer LEDC channel before the first asynchronous tone request,
   fixing the initial silent Select press and `LEDC is not initialized` serial
   error.
