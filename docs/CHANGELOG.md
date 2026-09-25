@@ -4,6 +4,22 @@
 
 ### Added
 
+- Added Version 0.7 allowlisted Telegram polling with local-only configuration,
+  certificate validation, `/status`, module selection, runtime display-mode
+  selection, the existing short `/beep`, and one-shot WiFi/NTP recovery alerts.
+- Added a focused Telegram service, PlatformIO Telegram dependency, configuration
+  example, Version 0.7 test procedure, and Telegram architecture decision.
+
+### Changed
+
+- Restricted Version 0.7 Telegram authorization and alert recipients to
+  allowlisted private chats; group-chat support is deferred.
+
+### Fixed
+
+- Fixed private-chat authorization so it uses matching Telegram chat and sender
+  IDs instead of an optional chat-title field.
+- Prevented a repeated Telegram update from producing a duplicate command reply.
 - Closed the Version 0.6 buzzer proof on its documented static, audible, and
   bounded thermal/stability evidence. Electrical PWM waveform capture is
   explicitly deferred as an optional future diagnostic because no
@@ -80,6 +96,9 @@
 
 ### Changed
 
+- Replaced the Version 0.5 compile-time-only display mode with RAM-only runtime
+  state so the approved Telegram commands can change it; reboot preserves the
+  checked-in Slideshow default rather than a remote selection.
 - Updated registered modules every loop so Clock WiFi/NTP retry continues during
   a Smart Status override; Clock and Status footers now show the active mode.
 - Left-aligned the footer label so it cannot overlap the right-aligned mode name.

@@ -283,3 +283,40 @@ after power-off. Electrical PWM waveform capture is not an acceptance gate for
 Version 0.6: no oscilloscope or logic analyzer is available within this milestone
 scope, and the available multimeter cannot resolve the 2 kHz, 100 ms signal. It
 is deferred as an optional future diagnostic.
+
+## ADR-014: Use Allowlisted Certificate-Validated Telegram Polling
+
+Date: 2026-09-25
+
+Decision:
+
+Use `UniversalTelegramBot` 1.3.x through PlatformIO with its ArduinoJson
+dependency. Keep Telegram configuration in ignored
+`firmware/include/config.local.h`; poll only over outbound,
+certificate-validated HTTPS once per second after WiFi/NTP is healthy. Do not
+use webhooks, an inbound HTTP server, `setInsecure()`, a generic messaging
+framework, persistence, an alert retry queue, or group chats in Version 0.7.
+Accept commands only from exact allowlisted private chat IDs. Configure alerts
+only for those private chats; group alert recipients are also deferred.
+
+Reason:
+
+The ESP32-S3 is behind a normal home network, so outbound polling needs no
+public endpoint, router port-forwarding, or server certificate. Exact chat-ID
+allowlisting limits who can request the small approved command set. Runtime-only
+display mode is enough for remote control without adding settings storage.
+Private chats make each configured ID a distinct trusted person. A group ID
+would authorize every group participant under the same shared identity and
+would need a separately designed, read-only alert-recipient policy.
+
+Alternatives considered:
+
+- Telegram webhooks with public HTTPS ingress
+- insecure TLS validation
+- a generic notification/event framework
+- persistent command settings and retry queue
+- group-chat commands or alerts
+
+Status:
+
+Accepted for Version 0.7. Physical bot and command validation remain pending.

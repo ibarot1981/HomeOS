@@ -521,6 +521,48 @@ Limitations and environment notes:
 No buzzer, Telegram notification, sensor, relay, persistence, or additional
 hardware is part of Version 0.5.
 
+## Version 0.7 Telegram Integration Test
+
+Build result:
+
+- environment: `edgehax_s3_pro_diagnostics`
+- build command: `& "$env:USERPROFILE\.platformio\penv\Scripts\pio.exe" run`
+- build result: passed on 2026-09-25 with 18.8% RAM and 14.2% flash use
+- local credentials are intentionally absent from the repository
+
+Before upload, copy `firmware/include/config.example.h` to the ignored
+`firmware/include/config.local.h`, preserve the local WiFi values, and set a
+Telegram bot token plus a comma-separated allowlist of private chat IDs. Groups
+and supergroups are unsupported. Do not paste
+either value into a commit, issue, screenshot, serial capture, or chat.
+
+Manual checklist after upload:
+
+- confirm serial reports only `Telegram : enabled with local allowlist`, never a
+  token or chat ID
+- confirm queued messages from before the first healthy poll are discarded; send
+  the test commands only after the startup discard message
+- from an allowlisted private chat, send `/status` and confirm the response
+  reports WiFi/NTP, module, mode, and sound state without credentials
+- send each command once and confirm it produces one reply; a repeated Telegram
+  update must not trigger a second command response
+- verify `/module clock`, `/module status`, `/mode slideshow`, `/mode fixed`,
+  `/mode smart`, and `/beep`; confirm existing buttons and the ePaper remain
+  functional after every command
+- power-cycle and confirm the display mode returns to Slideshow
+- send a command from a non-allowlisted chat and confirm no reply or device
+  state change occurs; serial must not reveal the sender ID
+- temporarily cause and then recover a WiFi/NTP failure only when safe to do so;
+  confirm a recovery alert is attempted and no alert queue or repeated retries
+  occur
+
+Limitations:
+
+- polling and reply delivery require healthy WiFi/NTP for TLS validation
+- an offline alert cannot be delivered and is intentionally not queued
+- no bot, chat ID, upload, or physical Telegram result is recorded here until
+  the user performs the local setup and validation
+
 ## Regression Tests
 
 Before declaring a milestone complete:

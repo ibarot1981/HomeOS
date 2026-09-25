@@ -1,6 +1,6 @@
 # Code Map
 
-## Version 0.6 Firmware Flow
+## Version 0.7 Firmware Flow
 
 ```mermaid
 flowchart TD
@@ -18,6 +18,13 @@ flowchart TD
   Loop --> Modes["updateDisplayMode(now)"]
   Modes -->|Slideshow interval| Navigation
   Modes -->|Smart alert begins/ends| Draw
+  Loop --> Telegram["TelegramService::poll(now)\nallowlisted outbound HTTPS"]
+  Telegram --> Commands["/status · /module · /mode · /beep"]
+  Commands --> Navigation
+  Commands --> Modes
+  Commands --> Tone
+  Loop --> Alerts["updateTelegramAlerts()"]
+  Alerts --> Telegram
   Draw --> Display["full ePaper refresh, then hibernate"]
 ```
 
@@ -25,9 +32,11 @@ flowchart TD
 
 | File | Responsibility |
 |---|---|
-| `firmware/src/main.cpp` | Version 0.6 application: startup diagnostics, display modes, WiFi/NTP clock, debounced buttons, one short GPIO17 Select tone, module registry, Clock module, and Status diagnostics/alert module. |
-| `firmware/include/config.example.h` | Non-secret example for optional local WiFi configuration. |
-| `platformio.ini` | Edgehax S3-PRO build environment and GxEPD2 dependency. |
+| `firmware/src/main.cpp` | Version 0.7 application: startup diagnostics, runtime display modes, WiFi/NTP clock, debounced buttons, unchanged GPIO17 Select tone, module registry, command handling, and WiFi/NTP alert-state tracking. |
+| `firmware/include/telegram_service.h` | Narrow Telegram transport interface: local allowlist, polling, replies, and alerts. |
+| `firmware/src/telegram_service.cpp` | Certificate-validated Telegram polling, exact private-chat allowlist checks, generic-safe serial diagnostics, and outbound messages. |
+| `firmware/include/config.example.h` | Non-secret example for local WiFi and Telegram configuration. |
+| `platformio.ini` | Edgehax S3-PRO build environment plus GxEPD2 and UniversalTelegramBot dependencies. |
 
 ## Current Module Model
 
@@ -42,13 +51,28 @@ successful sync, `refreshClockIfNeeded(now)` also detects loss of the WiFi
 connection, changes `clockStatus` to `kWiFiConnectFailed`, and schedules the
 existing five-minute WiFi/NTP retry path.
 
-`kDisplayMode` selects one build-time mode. Slideshow uses
+`displayMode` selects one RAM-only runtime mode and starts as
+`kDefaultDisplayMode`, currently Slideshow. Slideshow uses
 `kSlideshowIntervalMs` (60 seconds) to call the existing `changeModule(1)`.
 Fixed leaves the module selected by Previous or Next visible. Smart uses
 `StatusModule::hasAlert()` for configured WiFi/NTP failures, stores
 `smartAlertPreviousModuleIndex`, shows Status for `kSmartAlertDurationMs` (15
 seconds), then redraws the prior module. The smart alert is latched until the
 failure clears, preventing repeated full-refresh overrides.
+
+`TelegramService` is enabled only when both local Telegram configuration values
+are non-empty. Its `begin()` configures the library's Telegram root certificate;
+`poll(now, networkReady)` runs once per second only after WiFi/NTP is healthy.
+Its first poll records and discards queued pre-boot updates. It records the last
+handled update ID so a repeated Telegram delivery cannot issue a second command
+reply. It identifies a private message by matching its chat and sender IDs,
+accepts exact allowlisted private chat IDs from the local comma-separated list,
+rejects group and supergroup updates, and
+forwards text to `handleTelegramCommand()`. The handler exposes `/status`, the
+two existing module names, three runtime modes, and `/beep`; it neither accepts
+arbitrary module names nor changes the Version 0.6 tone implementation. A
+WiFi/NTP failure cannot send a Telegram alert while offline. Recovery causes one
+delivery attempt and no alert retry queue is retained.
 
 Buttons remain direct and hardware-specific: Previous GPIO4, Select GPIO5, and
 Next GPIO6 use `INPUT_PULLUP`, active-low presses, and the existing 50 ms debounce.

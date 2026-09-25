@@ -1,14 +1,15 @@
 # Architecture
 
-## Current Implementation (Version 0.6 Firmware Proof)
+## Current Implementation (Version 0.7 Telegram Integration)
 
-HomeOS Version 0.6 remains a small, single-file firmware implementation with a
-fixed two-module registry. `firmware/src/main.cpp` owns Button Input,
-Navigation, Display Modes, Clock, Board Diagnostics, Display, WiFi/NTP, Serial
-Diagnostics, and the smallest buzzer proof. Select requests one asynchronous
-GPIO17 tone and redraws the active module. The target architecture below remains
-a future direction; its proposed layers do not yet exist as separate firmware
-modules.
+HomeOS Version 0.7 remains a small firmware implementation with a fixed
+two-module registry. `firmware/src/main.cpp` owns Button Input, Navigation,
+Display Modes, Clock, Board Diagnostics, Display, WiFi/NTP, Serial Diagnostics,
+and the unchanged buzzer proof. `firmware/src/telegram_service.cpp` is the one
+focused transport boundary: it owns Telegram polling, allowlist checks, and
+outbound replies. Select requests one asynchronous GPIO17 tone and redraws the
+active module. The target architecture below remains a future direction; its
+proposed layers do not yet exist as separate firmware modules.
 
 ```mermaid
 flowchart LR
@@ -27,10 +28,12 @@ flowchart LR
     Serial["Serial Diagnostics"]
     WiFiNTP["WiFi/NTP"]
     Buzzer["Select tone<br/>2 kHz · 100 ms"]
+    Telegram["Telegram service<br/>allowlisted polling"]
   end
   subgraph External["External services"]
     WiFi["WiFi network"]
     NTP["NTP servers"]
+    TelegramAPI["Telegram Bot API"]
   end
   Buttons --> Navigation
   Buttons -->|Select| Buzzer
@@ -44,6 +47,10 @@ flowchart LR
   Buzzer --> BuzzerHW
   WiFi --> WiFiNTP --> NTP
   WiFiNTP --> Clock
+  WiFi --> Telegram --> TelegramAPI
+  Telegram --> Navigation
+  Telegram --> Modes
+  Telegram --> Buzzer
   Navigation --> Serial
   WiFiNTP --> Serial
   Display --> Serial
@@ -65,6 +72,20 @@ Current behavior:
   alerting, and retries WiFi/NTP synchronization every five minutes after failure.
 - Display uses the verified SPI wiring and full refresh only; each draw ends in ePaper hibernation.
 - Serial Diagnostics reports startup board information, button activity, WiFi/NTP state, display activity, and a five-second heartbeat.
+- Telegram is disabled unless both local configuration values are non-empty. When
+  WiFi/NTP is healthy, `TelegramService` polls once per second over
+  certificate-validated HTTPS, accepts only exact allowlisted private chat IDs,
+  rejects group and supergroup updates, and
+  never logs the token or chat IDs. It handles `/status`, the two existing
+  module selections, the three display modes, and `/beep`; unknown allowlisted
+  commands receive a usage response. The first poll deliberately discards
+  queued updates from before boot. There is no webhook, inbound listener,
+  generic messaging layer, persisted setting, or retry queue.
+- Display mode is now RAM-only runtime state so Telegram can select Slideshow,
+  Fixed, or Smart. A reboot returns it to `kDefaultDisplayMode`, currently
+  Slideshow. One WiFi/NTP recovery alert is attempted after a healthy-state
+  transition; an alert cannot be delivered while WiFi/NTP is unhealthy and is
+  not queued for later retry.
 - The GPIO17 firmware path was uploaded and audibly validated on 2026-09-09: the
   first Select press and two repeat presses passed after the LEDC initialization
   correction. A confirmation-gated, bounded thermal/stability check on
