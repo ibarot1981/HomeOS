@@ -14,6 +14,11 @@
 
 - Restricted Version 0.7 Telegram authorization and alert recipients to
   allowlisted private chats; group-chat support is deferred.
+
+### Fixed
+
+- Fixed private-chat authorization so it uses matching Telegram chat and sender
+  IDs instead of an optional chat-title field.
 - Closed the Version 0.6 buzzer proof on its documented static, audible, and
   bounded thermal/stability evidence. Electrical PWM waveform capture is
   explicitly deferred as an optional future diagnostic because no

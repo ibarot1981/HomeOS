@@ -45,9 +45,9 @@ void TelegramService::poll(unsigned long now, bool networkReady) {
 
   for (int index = 0; index < messageCount; ++index) {
     const telegramMessage &message = bot_.messages[index];
-    // Private Telegram chats have no chat title. Groups and supergroups do,
-    // so do not treat a group ID in local configuration as an authorization.
-    if (message.type != "message" || !message.chat_title.isEmpty() ||
+    // A private user message has the sender's ID as its chat ID. Group and
+    // supergroup messages use a distinct chat ID, so do not authorize them.
+    if (message.type != "message" || message.chat_id != message.from_id ||
         !isAllowedChat(message.chat_id)) {
       Serial.println("Telegram             : ignored unauthorized or unsupported update");
       continue;
