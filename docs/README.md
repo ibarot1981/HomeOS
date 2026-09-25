@@ -75,6 +75,15 @@ driver components. No alert tone or notification queue is part of this increment
 Electrical PWM waveform capture is an optional future diagnostic, not a Version
 0.6 acceptance gate.
 
+Version 0.7 adds an allowlisted Telegram integration that remains disabled until
+local credentials are supplied. It uses certificate-validated outbound polling
+for `/status`, `/module clock`, `/module status`, `/mode slideshow`, `/mode fixed`,
+`/mode smart`, and `/beep`. Telegram mode changes are RAM-only and reset to the
+checked-in Slideshow default after reboot. The existing Select tone is reused
+unchanged. One-shot WiFi/NTP transition alerts have no retry queue, so a loss of
+WiFi cannot be delivered until connectivity returns. Hardware validation with a
+locally created bot is still pending.
+
 ## Documentation Layout
 
 All project Markdown documentation belongs in this `docs/` folder. `AGENTS.md`

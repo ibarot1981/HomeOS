@@ -9,6 +9,8 @@
 #include <Fonts/FreeMonoBold18pt7b.h>
 #include <Fonts/FreeMonoBold24pt7b.h>
 
+#include "telegram_service.h"
+
 #if __has_include("config.local.h")
 #include "config.local.h"
 #endif
@@ -19,6 +21,14 @@
 
 #ifndef HOMEOS_WIFI_PASSWORD
 #define HOMEOS_WIFI_PASSWORD ""
+#endif
+
+#ifndef HOMEOS_TELEGRAM_BOT_TOKEN
+#define HOMEOS_TELEGRAM_BOT_TOKEN ""
+#endif
+
+#ifndef HOMEOS_TELEGRAM_ALLOWED_CHAT_IDS
+#define HOMEOS_TELEGRAM_ALLOWED_CHAT_IDS ""
 #endif
 
 namespace {
@@ -73,8 +83,8 @@ enum class DisplayMode {
   kSmart,
 };
 
-// Change this firmware constant to select the Version 0.5 display mode.
-constexpr DisplayMode kDisplayMode = DisplayMode::kSlideshow;
+constexpr DisplayMode kDefaultDisplayMode = DisplayMode::kSlideshow;
+DisplayMode displayMode = kDefaultDisplayMode;
 
 struct ButtonState {
   const char *name;
@@ -94,6 +104,13 @@ class Module {
 };
 
 ClockStatus clockStatus = ClockStatus::kWiFiNotConfigured;
+bool telegramAlertStateKnown = false;
+bool telegramWasHealthy = false;
+
+String handleTelegramCommand(const String &command);
+TelegramService telegram(HOMEOS_TELEGRAM_BOT_TOKEN,
+                         HOMEOS_TELEGRAM_ALLOWED_CHAT_IDS,
+                         handleTelegramCommand);
 
 ButtonState buttons[] = {
     {"Previous", kPreviousButtonPin, ButtonAction::kPrevious, false, false, 0},
@@ -231,7 +248,7 @@ const char *clockStatusMessage() {
 }
 
 const char *displayModeName() {
-  switch (kDisplayMode) {
+  switch (displayMode) {
     case DisplayMode::kSlideshow:
       return "Slideshow";
     case DisplayMode::kFixed:
@@ -334,6 +351,7 @@ void drawStatusScreen() {
 }
 
 void refreshClockIfNeeded(unsigned long now);
+void playSelectTone();
 
 class ClockModule final : public Module {
  public:
@@ -381,6 +399,98 @@ void drawActiveModule() {
   display.init(115200, true, 2, false);
   activeModule().draw();
   display.hibernate();
+}
+
+bool selectModuleByName(const String &moduleName) {
+  for (size_t index = 0; index < kModuleCount; ++index) {
+    if (!moduleName.equalsIgnoreCase(modules[index]->name())) {
+      continue;
+    }
+
+    activeModuleIndex = index;
+    lastModuleChangeMs = millis();
+    smartAlertActive = false;
+    smartAlertShownForCurrentFailure = statusModule.hasAlert();
+    Serial.print("Active module      : ");
+    Serial.println(activeModule().name());
+    drawActiveModule();
+    return true;
+  }
+
+  return false;
+}
+
+bool setDisplayMode(const String &modeName) {
+  if (modeName == "slideshow") {
+    displayMode = DisplayMode::kSlideshow;
+  } else if (modeName == "fixed") {
+    displayMode = DisplayMode::kFixed;
+  } else if (modeName == "smart") {
+    displayMode = DisplayMode::kSmart;
+  } else {
+    return false;
+  }
+
+  lastModuleChangeMs = millis();
+  Serial.print("Display mode       : ");
+  Serial.println(displayModeName());
+  drawActiveModule();
+  return true;
+}
+
+String telegramStatusMessage() {
+  String status = "HomeOS status\n";
+  status += "WiFi: ";
+  status += (WiFi.status() == WL_CONNECTED ? "connected" : "offline");
+  status += "\nTime: ";
+  status += clockStatusMessage();
+  status += "\nModule: ";
+  status += activeModule().name();
+  status += "\nMode: ";
+  status += displayModeName();
+  status += "\nSound: ";
+  status += (kSoundEnabled ? "enabled" : "disabled");
+  return status;
+}
+
+String telegramHelpMessage() {
+  return "Commands:\n/status\n/module clock\n/module status\n"
+         "/mode slideshow\n/mode fixed\n/mode smart\n/beep";
+}
+
+String handleTelegramCommand(const String &message) {
+  String command(message);
+  command.trim();
+  command.toLowerCase();
+
+  if (command == "/status") {
+    return telegramStatusMessage();
+  }
+
+  if (command == "/beep") {
+    playSelectTone();
+    return "HomeOS: short confirmation tone requested.";
+  }
+
+  if (command.startsWith("/module ")) {
+    String moduleName = command.substring(strlen("/module "));
+    moduleName.trim();
+    if (selectModuleByName(moduleName)) {
+      return "HomeOS: module set to " + String(activeModule().name()) + ".";
+    }
+    return "HomeOS: unknown module. Use clock or status.";
+  }
+
+  if (command.startsWith("/mode ")) {
+    String modeName = command.substring(strlen("/mode "));
+    modeName.trim();
+    if (setDisplayMode(modeName)) {
+      return "HomeOS: mode set to " + String(displayModeName()) + ".";
+    }
+    return "HomeOS: unknown mode. Use slideshow, fixed, or smart.";
+  }
+
+  return telegramHelpMessage();
 }
 
 ClockStatus connectWiFiAndSyncTime() {
@@ -466,7 +576,7 @@ void refreshClockIfNeeded(unsigned long now) {
     Serial.println("WiFi connection lost.");
     clockStatus = ClockStatus::kWiFiConnectFailed;
     lastClockSyncAttemptMs = now;
-    if (isClockModuleActive() && kDisplayMode != DisplayMode::kSmart) {
+    if (isClockModuleActive() && displayMode != DisplayMode::kSmart) {
       drawActiveModule();
     }
     return;
@@ -531,14 +641,14 @@ void changeModule(int direction) {
 }
 
 void updateDisplayMode(unsigned long now) {
-  if (kDisplayMode == DisplayMode::kSlideshow) {
+  if (displayMode == DisplayMode::kSlideshow) {
     if (now - lastModuleChangeMs >= kSlideshowIntervalMs) {
       changeModule(1);
     }
     return;
   }
 
-  if (kDisplayMode != DisplayMode::kSmart) {
+  if (displayMode != DisplayMode::kSmart) {
     return;
   }
 
@@ -580,6 +690,26 @@ void updateDisplayMode(unsigned long now) {
 void updateModules(unsigned long now) {
   for (Module *module : modules) {
     module->update(now);
+  }
+}
+
+void updateTelegramAlerts() {
+  const bool healthy = clockStatus == ClockStatus::kTimeSynced;
+  if (!telegramAlertStateKnown) {
+    telegramAlertStateKnown = true;
+    telegramWasHealthy = healthy;
+    return;
+  }
+
+  if (healthy == telegramWasHealthy) {
+    return;
+  }
+
+  telegramWasHealthy = healthy;
+  if (healthy) {
+    telegram.sendAlert("HomeOS alert: WiFi/NTP recovered.", true);
+  } else {
+    telegram.sendAlert("HomeOS alert: WiFi/NTP is unhealthy.", false);
   }
 }
 
@@ -653,6 +783,7 @@ void setup() {
   beginBuzzer();
   beginButtons();
   startHomeOS();
+  telegram.begin();
 }
 
 void loop() {
@@ -660,6 +791,8 @@ void loop() {
   scanButtons(now);
   updateModules(now);
   updateDisplayMode(now);
+  updateTelegramAlerts();
+  telegram.poll(now, clockStatus == ClockStatus::kTimeSynced);
 
   if (now - lastHeartbeatMs >= kHeartbeatIntervalMs) {
     lastHeartbeatMs = now;

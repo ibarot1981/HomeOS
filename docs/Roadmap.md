@@ -228,6 +228,13 @@ Learning:
 
 Goal: allow remote control and notifications.
 
+Status:
+
+- PlatformIO build passed on 2026-09-25; physical Telegram validation remains
+  required before this milestone is complete
+- Telegram remains disabled until local ignored configuration provides a bot
+  token and one or more allowed chat IDs
+
 Features:
 
 - Telegram bot setup
@@ -239,6 +246,22 @@ Features:
   - `/mode fixed`
   - `/beep`
 - send alerts to Telegram
+
+Implemented behavior:
+
+- certificate-validated outbound polling only; no webhook, open port, or router
+  configuration
+- `/status` returns non-sensitive WiFi/NTP, active-module, display-mode, and
+  sound state
+- `/module` accepts only `clock` and `status`
+- `/mode` accepts only `slideshow`, `fixed`, and `smart`; it is RAM-only and
+  returns to the configured Slideshow default after reboot
+- `/beep` reuses the existing short Select-confirmation tone without changing
+  its Version 0.6 timing or hardware behavior
+- unauthorized or unsupported updates make no state change and identify no chat
+  ID in serial output
+- WiFi/NTP recovery causes one alert attempt. No alert is queued while the
+  device is offline, and no persistence or retry framework is added.
 
 Success criteria:
 
