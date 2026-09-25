@@ -532,7 +532,8 @@ Build result:
 
 Before upload, copy `firmware/include/config.example.h` to the ignored
 `firmware/include/config.local.h`, preserve the local WiFi values, and set a
-Telegram bot token plus a comma-separated allowlist of chat IDs. Do not paste
+Telegram bot token plus a comma-separated allowlist of private chat IDs. Groups
+and supergroups are unsupported. Do not paste
 either value into a commit, issue, screenshot, serial capture, or chat.
 
 Manual checklist after upload:

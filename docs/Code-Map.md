@@ -34,7 +34,7 @@ flowchart TD
 |---|---|
 | `firmware/src/main.cpp` | Version 0.7 application: startup diagnostics, runtime display modes, WiFi/NTP clock, debounced buttons, unchanged GPIO17 Select tone, module registry, command handling, and WiFi/NTP alert-state tracking. |
 | `firmware/include/telegram_service.h` | Narrow Telegram transport interface: local allowlist, polling, replies, and alerts. |
-| `firmware/src/telegram_service.cpp` | Certificate-validated Telegram polling, exact chat-ID allowlist checks, generic-safe serial diagnostics, and outbound messages. |
+| `firmware/src/telegram_service.cpp` | Certificate-validated Telegram polling, exact private-chat allowlist checks, generic-safe serial diagnostics, and outbound messages. |
 | `firmware/include/config.example.h` | Non-secret example for local WiFi and Telegram configuration. |
 | `platformio.ini` | Edgehax S3-PRO build environment plus GxEPD2 and UniversalTelegramBot dependencies. |
 
@@ -63,7 +63,7 @@ failure clears, preventing repeated full-refresh overrides.
 `TelegramService` is enabled only when both local Telegram configuration values
 are non-empty. Its `begin()` configures the library's Telegram root certificate;
 `poll(now, networkReady)` runs once per second only after WiFi/NTP is healthy.
-Its first poll discards queued pre-boot updates. It accepts exact allowlisted chat IDs from the local comma-separated list and
+Its first poll discards queued pre-boot updates. It accepts exact allowlisted private chat IDs from the local comma-separated list, rejects group and supergroup updates, and
 forwards text to `handleTelegramCommand()`. The handler exposes `/status`, the
 two existing module names, three runtime modes, and `/beep`; it neither accepts
 arbitrary module names nor changes the Version 0.6 tone implementation. A

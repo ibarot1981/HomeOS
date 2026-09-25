@@ -74,7 +74,8 @@ Current behavior:
 - Serial Diagnostics reports startup board information, button activity, WiFi/NTP state, display activity, and a five-second heartbeat.
 - Telegram is disabled unless both local configuration values are non-empty. When
   WiFi/NTP is healthy, `TelegramService` polls once per second over
-  certificate-validated HTTPS, accepts only exact allowlisted chat IDs, and
+  certificate-validated HTTPS, accepts only exact allowlisted private chat IDs,
+  rejects group and supergroup updates, and
   never logs the token or chat IDs. It handles `/status`, the two existing
   module selections, the three display modes, and `/beep`; unknown allowlisted
   commands receive a usage response. The first poll deliberately discards

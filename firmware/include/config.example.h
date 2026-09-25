@@ -7,6 +7,7 @@
 #define HOMEOS_WIFI_PASSWORD "your-wifi-password"
 
 // Create the bot and obtain these values only when ready to test locally.
-// Keep the bot token and all chat IDs private. Multiple allowed IDs use commas.
+// Keep the bot token and all private chat IDs private. Multiple allowed private
+// chat IDs use commas. Groups are not supported in Version 0.7.
 #define HOMEOS_TELEGRAM_BOT_TOKEN "your-telegram-bot-token"
 #define HOMEOS_TELEGRAM_ALLOWED_CHAT_IDS "your-telegram-chat-id"

@@ -9,6 +9,11 @@
   selection, the existing short `/beep`, and one-shot WiFi/NTP recovery alerts.
 - Added a focused Telegram service, PlatformIO Telegram dependency, configuration
   example, Version 0.7 test procedure, and Telegram architecture decision.
+
+### Changed
+
+- Restricted Version 0.7 Telegram authorization and alert recipients to
+  allowlisted private chats; group-chat support is deferred.
 - Closed the Version 0.6 buzzer proof on its documented static, audible, and
   bounded thermal/stability evidence. Electrical PWM waveform capture is
   explicitly deferred as an optional future diagnostic because no

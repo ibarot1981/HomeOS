@@ -295,7 +295,9 @@ dependency. Keep Telegram configuration in ignored
 `firmware/include/config.local.h`; poll only over outbound,
 certificate-validated HTTPS once per second after WiFi/NTP is healthy. Do not
 use webhooks, an inbound HTTP server, `setInsecure()`, a generic messaging
-framework, persistence, or an alert retry queue in Version 0.7.
+framework, persistence, an alert retry queue, or group chats in Version 0.7.
+Accept commands only from exact allowlisted private chat IDs. Configure alerts
+only for those private chats; group alert recipients are also deferred.
 
 Reason:
 
@@ -303,6 +305,9 @@ The ESP32-S3 is behind a normal home network, so outbound polling needs no
 public endpoint, router port-forwarding, or server certificate. Exact chat-ID
 allowlisting limits who can request the small approved command set. Runtime-only
 display mode is enough for remote control without adding settings storage.
+Private chats make each configured ID a distinct trusted person. A group ID
+would authorize every group participant under the same shared identity and
+would need a separately designed, read-only alert-recipient policy.
 
 Alternatives considered:
 
@@ -310,6 +315,7 @@ Alternatives considered:
 - insecure TLS validation
 - a generic notification/event framework
 - persistent command settings and retry queue
+- group-chat commands or alerts
 
 Status:
 

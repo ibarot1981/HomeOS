@@ -233,12 +233,12 @@ Status:
 - PlatformIO build passed on 2026-09-25; physical Telegram validation remains
   required before this milestone is complete
 - Telegram remains disabled until local ignored configuration provides a bot
-  token and one or more allowed chat IDs
+  token and one or more allowed private chat IDs; group chats are deferred
 
 Features:
 
 - Telegram bot setup
-- allowed chat ID
+- allowed private chat ID
 - commands:
   - `/status`
   - `/module clock`
